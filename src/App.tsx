@@ -91,7 +91,11 @@ function App() {
                       <Route path="/careers" element={<Careers />} />
                       
                      {/* Stripe Routes */}
-                     <Route path="/stripe-products" element={<StripeProducts />} />
+                     <Route path="/stripe-products" element={
+                       <ProtectedRoute>
+                         <StripeProducts />
+                       </ProtectedRoute>
+                     } />
                      <Route path="/success" element={
                        <ProtectedRoute>
                          <StripeSuccess />
