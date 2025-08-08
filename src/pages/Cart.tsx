@@ -14,6 +14,7 @@ const Cart: React.FC = () => {
           <ShoppingBag className="h-16 w-16 text-gray-400 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Keranjang Kosong</h2>
           <p className="text-gray-600 mb-8">
+          </p>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Keranjang Kosong</h2>
           <p className="text-gray-600 dark:text-gray-300 mb-8">
             Belum ada produk di keranjang Anda. Mulai belanja sekarang!
@@ -47,10 +48,12 @@ const Cart: React.FC = () => {
                   />
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold text-gray-900">
+                    </h3>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                       {item.name}
                     </h3>
                     <p className="text-green-600 font-semibold">
+                    </p>
                     <p className="text-green-600 dark:text-green-400 font-semibold">
                       Rp {item.price.toLocaleString('id-ID')}
                     </p>
@@ -73,6 +76,7 @@ const Cart: React.FC = () => {
                   </div>
                   <div className="text-right">
                     <p className="text-lg font-semibold text-gray-900">
+                    </p>
                     <p className="text-lg font-semibold text-gray-900 dark:text-white">
                       Rp {(item.price * item.quantity).toLocaleString('id-ID')}
                     </p>
