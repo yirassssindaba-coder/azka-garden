@@ -1,21 +1,26 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { ordersService, CreateOrderData } from '../services/supabase/orders.service';
-import { adminService } from '../services/supabase/admin.service';
+import { Order, CartItem, ShippingInfo, PaymentMethod, ShippingMethod } from '../types';
 import { useAuth } from './AuthContext';
-import { Database } from '../types/database';
 
-type Order = Database['public']['Tables']['orders']['Row'];
-type OrderItem = Database['public']['Tables']['order_items']['Row'];
-
-interface OrderWithItems extends Order {
-  items: OrderItem[];
+interface CreateOrderData {
+  items: CartItem[];
+  shippingInfo: ShippingInfo;
+  paymentMethod: PaymentMethod;
+  shippingMethod: ShippingMethod;
+  subtotal: number;
+  tax: number;
+  paymentFee: number;
+  shippingFee: number;
+  discountAmount: number;
+  discountCode: string;
+  total: number;
 }
 
 interface OrderContextType {
-  orders: OrderWithItems[];
+  orders: Order[];
   loading: boolean;
   createOrder: (orderData: CreateOrderData) => Promise<string>;
-  getOrderById: (id: string) => OrderWithItems | undefined;
+  getOrderById: (id: string) => Order | undefined;
   updateOrderStatus: (id: string, status: Order['status']) => Promise<void>;
   refreshOrders: () => Promise<void>;
 }
@@ -23,50 +28,37 @@ interface OrderContextType {
 const OrderContext = createContext<OrderContextType | null>(null);
 
 export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [orders, setOrders] = useState<OrderWithItems[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
 
-  // Load user orders when user changes
+  // Load orders from localStorage
   useEffect(() => {
     if (user) {
-      loadUserOrders();
-      
-      // Subscribe to real-time order updates
-      const subscription = ordersService.subscribeToUserOrders(user.id, (payload) => {
-        console.log('Order update received:', payload);
-        loadUserOrders(); // Refresh orders when changes occur
-      });
-
-      return () => {
-        subscription.unsubscribe();
-      };
+      const savedOrders = localStorage.getItem(`orders_${user.id}`);
+      if (savedOrders) {
+        try {
+          setOrders(JSON.parse(savedOrders));
+        } catch (error) {
+          console.error('Error loading orders:', error);
+        }
+      }
     } else {
       setOrders([]);
     }
   }, [user]);
 
-  const loadUserOrders = async () => {
-    if (!user) return;
-
-    try {
-      setLoading(true);
-      const userOrders = await ordersService.getUserOrders(user.id);
-      
-      // Load items for each order
-      const ordersWithItems = await Promise.all(
-        userOrders.map(async (order) => {
-          const items = await ordersService.getOrderItems(order.id);
-          return { ...order, items };
-        })
-      );
-
-      setOrders(ordersWithItems);
-    } catch (error) {
-      console.error('Error loading user orders:', error);
-    } finally {
-      setLoading(false);
+  // Save orders to localStorage
+  useEffect(() => {
+    if (user && orders.length > 0) {
+      localStorage.setItem(`orders_${user.id}`, JSON.stringify(orders));
     }
+  }, [orders, user]);
+
+  const generateOrderNumber = (): string => {
+    const year = new Date().getFullYear();
+    const orderCount = orders.length + 1;
+    return `ORD-${year}-${orderCount.toString().padStart(3, '0')}`;
   };
 
   const createOrder = async (orderData: CreateOrderData): Promise<string> => {
@@ -74,66 +66,69 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       throw new Error('User must be authenticated to create order');
     }
 
+    setLoading(true);
+
     try {
-      const { order, error } = await ordersService.createOrder(user.id, orderData);
-      
-      if (error) {
-        throw new Error(error.message);
-      }
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-      if (order) {
-        // Log order creation
-        await adminService.recordSystemMetric('order_created', 1, {
-          user_id: user.id,
-          order_id: order.id,
-          total: order.total,
-          items_count: orderData.items.length
-        });
+      const newOrder: Order = {
+        id: Date.now().toString(),
+        orderNumber: generateOrderNumber(),
+        items: orderData.items,
+        shippingInfo: orderData.shippingInfo,
+        paymentMethod: orderData.paymentMethod,
+        shippingMethod: orderData.shippingMethod,
+        subtotal: orderData.subtotal,
+        tax: orderData.tax,
+        paymentFee: orderData.paymentFee,
+        shippingFee: orderData.shippingFee,
+        discountAmount: orderData.discountAmount,
+        discountCode: orderData.discountCode,
+        total: orderData.total,
+        status: 'pending',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
 
-        // Refresh orders list
-        await loadUserOrders();
-        
-        return order.id;
-      }
-
-      throw new Error('Failed to create order');
+      setOrders(prev => [newOrder, ...prev]);
+      return newOrder.id;
     } catch (error) {
       console.error('Error creating order:', error);
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
-  const getOrderById = (id: string): OrderWithItems | undefined => {
+  const getOrderById = (id: string): Order | undefined => {
     return orders.find(order => order.id === id);
   };
 
   const updateOrderStatus = async (id: string, status: Order['status']): Promise<void> => {
+    setLoading(true);
+
     try {
-      const { error } = await ordersService.updateOrderStatus(id, status);
-      
-      if (error) {
-        throw new Error(error.message);
-      }
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-      // Log status update
-      if (user) {
-        await adminService.recordSystemMetric('order_status_updated', 1, {
-          user_id: user.id,
-          order_id: id,
-          new_status: status
-        });
-      }
-
-      // Refresh orders
-      await loadUserOrders();
+      setOrders(prev => prev.map(order => 
+        order.id === id 
+          ? { ...order, status, updatedAt: new Date().toISOString() }
+          : order
+      ));
     } catch (error) {
       console.error('Error updating order status:', error);
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
   const refreshOrders = async () => {
-    await loadUserOrders();
+    // In a real app, this would refetch from the server
+    setLoading(true);
+    await new Promise(resolve => setTimeout(resolve, 500));
+    setLoading(false);
   };
 
   return (

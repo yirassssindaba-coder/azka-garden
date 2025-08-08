@@ -1,11 +1,9 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { User } from '@supabase/supabase-js';
-import { authService, AuthUser, LoginCredentials, RegisterData } from '../services/supabase/auth.service';
-import { adminService } from '../services/supabase/admin.service';
+import { authService } from '../services/auth';
+import { User, LoginRequest, RegisterRequest } from '../types/auth';
 
 interface AuthState {
   user: User | null;
-  profile: AuthUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
@@ -13,17 +11,15 @@ interface AuthState {
 
 type AuthAction =
   | { type: 'AUTH_START' }
-  | { type: 'AUTH_SUCCESS'; payload: { user: User; profile: AuthUser } }
+  | { type: 'AUTH_SUCCESS'; payload: User }
   | { type: 'AUTH_FAILURE'; payload: string }
   | { type: 'LOGOUT' }
-  | { type: 'CLEAR_ERROR' }
-  | { type: 'UPDATE_PROFILE'; payload: AuthUser };
+  | { type: 'CLEAR_ERROR' };
 
 const initialState: AuthState = {
   user: null,
-  profile: null,
   isAuthenticated: false,
-  isLoading: true,
+  isLoading: false,
   error: null
 };
 
@@ -38,8 +34,7 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
     case 'AUTH_SUCCESS':
       return {
         ...state,
-        user: action.payload.user,
-        profile: action.payload.profile,
+        user: action.payload,
         isAuthenticated: true,
         isLoading: false,
         error: null
@@ -48,7 +43,6 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
       return {
         ...state,
         user: null,
-        profile: null,
         isAuthenticated: false,
         isLoading: false,
         error: action.payload
@@ -63,11 +57,6 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
         ...state,
         error: null
       };
-    case 'UPDATE_PROFILE':
-      return {
-        ...state,
-        profile: action.payload
-      };
     default:
       return state;
   }
@@ -75,15 +64,13 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
 
 interface AuthContextType {
   user: User | null;
-  profile: AuthUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
-  login: (credentials: LoginCredentials) => Promise<void>;
-  register: (userData: RegisterData) => Promise<void>;
+  login: (credentials: LoginRequest) => Promise<void>;
+  register: (userData: RegisterRequest) => Promise<void>;
   logout: () => Promise<void>;
   clearError: () => void;
-  updateProfile: (updates: Partial<AuthUser>) => Promise<void>;
   isAdmin: () => boolean;
   isDeveloper: () => boolean;
 }
@@ -95,77 +82,31 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   useEffect(() => {
     // Check for existing session
-    const initializeAuth = async () => {
+    const token = localStorage.getItem('authToken');
+    const userData = localStorage.getItem('userData');
+    
+    if (token && userData) {
       try {
-        const user = await authService.getCurrentUser();
-        if (user) {
-          const profile = await authService.getUserProfile(user.id);
-          if (profile) {
-            dispatch({
-              type: 'AUTH_SUCCESS',
-              payload: { user, profile }
-            });
-          } else {
-            dispatch({ type: 'LOGOUT' });
-          }
-        } else {
-          dispatch({ type: 'LOGOUT' });
-        }
+        const user = JSON.parse(userData);
+        dispatch({ type: 'AUTH_SUCCESS', payload: user });
       } catch (error) {
-        console.error('Auth initialization error:', error);
-        dispatch({ type: 'LOGOUT' });
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userData');
       }
-    };
-
-    initializeAuth();
-
-    // Listen to auth changes
-    const { data: { subscription } } = authService.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_IN' && session?.user) {
-        const profile = await authService.getUserProfile(session.user.id);
-        if (profile) {
-          dispatch({
-            type: 'AUTH_SUCCESS',
-            payload: { user: session.user, profile }
-          });
-        }
-      } else if (event === 'SIGNED_OUT') {
-        dispatch({ type: 'LOGOUT' });
-      }
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
+    }
   }, []);
 
-  const login = async (credentials: LoginCredentials) => {
+  const login = async (credentials: LoginRequest) => {
     try {
       dispatch({ type: 'AUTH_START' });
       
-      const { user, error } = await authService.signIn(credentials);
+      const response = await authService.login(credentials);
       
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      if (user) {
-        const profile = await authService.getUserProfile(user.id);
-        if (profile) {
-          // Log user activity
-          await adminService.recordSystemMetric('user_login', 1, {
-            user_id: user.id,
-            email: user.email
-          });
-
-          dispatch({
-            type: 'AUTH_SUCCESS',
-            payload: { user, profile }
-          });
-        } else {
-          throw new Error('Profile not found');
-        }
-      }
+      // Store auth data
+      localStorage.setItem('authToken', response.token);
+      localStorage.setItem('userData', JSON.stringify(response.user));
+      
+      dispatch({ type: 'AUTH_SUCCESS', payload: response.user });
     } catch (error) {
       dispatch({ 
         type: 'AUTH_FAILURE', 
@@ -175,31 +116,22 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  const register = async (userData: RegisterData) => {
+  const register = async (userData: RegisterRequest) => {
     try {
       dispatch({ type: 'AUTH_START' });
       
-      const { user, error } = await authService.signUp(userData);
+      const user = await authService.register(userData);
       
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      if (user) {
-        const profile = await authService.getUserProfile(user.id);
-        if (profile) {
-          // Log user registration
-          await adminService.recordSystemMetric('user_registration', 1, {
-            user_id: user.id,
-            email: user.email
-          });
-
-          dispatch({
-            type: 'AUTH_SUCCESS',
-            payload: { user, profile }
-          });
-        }
-      }
+      // Auto login after registration
+      const loginResponse = await authService.login({
+        email: userData.email,
+        password: userData.password
+      });
+      
+      localStorage.setItem('authToken', loginResponse.token);
+      localStorage.setItem('userData', JSON.stringify(loginResponse.user));
+      
+      dispatch({ type: 'AUTH_SUCCESS', payload: loginResponse.user });
     } catch (error) {
       dispatch({ 
         type: 'AUTH_FAILURE', 
@@ -211,16 +143,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const logout = async () => {
     try {
-      if (state.user) {
-        await adminService.recordSystemMetric('user_logout', 1, {
-          user_id: state.user.id
-        });
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        await authService.logout(token);
       }
-
-      await authService.signOut();
-      dispatch({ type: 'LOGOUT' });
     } catch (error) {
       console.error('Logout error:', error);
+    } finally {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('userData');
       dispatch({ type: 'LOGOUT' });
     }
   };
@@ -229,39 +160,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     dispatch({ type: 'CLEAR_ERROR' });
   };
 
-  const updateProfile = async (updates: Partial<AuthUser>) => {
-    if (!state.user) return;
-
-    try {
-      const { error } = await authService.updateProfile(state.user.id, updates);
-      
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      const updatedProfile = await authService.getUserProfile(state.user.id);
-      if (updatedProfile) {
-        dispatch({ type: 'UPDATE_PROFILE', payload: updatedProfile });
-      }
-    } catch (error) {
-      console.error('Profile update error:', error);
-      throw error;
-    }
-  };
-
   const isAdmin = () => {
-    return state.profile?.role === 'admin';
+    return state.user?.role === 'ADMIN';
   };
 
   const isDeveloper = () => {
-    return state.profile?.role === 'developer';
+    return state.user?.role === 'DEVELOPER';
   };
 
   return (
     <AuthContext.Provider
       value={{
         user: state.user,
-        profile: state.profile,
         isAuthenticated: state.isAuthenticated,
         isLoading: state.isLoading,
         error: state.error,
@@ -269,7 +179,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         register,
         logout,
         clearError,
-        updateProfile,
         isAdmin,
         isDeveloper
       }}

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Shield, Lock, User, Eye, EyeOff } from 'lucide-react';
-import { securityManager } from '../../security/SecurityManager';
-import { realTimeMonitor } from '../../monitoring/RealTimeMonitor';
 
 const AdminLogin: React.FC = () => {
   const [credentials, setCredentials] = useState({
@@ -19,12 +17,12 @@ const AdminLogin: React.FC = () => {
   const demoCredentials = {
     admin: {
       email: 'admin@azkagarden.com',
-      password: 'Admin123!',
+      password: 'admin123',
       role: 'admin'
     },
     developer: {
       email: 'dev@azkagarden.com',
-      password: 'Dev123!',
+      password: 'dev123',
       role: 'developer'
     }
   };
@@ -34,53 +32,24 @@ const AdminLogin: React.FC = () => {
     setIsLoading(true);
     setError('');
 
-    // Security validation
-    const sanitizedEmail = credentials.email.trim().toLowerCase();
-    const securityCheck = securityManager.validateLogin(
-      sanitizedEmail,
-      credentials.password,
-      '127.0.0.1'
-    );
-    
-    if (!securityCheck.isValid) {
-      setError('Access denied: ' + securityCheck.reason);
-      setIsLoading(false);
-      return;
-    }
-
     // Simulate authentication
     setTimeout(() => {
-      const { password, role } = credentials;
+      const { email, password, role } = credentials;
       
       if (role === 'admin' && 
-          sanitizedEmail === demoCredentials.admin.email && 
+          email === demoCredentials.admin.email && 
           password === demoCredentials.admin.password) {
         localStorage.setItem('adminToken', 'admin-token-123');
         localStorage.setItem('adminRole', 'admin');
-        
-        // Create secure session and track login
-        securityManager.createSecureSession('admin-1', 'admin');
-        realTimeMonitor.trackAdmin('admin-1', 'login');
-        
         navigate('/admin/dashboard');
       } else if (role === 'developer' && 
-                 sanitizedEmail === demoCredentials.developer.email && 
+                 email === demoCredentials.developer.email && 
                  password === demoCredentials.developer.password) {
         localStorage.setItem('adminToken', 'dev-token-123');
         localStorage.setItem('adminRole', 'developer');
-        
-        // Create secure session and track login
-        securityManager.createSecureSession('dev-1', 'developer');
-        realTimeMonitor.trackAdmin('dev-1', 'login');
-        
         navigate('/admin/developer');
       } else {
         setError('Email atau password salah');
-        realTimeMonitor.trackSecurityThreat('FAILED_ADMIN_LOGIN', { 
-          email: sanitizedEmail, 
-          role, 
-          timestamp: new Date() 
-        });
       }
       setIsLoading(false);
     }, 1000);
@@ -97,13 +66,13 @@ const AdminLogin: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center py-12 px-4">
       <div className="max-w-md w-full">
-        <div className="bg-white rounded-2xl shadow-2xl p-8">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8">
           <div className="text-center mb-8">
             <div className="bg-gradient-to-r from-green-600 to-green-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
               <Shield className="h-8 w-8 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Portal</h1>
-            <p className="text-gray-600">Azka Garden Management System</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Admin Portal</h1>
+            <p className="text-gray-600 dark:text-gray-400">Azka Garden Management System</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -115,7 +84,7 @@ const AdminLogin: React.FC = () => {
 
             {/* Role Selection */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                 Login Sebagai
               </label>
               <div className="grid grid-cols-2 gap-3">
@@ -124,8 +93,8 @@ const AdminLogin: React.FC = () => {
                   onClick={() => setCredentials(prev => ({ ...prev, role: 'admin' }))}
                   className={`p-3 rounded-lg border-2 transition-all ${
                     credentials.role === 'admin'
-                      ? 'border-green-600 bg-green-50 text-green-700'
-                      : 'border-gray-200 hover:border-gray-300'
+                      ? 'border-green-600 bg-green-50 dark:bg-green-900 text-green-700 dark:text-green-300'
+                      : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                   }`}
                 >
                   <Shield className="h-5 w-5 mx-auto mb-1" />
@@ -136,8 +105,8 @@ const AdminLogin: React.FC = () => {
                   onClick={() => setCredentials(prev => ({ ...prev, role: 'developer' }))}
                   className={`p-3 rounded-lg border-2 transition-all ${
                     credentials.role === 'developer'
-                      ? 'border-green-600 bg-green-50 text-green-700'
-                      : 'border-gray-200 hover:border-gray-300'
+                      ? 'border-green-600 bg-green-50 dark:bg-green-900 text-green-700 dark:text-green-300'
+                      : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                   }`}
                 >
                   <User className="h-5 w-5 mx-auto mb-1" />
@@ -147,7 +116,7 @@ const AdminLogin: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Email
               </label>
               <input
@@ -155,13 +124,13 @@ const AdminLogin: React.FC = () => {
                 required
                 value={credentials.email}
                 onChange={(e) => setCredentials(prev => ({ ...prev, email: e.target.value }))}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 placeholder="Masukkan email admin"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Password
               </label>
               <div className="relative">
@@ -170,7 +139,7 @@ const AdminLogin: React.FC = () => {
                   required
                   value={credentials.password}
                   onChange={(e) => setCredentials(prev => ({ ...prev, password: e.target.value }))}
-                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   placeholder="Masukkan password"
                 />
                 <button
@@ -193,22 +162,22 @@ const AdminLogin: React.FC = () => {
           </form>
 
           {/* Demo Credentials */}
-          <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-            <h3 className="text-sm font-medium text-gray-700 mb-3">Demo Credentials:</h3>
+          <div className="mt-8 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Demo Credentials:</h3>
             <div className="space-y-2">
               <button
                 onClick={() => handleDemoLogin('admin')}
-                className="w-full text-left p-2 bg-white rounded border hover:bg-gray-50 transition-colors"
+                className="w-full text-left p-2 bg-white dark:bg-gray-600 rounded border hover:bg-gray-50 dark:hover:bg-gray-500 transition-colors"
               >
-                <div className="text-sm font-medium text-gray-900">Administrator</div>
-                <div className="text-xs text-gray-600">admin@azkagarden.com / admin123</div>
+                <div className="text-sm font-medium text-gray-900 dark:text-white">Administrator</div>
+                <div className="text-xs text-gray-600 dark:text-gray-400">admin@azkagarden.com / admin123</div>
               </button>
               <button
                 onClick={() => handleDemoLogin('developer')}
-                className="w-full text-left p-2 bg-white rounded border hover:bg-gray-50 transition-colors"
+                className="w-full text-left p-2 bg-white dark:bg-gray-600 rounded border hover:bg-gray-50 dark:hover:bg-gray-500 transition-colors"
               >
-                <div className="text-sm font-medium text-gray-900">Developer</div>
-                <div className="text-xs text-gray-600">dev@azkagarden.com / dev123</div>
+                <div className="text-sm font-medium text-gray-900 dark:text-white">Developer</div>
+                <div className="text-xs text-gray-600 dark:text-gray-400">dev@azkagarden.com / dev123</div>
               </button>
             </div>
           </div>
