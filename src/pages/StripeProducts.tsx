@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ShoppingCart, Leaf, Crown, Package, CreditCard, Calendar } from 'lucide-react';
 import { stripeProducts, StripeProduct } from '../stripe-config';
 import { useAuth } from '../contexts/AuthContext';
+import { StripeService } from '../services/stripe';
 
 const StripeProducts: React.FC = () => {
   const [loading, setLoading] = useState(false);
