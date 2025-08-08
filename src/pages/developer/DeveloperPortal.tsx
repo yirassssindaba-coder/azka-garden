@@ -31,7 +31,9 @@ import {
   Play,
   Pause,
   RotateCcw,
-  Plus
+  Plus,
+  Eye,
+  Edit
 } from 'lucide-react';
 
 const DeveloperPortal: React.FC = () => {
@@ -162,14 +164,14 @@ const DeveloperPortal: React.FC = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Developer Header */}
       <div className="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-full px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-2 rounded-lg mr-3">
                 <Code className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white">Developer Portal - Azka Garden</h1>
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white">Portal Pengembang - Azka Garden</h1>
                 <p className="text-sm text-gray-600 dark:text-gray-400">System Development & Monitoring</p>
               </div>
             </div>
@@ -193,7 +195,7 @@ const DeveloperPortal: React.FC = () => {
                   <div className="px-4 py-2 border-b dark:border-gray-700">
                     <p className="text-sm font-medium text-gray-900 dark:text-white">{user?.fullName}</p>
                     <p className="text-xs text-gray-600 dark:text-gray-400">{user?.email}</p>
-                    <p className="text-xs text-blue-600 dark:text-blue-400 font-medium">Developer</p>
+                    <p className="text-xs text-blue-600 dark:text-blue-400 font-medium">Pengembang</p>
                   </div>
                   <button
                     onClick={() => navigate('/')}
@@ -217,9 +219,9 @@ const DeveloperPortal: React.FC = () => {
       </div>
 
       {/* Developer Navigation Tabs */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex space-x-8">
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
+        <div className="max-w-full px-4 sm:px-6 lg:px-8">
+          <nav className="flex space-x-4 min-w-max">
             {[
               { id: 'monitoring', label: 'System Monitoring', icon: Monitor },
               { id: 'api', label: 'API Management', icon: Globe },
@@ -233,7 +235,7 @@ const DeveloperPortal: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                className={`flex items-center space-x-2 py-4 px-3 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
                   activeTab === tab.id
                     ? 'border-blue-500 text-blue-600 dark:text-blue-400'
                     : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300'
@@ -247,69 +249,69 @@ const DeveloperPortal: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-full px-4 sm:px-6 lg:px-8 py-8">
         {/* System Monitoring Tab */}
         {activeTab === 'monitoring' && (
           <div className="space-y-8">
             {/* Real-time System Metrics */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 border border-gray-100 dark:border-gray-700">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Uptime</p>
-                    <p className="text-3xl font-bold text-green-600 dark:text-green-400">{systemStats.uptime}</p>
+                    <p className="text-2xl font-bold text-green-600 dark:text-green-400">{systemStats.uptime}</p>
                   </div>
-                  <Activity className="h-8 w-8 text-green-500" />
+                  <Activity className="h-6 w-6 text-green-500" />
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 border border-gray-100 dark:border-gray-700">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Response Time</p>
-                    <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{systemStats.responseTime}</p>
+                    <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{systemStats.responseTime}</p>
                   </div>
-                  <Zap className="h-8 w-8 text-blue-500" />
+                  <Zap className="h-6 w-6 text-blue-500" />
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 border border-gray-100 dark:border-gray-700">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Active Users</p>
-                    <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">{systemStats.activeUsers}</p>
+                    <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">{systemStats.activeUsers}</p>
                   </div>
-                  <Users className="h-8 w-8 text-purple-500" />
+                  <Users className="h-6 w-6 text-purple-500" />
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 border border-gray-100 dark:border-gray-700">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">CPU Usage</p>
-                    <p className="text-3xl font-bold text-orange-600 dark:text-orange-400">{systemStats.cpuUsage}%</p>
+                    <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">{systemStats.cpuUsage}%</p>
                   </div>
-                  <Cpu className="h-8 w-8 text-orange-500" />
+                  <Cpu className="h-6 w-6 text-orange-500" />
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 border border-gray-100 dark:border-gray-700">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Memory</p>
-                    <p className="text-3xl font-bold text-red-600 dark:text-red-400">{systemStats.memoryUsage}%</p>
+                    <p className="text-2xl font-bold text-red-600 dark:text-red-400">{systemStats.memoryUsage}%</p>
                   </div>
-                  <HardDrive className="h-8 w-8 text-red-500" />
+                  <HardDrive className="h-6 w-6 text-red-500" />
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 border border-gray-100 dark:border-gray-700">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Error Rate</p>
-                    <p className="text-3xl font-bold text-green-600 dark:text-green-400">{systemStats.errorRate}</p>
+                    <p className="text-2xl font-bold text-green-600 dark:text-green-400">{systemStats.errorRate}</p>
                   </div>
-                  <Bug className="h-8 w-8 text-green-500" />
+                  <Bug className="h-6 w-6 text-green-500" />
                 </div>
               </div>
             </div>
@@ -317,7 +319,7 @@ const DeveloperPortal: React.FC = () => {
             {/* System Health Overview */}
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">System Health Overview</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div className="text-center">
                   <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
                     <Cpu className="h-8 w-8 text-blue-600 dark:text-blue-400" />
@@ -381,9 +383,9 @@ const DeveloperPortal: React.FC = () => {
         {/* API Management Tab */}
         {activeTab === 'api' && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">API Management</h2>
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap">
                 <Plus className="h-4 w-4 mr-2 inline" />
                 Add Endpoint
               </button>
@@ -391,22 +393,22 @@ const DeveloperPortal: React.FC = () => {
 
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700">
               <div className="overflow-x-auto">
-                <table className="w-full">
+                <table className="w-full min-w-full">
                   <thead className="bg-gray-50 dark:bg-gray-700">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Endpoint
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Status
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Response Time
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Uptime
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Actions
                       </th>
                     </tr>
@@ -414,22 +416,22 @@ const DeveloperPortal: React.FC = () => {
                   <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
                     {apiEndpoints.map((endpoint, index) => (
                       <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-4 py-4 whitespace-nowrap">
                           <div className="text-sm font-medium text-gray-900 dark:text-white">{endpoint.name}</div>
                           <div className="text-sm text-gray-500 dark:text-gray-400">{endpoint.endpoint}</div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-4 py-4 whitespace-nowrap">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(endpoint.status)}`}>
                             {endpoint.status}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                           {endpoint.responseTime}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                           {endpoint.uptime}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
                           <div className="flex space-x-2">
                             <button className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300">
                               <Play className="h-4 w-4" />
@@ -456,7 +458,7 @@ const DeveloperPortal: React.FC = () => {
           <div className="space-y-6">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Database Console</h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
                 <div className="text-center">
                   <Database className="h-12 w-12 text-green-600 dark:text-green-400 mx-auto mb-4" />
@@ -500,7 +502,7 @@ const DeveloperPortal: React.FC = () => {
             
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Security Events</h3>
-              <div className="space-y-3">
+              <div className="space-y-3 max-h-80 overflow-y-auto">
                 {securityLogs.map((log) => (
                   <div key={log.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                     <div className="flex items-center space-x-3">
@@ -531,14 +533,14 @@ const DeveloperPortal: React.FC = () => {
         {/* System Logs Tab */}
         {activeTab === 'logs' && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">System Logs</h2>
               <div className="flex space-x-2">
-                <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap">
                   <RefreshCw className="h-4 w-4 mr-2 inline" />
                   Refresh
                 </button>
-                <button className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">
+                <button className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap">
                   Clear Logs
                 </button>
               </div>

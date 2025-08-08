@@ -8,7 +8,6 @@ import {
   Package, 
   TrendingUp,
   AlertTriangle,
-  Activity,
   Settings,
   LogOut,
   Bell,
@@ -17,20 +16,20 @@ import {
   Eye,
   Plus,
   Edit,
-  MessageSquare,
   User,
   CheckCircle,
   FileText,
   CreditCard,
   Truck,
-  Star,
   Calendar,
   Search,
-  Filter
+  Filter,
+  Trash2,
+  Save,
+  X
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useOrder } from '../../contexts/OrderContext';
-import { useChat } from '../../contexts/ChatContext';
 import { getPlantStatistics } from '../../services/database';
 
 const AdminDashboard: React.FC = () => {
@@ -42,9 +41,10 @@ const AdminDashboard: React.FC = () => {
   const [allOrders, setAllOrders] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('all');
+  const [editingUser, setEditingUser] = useState<string | null>(null);
+  const [editingProduct, setEditingProduct] = useState<string | null>(null);
   const { user, logout } = useAuth();
   const { orders, updateOrderStatus } = useOrder();
-  const { sessions, getUnreadCount } = useChat();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,6 +53,10 @@ const AdminDashboard: React.FC = () => {
       return;
     }
     loadDashboardData();
+    
+    // Auto-refresh every 30 seconds
+    const interval = setInterval(loadDashboardData, 30000);
+    return () => clearInterval(interval);
   }, [user, orders]);
 
   const loadDashboardData = async () => {
@@ -87,8 +91,7 @@ const AdminDashboard: React.FC = () => {
         total_users: allUsersData.length,
         total_products: stats.totalPlants,
         low_stock_products: stats.lowStockCount,
-        average_order_value: allOrdersData.length > 0 ? totalRevenue / allOrdersData.length : 0,
-        unread_messages: getUnreadCount()
+        average_order_value: allOrdersData.length > 0 ? totalRevenue / allOrdersData.length : 0
       };
 
       setDashboardStats(dashboardData);
@@ -125,6 +128,20 @@ const AdminDashboard: React.FC = () => {
       localStorage.setItem('all_users', JSON.stringify(updatedUsers));
       loadDashboardData();
     }
+  };
+
+  const handleEditUser = (userId: string) => {
+    setEditingUser(editingUser === userId ? null : userId);
+  };
+
+  const handleSaveUser = (userId: string, userData: any) => {
+    const updatedUsers = allUsers.map(u => 
+      u.id === userId ? { ...u, ...userData, updatedAt: new Date().toISOString() } : u
+    );
+    setAllUsers(updatedUsers);
+    localStorage.setItem('all_users', JSON.stringify(updatedUsers));
+    setEditingUser(null);
+    loadDashboardData();
   };
 
   const formatCurrency = (amount: number) => {
@@ -175,7 +192,7 @@ const AdminDashboard: React.FC = () => {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-4 border-green-600 border-t-transparent mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Memuat dashboard admin...</p>
+          <p className="text-gray-600 dark:text-gray-400">Memuat dashboard administrator...</p>
         </div>
       </div>
     );
@@ -185,14 +202,14 @@ const AdminDashboard: React.FC = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Admin Header */}
       <div className="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-full px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <div className="bg-gradient-to-r from-green-600 to-green-700 p-2 rounded-lg mr-3">
                 <Shield className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white">Admin Portal - Azka Garden</h1>
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white">Portal Administrator - Azka Garden</h1>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Management & Analytics Dashboard</p>
               </div>
             </div>
@@ -209,11 +226,9 @@ const AdminDashboard: React.FC = () => {
               </button>
               <button className="relative p-2 text-gray-400 hover:text-green-600 transition-colors">
                 <Bell className="h-5 w-5" />
-                {dashboardStats?.unread_messages > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                    {dashboardStats.unread_messages}
-                  </span>
-                )}
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                  3
+                </span>
               </button>
               <div className="relative group">
                 <button className="flex items-center space-x-2 p-2 text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">
@@ -248,9 +263,9 @@ const AdminDashboard: React.FC = () => {
       </div>
 
       {/* Admin Navigation Tabs */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex space-x-8">
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
+        <div className="max-w-full px-4 sm:px-6 lg:px-8">
+          <nav className="flex space-x-4 min-w-max">
             {[
               { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
               { id: 'users', label: 'Manajemen Pengguna', icon: Users },
@@ -265,7 +280,7 @@ const AdminDashboard: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                className={`flex items-center space-x-2 py-4 px-3 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
                   activeTab === tab.id
                     ? 'border-green-500 text-green-600 dark:text-green-400'
                     : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300'
@@ -279,23 +294,23 @@ const AdminDashboard: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-full px-4 sm:px-6 lg:px-8 py-8">
         {/* Dashboard Tab */}
         {activeTab === 'dashboard' && dashboardStats && (
           <div className="space-y-8">
             {/* Real-time Metrics */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Total Pesanan</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">{dashboardStats.total_orders}</p>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">{dashboardStats.total_orders}</p>
                     <p className="text-sm text-green-600 dark:text-green-400 font-medium">
                       {dashboardStats.today_orders} hari ini
                     </p>
                   </div>
                   <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full">
-                    <ShoppingCart className="h-8 w-8 text-green-600 dark:text-green-400" />
+                    <ShoppingCart className="h-6 w-6 text-green-600 dark:text-green-400" />
                   </div>
                 </div>
               </div>
@@ -304,7 +319,7 @@ const AdminDashboard: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Total Revenue</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
                       {formatCurrency(dashboardStats.total_revenue)}
                     </p>
                     <p className="text-sm text-green-600 dark:text-green-400 font-medium">
@@ -312,7 +327,7 @@ const AdminDashboard: React.FC = () => {
                     </p>
                   </div>
                   <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full">
-                    <DollarSign className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                    <DollarSign className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                   </div>
                 </div>
               </div>
@@ -321,11 +336,11 @@ const AdminDashboard: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Total Pengguna</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">{dashboardStats.total_users}</p>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">{dashboardStats.total_users}</p>
                     <p className="text-sm text-purple-600 dark:text-purple-400 font-medium">Terdaftar</p>
                   </div>
                   <div className="bg-purple-100 dark:bg-purple-900 p-3 rounded-full">
-                    <Users className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+                    <Users className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                   </div>
                 </div>
               </div>
@@ -334,13 +349,13 @@ const AdminDashboard: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Produk Aktif</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">{dashboardStats.total_products}</p>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">{dashboardStats.total_products}</p>
                     <p className="text-sm text-orange-600 dark:text-orange-400 font-medium">
                       {dashboardStats.low_stock_products} stok rendah
                     </p>
                   </div>
                   <div className="bg-orange-100 dark:bg-orange-900 p-3 rounded-full">
-                    <Package className="h-8 w-8 text-orange-600 dark:text-orange-400" />
+                    <Package className="h-6 w-6 text-orange-600 dark:text-orange-400" />
                   </div>
                 </div>
               </div>
@@ -350,8 +365,8 @@ const AdminDashboard: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Pesanan Terbaru</h3>
-                <div className="space-y-3">
-                  {allOrders.slice(0, 5).map((order) => (
+                <div className="space-y-3 max-h-80 overflow-y-auto">
+                  {allOrders.slice(0, 10).map((order) => (
                     <div key={order.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                       <div>
                         <div className="font-medium text-gray-900 dark:text-white">#{order.orderNumber}</div>
@@ -374,8 +389,8 @@ const AdminDashboard: React.FC = () => {
 
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Pengguna Terbaru</h3>
-                <div className="space-y-3">
-                  {allUsers.slice(-5).reverse().map((userData) => (
+                <div className="space-y-3 max-h-80 overflow-y-auto">
+                  {allUsers.slice(-10).reverse().map((userData) => (
                     <div key={userData.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                       <div className="flex items-center space-x-3">
                         <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
@@ -402,9 +417,9 @@ const AdminDashboard: React.FC = () => {
         {/* User Management Tab */}
         {activeTab === 'users' && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Manajemen Pengguna</h2>
-              <div className="flex items-center space-x-4">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                   <input
@@ -412,10 +427,10 @@ const AdminDashboard: React.FC = () => {
                     placeholder="Cari pengguna..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500"
+                    className="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500 w-full sm:w-64"
                   />
                 </div>
-                <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap">
                   <Plus className="h-4 w-4 mr-2 inline" />
                   Tambah Pengguna
                 </button>
@@ -424,22 +439,22 @@ const AdminDashboard: React.FC = () => {
 
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700">
               <div className="overflow-x-auto">
-                <table className="w-full">
+                <table className="w-full min-w-full">
                   <thead className="bg-gray-50 dark:bg-gray-700">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Pengguna
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Role
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Bergabung
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Status
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Aksi
                       </th>
                     </tr>
@@ -447,10 +462,10 @@ const AdminDashboard: React.FC = () => {
                   <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
                     {filteredUsers.map((userData) => (
                       <tr key={userData.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-4 py-4 whitespace-nowrap">
                           <div className="flex items-center">
-                            <div className="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mr-3">
-                              <span className="text-green-600 dark:text-green-400 font-bold">
+                            <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mr-3">
+                              <span className="text-green-600 dark:text-green-400 font-bold text-sm">
                                 {userData.fullName?.charAt(0) || userData.email?.charAt(0)}
                               </span>
                             </div>
@@ -462,7 +477,7 @@ const AdminDashboard: React.FC = () => {
                             </div>
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-4 py-4 whitespace-nowrap">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                             userData.role === 'ADMIN' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
                             userData.role === 'DEVELOPER' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
@@ -471,17 +486,20 @@ const AdminDashboard: React.FC = () => {
                             {userData.role}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                        <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                           {new Date(userData.createdAt).toLocaleDateString('id-ID')}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-4 py-4 whitespace-nowrap">
                           <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                             Aktif
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
                           <div className="flex space-x-2">
-                            <button className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300">
+                            <button 
+                              onClick={() => handleEditUser(userData.id)}
+                              className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300"
+                            >
                               <Edit className="h-4 w-4" />
                             </button>
                             <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
@@ -491,7 +509,7 @@ const AdminDashboard: React.FC = () => {
                               onClick={() => handleDeleteUser(userData.id)}
                               className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
                             >
-                              <AlertTriangle className="h-4 w-4" />
+                              <Trash2 className="h-4 w-4" />
                             </button>
                           </div>
                         </td>
@@ -507,9 +525,9 @@ const AdminDashboard: React.FC = () => {
         {/* Orders Management Tab */}
         {activeTab === 'orders' && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Manajemen Pesanan</h2>
-              <div className="flex items-center space-x-4">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                   <input
@@ -517,13 +535,13 @@ const AdminDashboard: React.FC = () => {
                     placeholder="Cari pesanan..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500"
+                    className="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500 w-full sm:w-64"
                   />
                 </div>
                 <select
                   value={selectedStatus}
                   onChange={(e) => setSelectedStatus(e.target.value)}
-                  className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-500"
+                  className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-500 w-full sm:w-auto"
                 >
                   <option value="all">Semua Status</option>
                   <option value="pending">Pending</option>
@@ -537,25 +555,25 @@ const AdminDashboard: React.FC = () => {
 
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700">
               <div className="overflow-x-auto">
-                <table className="w-full">
+                <table className="w-full min-w-full">
                   <thead className="bg-gray-50 dark:bg-gray-700">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Pesanan
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Pelanggan
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Total
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Status
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Tanggal
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Aksi
                       </th>
                     </tr>
@@ -563,18 +581,18 @@ const AdminDashboard: React.FC = () => {
                   <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
                     {filteredOrders.map((order) => (
                       <tr key={order.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-4 py-4 whitespace-nowrap">
                           <div className="text-sm font-medium text-gray-900 dark:text-white">#{order.orderNumber}</div>
                           <div className="text-sm text-gray-500 dark:text-gray-400">{order.items?.length} item</div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-4 py-4 whitespace-nowrap">
                           <div className="text-sm text-gray-900 dark:text-white">{order.shippingInfo?.fullName}</div>
                           <div className="text-sm text-gray-500 dark:text-gray-400">{order.shippingInfo?.phone}</div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                        <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
                           {formatCurrency(order.total)}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-4 py-4 whitespace-nowrap">
                           <select
                             value={order.status}
                             onChange={(e) => handleUpdateOrderStatus(order.id, e.target.value)}
@@ -587,16 +605,18 @@ const AdminDashboard: React.FC = () => {
                             <option value="cancelled">Cancelled</option>
                           </select>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                        <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                           {new Date(order.createdAt).toLocaleDateString('id-ID')}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <button className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 mr-3">
-                            <Eye className="h-4 w-4" />
-                          </button>
-                          <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
-                            <Edit className="h-4 w-4" />
-                          </button>
+                        <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                          <div className="flex space-x-2">
+                            <button className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300">
+                              <Eye className="h-4 w-4" />
+                            </button>
+                            <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
+                              <Edit className="h-4 w-4" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -610,15 +630,15 @@ const AdminDashboard: React.FC = () => {
         {/* Products Management Tab */}
         {activeTab === 'products' && plantStats && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Manajemen Produk</h2>
-              <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+              <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap">
                 <Plus className="h-4 w-4 mr-2 inline" />
                 Tambah Produk
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border border-gray-100 dark:border-gray-700">
                 <div className="text-2xl font-bold text-gray-900 dark:text-white">{plantStats.totalPlants}</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Total Produk</div>
@@ -639,7 +659,7 @@ const AdminDashboard: React.FC = () => {
 
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Distribusi Kategori</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {plantStats.categoryDistribution.map((category: any) => (
                   <div key={category.name} className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                     <div className="font-medium text-gray-900 dark:text-white">{category.name}</div>
@@ -657,7 +677,7 @@ const AdminDashboard: React.FC = () => {
           <div className="space-y-6">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Analisis & Laporan</h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Performa Penjualan</h3>
                 <div className="space-y-3">
@@ -718,7 +738,7 @@ const AdminDashboard: React.FC = () => {
         )}
 
         {/* Other tabs placeholder */}
-        {['users', 'payments', 'shipping', 'content', 'security'].includes(activeTab) && activeTab !== 'users' && activeTab !== 'orders' && activeTab !== 'products' && activeTab !== 'analytics' && (
+        {['payments', 'shipping', 'content', 'security'].includes(activeTab) && (
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center border border-gray-100 dark:border-gray-700">
             <div className="text-gray-400 dark:text-gray-500 mb-4">
               <Settings className="h-16 w-16 mx-auto" />

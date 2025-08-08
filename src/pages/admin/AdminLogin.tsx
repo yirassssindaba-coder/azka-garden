@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Shield, Lock, User, Eye, EyeOff, Leaf } from 'lucide-react';
+import { Shield, Lock, User, Eye, EyeOff, Leaf, Key } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const AdminLogin: React.FC = () => {
@@ -10,6 +10,8 @@ const AdminLogin: React.FC = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showCredentials, setShowCredentials] = useState(false);
+  const [passkey, setPasskey] = useState('');
   const { login, error, clearError } = useAuth();
   const navigate = useNavigate();
 
@@ -21,15 +23,13 @@ const AdminLogin: React.FC = () => {
       await login(credentials.email, credentials.password);
       
       // Get user data to determine redirect
-      const userData = localStorage.getItem('userData');
+      const userData = localStorage.getItem('azka_garden_user');
       if (userData) {
         const user = JSON.parse(userData);
-        if (user.role === 'admin') {
+        if (user.role === 'ADMIN') {
           navigate('/admin/dashboard');
-        } else if (user.role === 'developer') {
-          navigate('/admin/developer');
         } else {
-          throw new Error('Akses ditolak. Hanya admin dan developer yang dapat mengakses portal ini.');
+          throw new Error('Akses ditolak. Hanya administrator yang dapat mengakses portal ini.');
         }
       }
     } catch (error) {
@@ -39,29 +39,28 @@ const AdminLogin: React.FC = () => {
     }
   };
 
-  const handleDemoLogin = (type: 'admin' | 'developer') => {
-    if (type === 'admin') {
+  const handlePasskeySubmit = () => {
+    if (passkey === 'AZKA2024ADMIN') {
+      setShowCredentials(true);
       setCredentials({
         email: 'admin@azkagarden.com',
-        password: 'admin123'
+        password: 'Admin123!'
       });
     } else {
-      setCredentials({
-        email: 'dev@azkagarden.com',
-        password: 'dev123'
-      });
+      alert('Passkey salah!');
+      setPasskey('');
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-green-900 via-green-800 to-green-700 flex items-center justify-center py-12 px-4">
       <div className="max-w-md w-full">
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8">
           <div className="text-center mb-8">
             <div className="bg-gradient-to-r from-green-600 to-green-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
               <Shield className="h-8 w-8 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Portal Admin</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Portal Administrator</h1>
             <p className="text-gray-600 dark:text-gray-400">Azka Garden Management System</p>
           </div>
 
@@ -74,7 +73,7 @@ const AdminLogin: React.FC = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Email
+                Email Administrator
               </label>
               <input
                 type="email"
@@ -85,7 +84,7 @@ const AdminLogin: React.FC = () => {
                   if (error) clearError();
                 }}
                 className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                placeholder="Masukkan email admin/developer"
+                placeholder="Masukkan email administrator"
               />
             </div>
 
@@ -120,29 +119,52 @@ const AdminLogin: React.FC = () => {
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold py-3 rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? 'Memproses...' : 'Masuk ke Portal'}
+              {isLoading ? 'Memproses...' : 'Masuk ke Portal Administrator'}
             </button>
           </form>
 
-          {/* Demo Credentials */}
+          {/* Demo Credentials with Passkey Protection */}
           <div className="mt-8 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Demo Credentials:</h3>
-            <div className="space-y-2">
-              <button
-                onClick={() => handleDemoLogin('admin')}
-                className="w-full text-left p-2 bg-white dark:bg-gray-600 rounded border hover:bg-gray-50 dark:hover:bg-gray-500 transition-colors"
-              >
-                <div className="text-sm font-medium text-gray-900 dark:text-white">Administrator</div>
-                <div className="text-xs text-gray-600 dark:text-gray-400">admin@azkagarden.com / admin123</div>
-              </button>
-              <button
-                onClick={() => handleDemoLogin('developer')}
-                className="w-full text-left p-2 bg-white dark:bg-gray-600 rounded border hover:bg-gray-50 dark:hover:bg-gray-500 transition-colors"
-              >
-                <div className="text-sm font-medium text-gray-900 dark:text-white">Developer</div>
-                <div className="text-xs text-gray-600 dark:text-gray-400">dev@azkagarden.com / dev123</div>
-              </button>
-            </div>
+            {!showCredentials ? (
+              <div>
+                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center">
+                  <Key className="h-4 w-4 mr-2" />
+                  Demo Credentials (Protected)
+                </h3>
+                <div className="flex space-x-2">
+                  <input
+                    type="password"
+                    placeholder="Masukkan passkey untuk melihat credentials"
+                    value={passkey}
+                    onChange={(e) => setPasskey(e.target.value)}
+                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded text-sm"
+                  />
+                  <button
+                    type="button"
+                    onClick={handlePasskeySubmit}
+                    className="px-4 py-2 bg-green-600 text-white rounded text-sm hover:bg-green-700 transition-colors"
+                  >
+                    Buka
+                  </button>
+                </div>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                  Hubungi developer untuk mendapatkan passkey
+                </p>
+              </div>
+            ) : (
+              <div>
+                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Demo Credentials:</h3>
+                <div className="space-y-2">
+                  <div className="p-3 bg-white dark:bg-gray-600 rounded border">
+                    <div className="text-sm font-medium text-gray-900 dark:text-white">Administrator</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">
+                      Email: admin@azkagarden.com<br />
+                      Password: Admin123!
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="mt-6 text-center">

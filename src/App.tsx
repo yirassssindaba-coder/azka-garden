@@ -106,13 +106,8 @@ function App() {
                      
                       {/* Admin Routes */}
                       <Route path="/admin/login" element={<AdminLogin />} />
-                      <Route path="/admin" element={
-                        <ProtectedRoute requiredRole="admin">
-                          <AdminDashboard />
-                        </ProtectedRoute>
-                      } />
                       <Route path="/admin/dashboard" element={
-                        <ProtectedRoute requiredRole="admin">
+                        <ProtectedRoute requiredRole="ADMIN">
                           <AdminDashboard />
                         </ProtectedRoute>
                       } />
@@ -120,7 +115,7 @@ function App() {
                       {/* Developer Routes */}
                       <Route path="/developer/login" element={<DeveloperLogin />} />
                       <Route path="/developer/portal" element={
-                        <ProtectedRoute requiredRole="developer">
+                        <ProtectedRoute requiredRole="DEVELOPER">
                           <DeveloperPortal />
                         </ProtectedRoute>
                       } />
