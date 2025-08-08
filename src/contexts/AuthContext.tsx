@@ -190,7 +190,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         logout,
         clearError,
         isAdmin,
-        isDeveloper
+        isDeveloper,
         updateProfile
       }}
     >
