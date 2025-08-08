@@ -14,6 +14,8 @@ const Cart: React.FC = () => {
           <ShoppingBag className="h-16 w-16 text-gray-400 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Keranjang Kosong</h2>
           <p className="text-gray-600 mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Keranjang Kosong</h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-8">
             Belum ada produk di keranjang Anda. Mulai belanja sekarang!
           </p>
           <Link
@@ -30,6 +32,7 @@ const Cart: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Keranjang Belanja</h1>
+      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Keranjang Belanja</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
@@ -44,9 +47,11 @@ const Cart: React.FC = () => {
                   />
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold text-gray-900">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                       {item.name}
                     </h3>
                     <p className="text-green-600 font-semibold">
+                    <p className="text-green-600 dark:text-green-400 font-semibold">
                       Rp {item.price.toLocaleString('id-ID')}
                     </p>
                   </div>
@@ -68,6 +73,7 @@ const Cart: React.FC = () => {
                   </div>
                   <div className="text-right">
                     <p className="text-lg font-semibold text-gray-900">
+                    <p className="text-lg font-semibold text-gray-900 dark:text-white">
                       Rp {(item.price * item.quantity).toLocaleString('id-ID')}
                     </p>
                     <button

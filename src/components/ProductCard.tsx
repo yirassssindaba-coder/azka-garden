@@ -88,6 +88,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ plant }) => {
               <span className="text-gray-600 dark:text-gray-400 font-medium">{plant.care_level}</span>
             </div>
             <span className="text-gray-500 dark:text-gray-400">{t('product_detail.stock')}: {plant.stock}</span>
+            <span className="text-gray-500 dark:text-gray-300">Stok: {plant.stock}</span>
           </div>
         </div>
       </div>
