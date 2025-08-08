@@ -73,6 +73,7 @@ interface AuthContextType {
   clearError: () => void;
   isAdmin: () => boolean;
   isDeveloper: () => boolean;
+  updateProfile: (data: any) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -168,6 +169,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return state.user?.role === 'DEVELOPER';
   };
 
+  const updateProfile = async (data: any) => {
+    // Mock implementation for profile update
+    if (state.user) {
+      const updatedUser = { ...state.user, ...data };
+      localStorage.setItem('userData', JSON.stringify(updatedUser));
+      dispatch({ type: 'AUTH_SUCCESS', payload: updatedUser });
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -181,6 +191,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         clearError,
         isAdmin,
         isDeveloper
+        updateProfile
       }}
     >
       {children}

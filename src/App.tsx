@@ -23,6 +23,10 @@ import FAQ from './pages/FAQ';
 import Shipping from './pages/Shipping';
 import Returns from './pages/Returns';
 import CareGuide from './pages/CareGuide';
+import Profile from './pages/Profile';
+import Wishlist from './pages/Wishlist';
+import Blog from './pages/Blog';
+import Careers from './pages/Careers';
 import { CartProvider } from './contexts/CartContext';
 import { OrderProvider } from './contexts/OrderContext';
 import { AuthProvider } from './contexts/AuthContext';
@@ -56,6 +60,10 @@ function App() {
                     <Route path="/shipping" element={<Shipping />} />
                     <Route path="/returns" element={<Returns />} />
                     <Route path="/care-guide" element={<CareGuide />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/wishlist" element={<Wishlist />} />
+                    <Route path="/blog" element={<Blog />} />
+                    <Route path="/careers" element={<Careers />} />
                     <Route path="/admin" element={<AdminDashboard />} />
                     <Route path="/admin/dashboard" element={<AdminDashboard />} />
                     <Route path="/admin/login" element={<AdminLogin />} />
