@@ -1,6 +1,22 @@
-import { loadStripe } from '@stripe/stripe-js';
-
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+// Mock Stripe implementation for development
+const stripePromise = Promise.resolve({
+  elements: () => ({
+    create: () => ({
+      mount: () => {},
+      on: () => {},
+      destroy: () => {}
+    }),
+    getElement: () => null
+  }),
+  createPaymentMethod: () => Promise.resolve({
+    paymentMethod: { id: 'pm_mock' },
+    error: null
+  }),
+  confirmCardPayment: () => Promise.resolve({
+    paymentIntent: { status: 'succeeded' },
+    error: null
+  })
+});
 
 export default stripePromise;
 
