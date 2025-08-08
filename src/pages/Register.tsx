@@ -39,7 +39,9 @@ const Register: React.FC = () => {
 
     try {
       await register(formData);
-      navigate('/', { replace: true });
+      // After successful registration, user will be automatically logged in
+      // Navigate to products page to start shopping
+      navigate('/stripe-products', { replace: true });
     } catch (error) {
       // Error is handled by the context
     } finally {

@@ -55,10 +55,10 @@ const Home: React.FC = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 animate-slide-up">
                 <Link
-                  to="/products"
+                  to="/stripe-products"
                   className="inline-flex items-center px-8 py-4 bg-white dark:bg-gray-800 text-green-600 dark:text-green-400 font-bold rounded-xl hover:bg-green-50 dark:hover:bg-gray-700 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
-                  Jelajahi 59+ Tanaman
+                  Jelajahi Koleksi Premium
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
                 <a
@@ -356,10 +356,10 @@ const Home: React.FC = () => {
                 Tanaman berkualitas tinggi untuk penggemar tanaman hias yang ingin koleksi lebih beragam
               </p>
               <Link
-                to="/products?price=mid"
+                to="/stripe-products"
                 className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 hover:scale-105 transition-all duration-300 shadow-lg"
               >
-                Jelajahi Koleksi
+                Koleksi Premium
               </Link>
             </div>
             

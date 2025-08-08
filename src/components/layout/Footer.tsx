@@ -111,6 +111,11 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/stripe-products" className="text-gray-300 hover:text-green-400 transition-colors">
+                  Koleksi Premium
+                </Link>
+              </li>
+              <li>
                 <Link to="/blog" className="text-gray-300 hover:text-green-400 transition-colors">
                   Blog & Tips
                 </Link>

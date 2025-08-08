@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Heart } from 'lucide-react';
-import { useTranslation } from '../i18n/utils/translator';
 import { Plant } from '../types';
 import { useCart } from '../contexts/CartContext';
 
@@ -11,7 +10,6 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ plant }) => {
   const { addToCart } = useCart();
-  const { t, formatCurrency } = useTranslation();
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -48,14 +46,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ plant }) => {
           {/* Stock indicator */}
           {plant.stock <= 5 && plant.stock > 0 && (
             <div className="absolute bottom-4 left-4 bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-medium">
-              {t('products.stock_status.low_stock')}
+              Stok Terbatas
             </div>
           )}
           
           {plant.stock === 0 && (
             <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
               <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                {t('products.stock_status.out_of_stock')}
+                Stok Habis
               </span>
             </div>
           )}
@@ -71,7 +69,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ plant }) => {
           
           <div className="flex items-center justify-between mb-3">
             <span className="text-2xl font-bold text-green-600">
-              {formatCurrency(plant.price)}
+              Rp {plant.price.toLocaleString('id-ID')}
             </span>
             <span className="text-xs text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full font-medium">
               {plant.category}

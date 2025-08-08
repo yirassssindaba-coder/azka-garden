@@ -17,6 +17,8 @@ import SearchResults from './pages/SearchResults';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminLogin from './pages/admin/AdminLogin';
 import DeveloperDashboard from './pages/admin/DeveloperDashboard';
+import StripeProducts from './pages/StripeProducts';
+import StripeSuccess from './pages/StripeSuccess';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
@@ -88,6 +90,14 @@ function App() {
                       <Route path="/blog" element={<Blog />} />
                       <Route path="/careers" element={<Careers />} />
                       
+                     {/* Stripe Routes */}
+                     <Route path="/stripe-products" element={<StripeProducts />} />
+                     <Route path="/success" element={
+                       <ProtectedRoute>
+                         <StripeSuccess />
+                       </ProtectedRoute>
+                     } />
+                     
                       {/* Admin Routes */}
                       <Route path="/admin/login" element={<AdminLogin />} />
                       <Route path="/admin" element={

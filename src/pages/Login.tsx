@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, Leaf } from 'lucide-react';
-import { useTranslation } from '../i18n/utils/translator';
 import { useAuth } from '../contexts/AuthContext';
 
 const Login: React.FC = () => {
@@ -13,7 +12,6 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { t } = useTranslation();
   const { login, error, clearError } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -37,11 +35,7 @@ const Login: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      await login({
-        email: formData.email,
-        password: formData.password,
-        rememberMe: formData.rememberMe
-      });
+      await login(formData.email, formData.password);
       navigate(from, { replace: true });
     } catch (error) {
       // Error is handled by the context
@@ -59,12 +53,12 @@ const Login: React.FC = () => {
             <span className="text-2xl font-bold text-gray-900 dark:text-white">Azka Garden</span>
           </Link>
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            {t('auth.login.title')}
+            Masuk ke Akun Anda
           </h2>
           <p className="text-gray-600 dark:text-gray-400">
-            {t('auth.login.no_account')}{' '}
+            Belum punya akun?{' '}
             <Link to="/register" className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-medium">
-              {t('auth.login.register_link')}
+              Daftar sekarang
             </Link>
           </p>
         </div>
@@ -79,7 +73,7 @@ const Login: React.FC = () => {
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {t('auth.login.email')}
+                Email
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -91,14 +85,14 @@ const Login: React.FC = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder={t('auth.login.email')}
+                  placeholder="Masukkan email Anda"
                 />
               </div>
             </div>
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {t('auth.login.password')}
+                Password
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -110,7 +104,7 @@ const Login: React.FC = () => {
                   value={formData.password}
                   onChange={handleInputChange}
                   className="w-full pl-10 pr-12 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder={t('auth.login.password')}
+                  placeholder="Masukkan password Anda"
                 />
                 <button
                   type="button"
@@ -133,14 +127,14 @@ const Login: React.FC = () => {
                   className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded"
                 />
                 <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                  {t('auth.login.remember_me')}
+                  Ingat saya
                 </label>
               </div>
               <Link
                 to="/forgot-password"
                 className="text-sm text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-medium"
               >
-                {t('auth.login.forgot_password')}
+                Lupa password?
               </Link>
             </div>
 
@@ -149,7 +143,7 @@ const Login: React.FC = () => {
               disabled={isSubmitting}
               className="w-full bg-green-600 dark:bg-green-700 text-white font-semibold py-3 rounded-lg hover:bg-green-700 dark:hover:bg-green-800 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? t('common.loading') : t('auth.login.login_button')}
+              {isSubmitting ? 'Memproses...' : 'Masuk'}
             </button>
           </form>
 

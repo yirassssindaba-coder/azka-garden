@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
+import { supabase } from '../lib/supabase';
+import type { User as SupabaseUser } from '@supabase/supabase-js';
 
-export interface User {
-  id: string;
-  email: string;
-  fullName: string;
-  role: 'customer' | 'admin' | 'developer';
-  phoneNumber?: string;
-  createdAt: string;
+export interface User extends SupabaseUser {
+  user_metadata: {
+    full_name?: string;
+    phone_number?: string;
+  };
 }
 
 interface AuthState {
@@ -61,89 +61,45 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-// Demo users with role separation
-const demoUsers = {
-  // Customer accounts
-  'customer@azkagarden.com': {
-    id: 'user-1',
-    email: 'customer@azkagarden.com',
-    fullName: 'Pelanggan Demo',
-    role: 'customer' as const,
-    password: 'customer123',
-    phoneNumber: '081234567890',
-    createdAt: new Date().toISOString()
-  },
-  'user@test.com': {
-    id: 'user-2',
-    email: 'user@test.com',
-    fullName: 'User Test',
-    role: 'customer' as const,
-    password: 'user123',
-    phoneNumber: '081234567891',
-    createdAt: new Date().toISOString()
-  },
-  // Admin account
-  'admin@azkagarden.com': {
-    id: 'admin-1',
-    email: 'admin@azkagarden.com',
-    fullName: 'Administrator Azka Garden',
-    role: 'admin' as const,
-    password: 'admin123',
-    phoneNumber: '081234567892',
-    createdAt: new Date().toISOString()
-  },
-  // Developer account
-  'dev@azkagarden.com': {
-    id: 'dev-1',
-    email: 'dev@azkagarden.com',
-    fullName: 'Developer Azka Garden',
-    role: 'developer' as const,
-    password: 'dev123',
-    phoneNumber: '081234567893',
-    createdAt: new Date().toISOString()
-  }
-};
-
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   useEffect(() => {
-    // Check for existing session
-    const token = localStorage.getItem('authToken');
-    const userData = localStorage.getItem('userData');
-    
-    if (token && userData) {
-      try {
-        const user = JSON.parse(userData);
-        dispatch({ type: 'AUTH_SUCCESS', payload: user });
-      } catch (error) {
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('userData');
+    // Check for existing Supabase session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        dispatch({ type: 'AUTH_SUCCESS', payload: session.user as User });
       }
-    }
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) {
+        dispatch({ type: 'AUTH_SUCCESS', payload: session.user as User });
+      } else if (event === 'SIGNED_OUT') {
+        dispatch({ type: 'LOGOUT' });
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const login = async (email: string, password: string) => {
     try {
       dispatch({ type: 'AUTH_START' });
       
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const user = demoUsers[email as keyof typeof demoUsers];
-      
-      if (!user || user.password !== password) {
-        throw new Error('Email atau password salah');
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        throw new Error(error.message);
       }
-      
-      // Create user object without password
-      const { password: _, ...userWithoutPassword } = user;
-      
-      // Store auth data
-      localStorage.setItem('authToken', 'token-' + Date.now());
-      localStorage.setItem('userData', JSON.stringify(userWithoutPassword));
-      
-      dispatch({ type: 'AUTH_SUCCESS', payload: userWithoutPassword });
+
+      if (data.user) {
+        dispatch({ type: 'AUTH_SUCCESS', payload: data.user as User });
+      }
     } catch (error) {
       dispatch({ 
         type: 'AUTH_FAILURE', 
@@ -157,28 +113,25 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       dispatch({ type: 'AUTH_START' });
       
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Check if email already exists
-      if (demoUsers[userData.email as keyof typeof demoUsers]) {
-        throw new Error('Email sudah terdaftar');
-      }
-      
-      const newUser: User = {
-        id: 'user-' + Date.now(),
+      const { data, error } = await supabase.auth.signUp({
         email: userData.email,
-        fullName: userData.fullName,
-        role: 'customer',
-        phoneNumber: userData.phoneNumber,
-        createdAt: new Date().toISOString()
-      };
-      
-      // Store auth data
-      localStorage.setItem('authToken', 'token-' + Date.now());
-      localStorage.setItem('userData', JSON.stringify(newUser));
-      
-      dispatch({ type: 'AUTH_SUCCESS', payload: newUser });
+        password: userData.password,
+        options: {
+          data: {
+            full_name: userData.fullName,
+            phone_number: userData.phoneNumber,
+            username: userData.username
+          }
+        }
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      if (data.user) {
+        dispatch({ type: 'AUTH_SUCCESS', payload: data.user as User });
+      }
     } catch (error) {
       dispatch({ 
         type: 'AUTH_FAILURE', 
@@ -190,9 +143,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const logout = async () => {
     try {
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('userData');
-      localStorage.removeItem('adminRole'); // Clear admin role
+      await supabase.auth.signOut();
       dispatch({ type: 'LOGOUT' });
     } catch (error) {
       console.error('Logout error:', error);
@@ -204,10 +155,25 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const updateProfile = async (data: any) => {
-    if (state.user) {
-      const updatedUser = { ...state.user, ...data };
-      localStorage.setItem('userData', JSON.stringify(updatedUser));
-      dispatch({ type: 'AUTH_SUCCESS', payload: updatedUser });
+    try {
+      const { data: updatedUser, error } = await supabase.auth.updateUser({
+        data: {
+          full_name: data.fullName,
+          phone_number: data.phoneNumber,
+          ...data
+        }
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      if (updatedUser.user) {
+        dispatch({ type: 'AUTH_SUCCESS', payload: updatedUser.user as User });
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      throw error;
     }
   };
 
