@@ -85,10 +85,10 @@ const FeaturedCollections: React.FC = () => {
       </section>
 
       {/* Premium Collection */}
-      <section className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-8">
+      <section className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-8 border border-gray-200">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center space-x-3">
-            <Crown className="h-8 w-8 text-purple-600" />
+            <Crown className="h-8 w-8 text-gray-800" />
             <div>
               <h2 className="text-3xl font-bold text-gray-900">Koleksi Premium</h2>
               <p className="text-gray-600">Tanaman eksklusif untuk kolektor sejati</p>
@@ -96,7 +96,7 @@ const FeaturedCollections: React.FC = () => {
           </div>
           <Link
             to="/products?category=premium"
-            className="inline-flex items-center text-purple-600 hover:text-purple-700 font-medium"
+            className="inline-flex items-center text-gray-800 hover:text-black font-medium"
           >
             Jelajahi Premium
             <ArrowRight className="ml-1 h-4 w-4" />
@@ -106,7 +106,7 @@ const FeaturedCollections: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {premiumPlants.slice(0, 3).map((plant) => (
             <div key={plant.id} className="relative">
-              <div className="absolute top-2 left-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs px-2 py-1 rounded-full z-10">
+              <div className="absolute top-2 left-2 bg-gradient-to-r from-gray-800 to-black text-white text-xs px-2 py-1 rounded-full z-10">
                 Premium
               </div>
               <ProductCard plant={plant} />

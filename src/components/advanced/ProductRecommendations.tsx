@@ -231,13 +231,13 @@ const ProductRecommendations: React.FC<ProductRecommendationsProps> = ({
 
               {/* Recommendation Reason */}
               {type === 'personalized' && (
-                <div className="mt-2 text-xs text-purple-600 bg-purple-50 px-2 py-1 rounded">
+                <div className="mt-2 text-xs text-green-600 bg-green-50 px-2 py-1 rounded">
                   Cocok dengan preferensi Anda
                 </div>
               )}
               
               {type === 'similar' && (
-                <div className="mt-2 text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded">
+                <div className="mt-2 text-xs text-gray-600 bg-gray-50 px-2 py-1 rounded">
                   Perawatan serupa
                 </div>
               )}
@@ -253,9 +253,9 @@ const ProductRecommendations: React.FC<ProductRecommendationsProps> = ({
       </div>
 
       {/* AI Explanation */}
-      <div className="mt-6 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-4">
+      <div className="mt-6 bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 rounded-lg p-4">
         <div className="flex items-start space-x-3">
-          <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-2 rounded-full">
+          <div className="bg-gradient-to-r from-green-600 to-green-700 text-white p-2 rounded-full">
             <Star className="h-4 w-4" />
           </div>
           <div>

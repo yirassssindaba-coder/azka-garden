@@ -184,13 +184,13 @@ const Home: React.FC = () => {
             <div className="bg-white p-8 rounded-2xl text-center shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-2">
               <div className="text-6xl mb-6">👑</div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">Premium Collection</h3>
-              <p className="text-purple-600 font-bold text-lg mb-4">Rp500.000+</p>
+              <p className="text-gray-800 font-bold text-lg mb-4">Rp500.000+</p>
               <p className="text-gray-600 mb-6 leading-relaxed">
                 Bonsai eksklusif dan tanaman langka untuk kolektor sejati
               </p>
               <Link
                 to="/products?price=premium"
-                className="inline-flex items-center px-6 py-3 bg-purple-600 text-white font-semibold rounded-xl hover:bg-purple-700 hover:scale-105 transition-all duration-300 shadow-lg"
+                className="inline-flex items-center px-6 py-3 bg-gray-800 text-white font-semibold rounded-xl hover:bg-black hover:scale-105 transition-all duration-300 shadow-lg"
               >
                 Koleksi Eksklusif
               </Link>

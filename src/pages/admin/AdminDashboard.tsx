@@ -389,15 +389,15 @@ const AdminDashboard: React.FC = () => {
               <div className="text-sm font-semibold text-green-800">Manage Products</div>
               <div className="text-xs text-green-600 mt-1">{plantStats?.totalPlants || 59} products</div>
             </button>
-            <button className="p-6 bg-gradient-to-br from-yellow-50 to-yellow-100 hover:from-yellow-100 hover:to-yellow-200 rounded-xl transition-all duration-300 text-center group">
-              <ShoppingCart className="h-8 w-8 text-yellow-600 mx-auto mb-3 group-hover:scale-110 transition-transform" />
-              <div className="text-sm font-semibold text-yellow-800">Manage Orders</div>
-              <div className="text-xs text-yellow-600 mt-1">23 pending</div>
+            <button className="p-6 bg-gradient-to-br from-gray-50 to-gray-100 hover:from-gray-100 hover:to-gray-200 rounded-xl transition-all duration-300 text-center group">
+              <ShoppingCart className="h-8 w-8 text-gray-600 mx-auto mb-3 group-hover:scale-110 transition-transform" />
+              <div className="text-sm font-semibold text-gray-800">Manage Orders</div>
+              <div className="text-xs text-gray-600 mt-1">23 pending</div>
             </button>
-            <button className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 rounded-xl transition-all duration-300 text-center group">
-              <Eye className="h-8 w-8 text-purple-600 mx-auto mb-3 group-hover:scale-110 transition-transform" />
-              <div className="text-sm font-semibold text-purple-800">View Reports</div>
-              <div className="text-xs text-purple-600 mt-1">Analytics</div>
+            <button className="p-6 bg-gradient-to-br from-black to-gray-800 hover:from-gray-800 hover:to-black rounded-xl transition-all duration-300 text-center group">
+              <Eye className="h-8 w-8 text-white mx-auto mb-3 group-hover:scale-110 transition-transform" />
+              <div className="text-sm font-semibold text-white">View Reports</div>
+              <div className="text-xs text-gray-300 mt-1">Analytics</div>
             </button>
           </div>
         </div>

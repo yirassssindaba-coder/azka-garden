@@ -301,8 +301,8 @@ const DeveloperDashboard: React.FC = () => {
 
             <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
               <div className="flex items-center justify-between mb-4">
-                <div className="bg-purple-100 p-2 rounded-lg">
-                  <Monitor className="h-6 w-6 text-purple-600" />
+                <div className="bg-gray-100 p-2 rounded-lg">
+                  <Monitor className="h-6 w-6 text-gray-600" />
                 </div>
                 <span className={`text-2xl font-bold ${getMetricColor(metrics.memoryUsage, { warning: 80, critical: 95 })}`}>
                   {metrics.memoryUsage}%
@@ -343,8 +343,8 @@ const DeveloperDashboard: React.FC = () => {
 
             <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
               <div className="flex items-center justify-between mb-4">
-                <div className="bg-orange-100 p-2 rounded-lg">
-                  <Zap className="h-6 w-6 text-orange-600" />
+                <div className="bg-gray-100 p-2 rounded-lg">
+                  <Zap className="h-6 w-6 text-gray-600" />
                 </div>
                 <span className="text-2xl font-bold text-gray-900">{metrics.networkLatency}ms</span>
               </div>
@@ -455,10 +455,10 @@ const DeveloperDashboard: React.FC = () => {
               <div className="text-xs text-green-600 mt-1">Real-time metrics</div>
             </button>
             
-            <button className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 rounded-xl transition-all duration-300 text-center group">
-              <GitBranch className="h-8 w-8 text-purple-600 mx-auto mb-3 group-hover:scale-110 transition-transform" />
-              <div className="text-sm font-semibold text-purple-800">Deployment</div>
-              <div className="text-xs text-purple-600 mt-1">CI/CD Pipeline</div>
+            <button className="p-6 bg-gradient-to-br from-gray-50 to-gray-100 hover:from-gray-100 hover:to-gray-200 rounded-xl transition-all duration-300 text-center group">
+              <GitBranch className="h-8 w-8 text-gray-600 mx-auto mb-3 group-hover:scale-110 transition-transform" />
+              <div className="text-sm font-semibold text-gray-800">Deployment</div>
+              <div className="text-xs text-gray-600 mt-1">CI/CD Pipeline</div>
             </button>
           </div>
         </div>
