@@ -450,15 +450,6 @@ const DeveloperDashboard: React.FC = () => {
       </div>
     </div>
   );
-
-  function getSeverityColor(severity: string) {
-    switch (severity) {
-      case 'critical': return 'text-black bg-gray-200';
-      case 'error': return 'text-gray-800 bg-gray-100';
-      case 'warning': return 'text-gray-600 bg-gray-50';
-      default: return 'text-green-600 bg-green-100';
-    }
-  }
 };
 
 export default DeveloperDashboard;
