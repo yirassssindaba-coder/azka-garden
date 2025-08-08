@@ -133,5 +133,18 @@
   "currency": {
     "symbol": "$",
     "format": "{{symbol}}{{amount}}"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "hero": {
+    "badge": "#1 Plant Store in Indonesia",
+    "title": "Green Your Home with",
+    "title_highlight": "Best Ornamental Plants",
+    "description": "Complete collection of 59+ premium quality ornamental plants from Jamani Dolar to exclusive Bonsai. From easy-care indoor plants to premium collections for true collectors.",
+    "cta_primary": "Explore 59+ Plants",
+    "cta_secondary": "Learn More"
   }
 }

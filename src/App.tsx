@@ -20,41 +20,44 @@ import DeveloperDashboard from './pages/admin/DeveloperDashboard';
 import { CartProvider } from './contexts/CartContext';
 import { OrderProvider } from './contexts/OrderContext';
 import { AuthProvider } from './contexts/AuthContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import './index.css';
 
 function App() {
   return (
-    <AuthProvider>
-      <OrderProvider>
-        <CartProvider>
-          <Router>
-            <div className="min-h-screen bg-gray-50">
-              <Header />
-              <main>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/products" element={<Products />} />
-                  <Route path="/products/:id" element={<ProductDetail />} />
-                  <Route path="/cart" element={<Cart />} />
-                  <Route path="/checkout" element={<Checkout />} />
-                  <Route path="/orders" element={<Orders />} />
-                  <Route path="/orders/:id" element={<OrderDetail />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/search" element={<SearchResults />} />
-                  <Route path="/admin" element={<AdminDashboard />} />
-                  <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                  <Route path="/admin/login" element={<AdminLogin />} />
-                  <Route path="/admin/developer" element={<DeveloperDashboard />} />
-                </Routes>
-              </main>
-              <Footer />
-              <ChatBot />
-            </div>
-          </Router>
-        </CartProvider>
-      </OrderProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <OrderProvider>
+          <CartProvider>
+            <Router>
+              <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+                <Header />
+                <main>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/products" element={<Products />} />
+                    <Route path="/products/:id" element={<ProductDetail />} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/checkout" element={<Checkout />} />
+                    <Route path="/orders" element={<Orders />} />
+                    <Route path="/orders/:id" element={<OrderDetail />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/search" element={<SearchResults />} />
+                    <Route path="/admin" element={<AdminDashboard />} />
+                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                    <Route path="/admin/login" element={<AdminLogin />} />
+                    <Route path="/admin/developer" element={<DeveloperDashboard />} />
+                  </Routes>
+                </main>
+                <Footer />
+                <ChatBot />
+              </div>
+            </Router>
+          </CartProvider>
+        </OrderProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

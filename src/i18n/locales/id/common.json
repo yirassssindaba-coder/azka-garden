@@ -270,6 +270,19 @@
     "symbol": "Rp",
     "format": "{{symbol}} {{amount}}"
   },
+  "theme": {
+    "light": "Terang",
+    "dark": "Gelap", 
+    "system": "Sistem"
+  },
+  "hero": {
+    "badge": "Toko Tanaman Hias #1 di Indonesia",
+    "title": "Hijaukan Rumah Anda dengan",
+    "title_highlight": "Tanaman Hias Terbaik",
+    "description": "Koleksi lengkap 59+ tanaman hias berkualitas premium dari Jamani Dolar hingga Bonsai eksklusif. Dari tanaman indoor mudah perawatan hingga koleksi premium untuk kolektor sejati.",
+    "cta_primary": "Jelajahi 59+ Tanaman",
+    "cta_secondary": "Pelajari Lebih Lanjut"
+  },
   "date": {
     "formats": {
       "short": "DD/MM/YYYY",

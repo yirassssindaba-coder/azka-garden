@@ -1,4 +1,5 @@
 import { i18nConfig, currencyByLocale, dateFormatsByLocale } from '../config/i18n.config';
+import React from 'react';
 
 // Import locale files
 import idCommon from '../locales/id/common.json';
@@ -212,7 +213,7 @@ export const translator = new Translator();
 
 // React hook for translations
 export const useTranslation = () => {
-  const [, forceUpdate] = React.useReducer(x => x + 1, 0);
+  const [, forceUpdate] = React.useReducer((x: number) => x + 1, 0);
 
   React.useEffect(() => {
     const handleLocaleChange = () => forceUpdate();
@@ -222,6 +223,14 @@ export const useTranslation = () => {
 
   return {
     t: translator.t.bind(translator),
+    plural: translator.plural.bind(translator),
+    formatDate: translator.formatDate.bind(translator),
+    formatCurrency: translator.formatCurrency.bind(translator),
+    formatNumber: translator.formatNumber.bind(translator),
+    formatRelativeTime: translator.formatRelativeTime.bind(translator),
+    setLocale: translator.setLocale.bind(translator),
+    getLocale: translator.getLocale.bind(translator),
+    getAvailableLocales: translator.getAvailableLocales.bind(translator),
     i18n: translator,
     locale: translator.getLocale()
   };

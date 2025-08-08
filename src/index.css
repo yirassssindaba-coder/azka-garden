@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Dark mode base styles */
+@layer base {
+  html {
+    @apply transition-colors duration-300;
+  }
+  
+  .dark {
+    color-scheme: dark;
+  }
+}
+
 /* Custom color scheme - Green, White, Black, Gray */
 :root {
   --primary-green: #16a34a;

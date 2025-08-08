@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from '../../i18n/utils/translator';
 import { 
   Leaf, 
   MapPin, 
@@ -15,27 +16,28 @@ import {
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
+  const { t } = useTranslation();
 
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-gray-900 dark:bg-black text-white">
       {/* Newsletter Section */}
-      <div className="bg-green-600">
+      <div className="bg-green-600 dark:bg-green-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="mb-4 md:mb-0">
-              <h3 className="text-xl font-bold mb-2">Dapatkan Tips Perawatan Tanaman</h3>
+              <h3 className="text-xl font-bold mb-2">{t('footer.newsletter.title')}</h3>
               <p className="text-green-100">
-                Berlangganan newsletter kami untuk mendapatkan tips perawatan tanaman dan penawaran khusus
+                {t('footer.newsletter.description')}
               </p>
             </div>
             <div className="flex w-full md:w-auto">
               <input
                 type="email"
-                placeholder="Masukkan email Anda"
-                className="flex-1 md:w-80 px-4 py-3 rounded-l-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-300"
+                placeholder={t('footer.newsletter.placeholder')}
+                className="flex-1 md:w-80 px-4 py-3 rounded-l-lg text-gray-900 dark:text-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-300"
               />
-              <button className="bg-green-800 hover:bg-green-900 px-6 py-3 rounded-r-lg font-semibold transition-colors">
-                Berlangganan
+              <button className="bg-green-800 dark:bg-green-900 hover:bg-green-900 dark:hover:bg-black px-6 py-3 rounded-r-lg font-semibold transition-colors">
+                {t('footer.newsletter.subscribe')}
               </button>
             </div>
           </div>
@@ -43,7 +45,7 @@ const Footer: React.FC = () => {
       </div>
 
       {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 dark:bg-black">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="lg:col-span-1">
@@ -51,9 +53,8 @@ const Footer: React.FC = () => {
               <Leaf className="h-8 w-8 text-green-400" />
               <span className="text-2xl font-bold">Azka Garden</span>
             </div>
-            <p className="text-gray-300 mb-6 leading-relaxed">
-              Toko tanaman hias online terpercaya dengan koleksi lengkap dan kualitas terbaik. 
-              Kami berkomitmen untuk membantu Anda menciptakan ruang hijau yang indah.
+            <p className="text-gray-300 dark:text-gray-400 mb-6 leading-relaxed">
+              {t('footer.company.description')}
             </p>
             
             {/* Social Media */}

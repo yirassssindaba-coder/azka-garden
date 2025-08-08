@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { ShoppingCart, Leaf, Search, Package, User, LogOut, Shield } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useTranslation } from '../i18n/utils/translator';
 import SmartSearchBar from './advanced/SmartSearchBar';
 import LanguageSelector from './i18n/LanguageSelector';
 
@@ -10,6 +11,7 @@ const Header: React.FC = () => {
   const location = useLocation();
   const { items } = useCart();
   const { user, isAuthenticated, logout } = useAuth();
+  const { t } = useTranslation();
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   const isActive = (path: string) => location.pathname === path;
@@ -22,12 +24,12 @@ const Header: React.FC = () => {
     }
   };
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-40">
+    <header className="bg-white dark:bg-gray-900 shadow-sm sticky top-0 z-40 border-b border-gray-200 dark:border-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center space-x-2">
             <Leaf className="h-8 w-8 text-green-600" />
-            <span className="text-xl font-bold text-gray-900">Azka Garden</span>
+            <span className="text-xl font-bold text-gray-900 dark:text-white">Azka Garden</span>
           </Link>
 
           {/* Search Bar - Hidden on mobile, shown on larger screens */}
@@ -40,32 +42,32 @@ const Header: React.FC = () => {
               to="/"
               className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                 isActive('/') 
-                  ? 'text-green-600 bg-green-50' 
-                  : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                  ? 'text-green-600 bg-green-50 dark:bg-green-900 dark:text-green-400' 
+                  : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900'
               }`}
             >
-              Beranda
+              {t('navigation.home')}
             </Link>
             <Link
               to="/products"
               className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                 isActive('/products') 
-                  ? 'text-green-600 bg-green-50' 
-                  : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                  ? 'text-green-600 bg-green-50 dark:bg-green-900 dark:text-green-400' 
+                  : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900'
               }`}
             >
-              Produk
+              {t('navigation.products')}
             </Link>
             {isAuthenticated && (
               <Link
                 to="/orders"
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   isActive('/orders') 
-                    ? 'text-green-600 bg-green-50' 
-                    : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                    ? 'text-green-600 bg-green-50 dark:bg-green-900 dark:text-green-400' 
+                    : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900'
                 }`}
               >
-                Pesanan
+                {t('navigation.orders')}
               </Link>
             )}
           </nav>
@@ -74,7 +76,7 @@ const Header: React.FC = () => {
             {/* Admin Portal Link */}
             <Link 
               to="/admin/login"
-              className="hidden md:flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+              className="hidden md:flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900 rounded-lg transition-colors"
             >
               <Shield className="h-4 w-4 mr-1" />
               Admin
@@ -83,7 +85,7 @@ const Header: React.FC = () => {
             {/* Mobile Search Button */}
             <Link 
               to="/search"
-              className="lg:hidden p-2 text-gray-400 hover:text-green-600 transition-colors"
+              className="lg:hidden p-2 text-gray-400 dark:text-gray-500 hover:text-green-600 dark:hover:text-green-400 transition-colors"
             >
               <Search className="h-5 w-5" />
             </Link>
@@ -94,7 +96,7 @@ const Header: React.FC = () => {
             {isAuthenticated && (
               <Link
                 to="/orders"
-                className="p-2 text-gray-400 hover:text-green-600 transition-colors"
+                className="p-2 text-gray-400 dark:text-gray-500 hover:text-green-600 dark:hover:text-green-400 transition-colors"
               >
                 <Package className="h-5 w-5" />
               </Link>
@@ -102,7 +104,7 @@ const Header: React.FC = () => {
             
             <Link
               to="/cart"
-              className="relative p-2 text-gray-400 hover:text-green-600 transition-colors"
+              className="relative p-2 text-gray-400 dark:text-gray-500 hover:text-green-600 dark:hover:text-green-400 transition-colors"
             >
               <ShoppingCart className="h-5 w-5" />
               {itemCount > 0 && (
@@ -114,36 +116,36 @@ const Header: React.FC = () => {
 
             {isAuthenticated ? (
               <div className="relative group">
-                <button className="flex items-center space-x-2 p-2 text-gray-700 hover:text-green-600 transition-colors">
+                <button className="flex items-center space-x-2 p-2 text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">
                   <User className="h-5 w-5" />
                   <span className="hidden md:block text-sm font-medium">{user?.fullName}</span>
                 </button>
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border dark:border-gray-700">
                   <Link
                     to="/profile"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
-                    Profil Saya
+                    {t('navigation.profile')}
                   </Link>
                   <Link
                     to="/orders"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
-                    Pesanan Saya
+                    {t('navigation.orders')}
                   </Link>
                   <Link
                     to="/wishlist"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
                     Wishlist
                   </Link>
                   <hr className="my-1" />
                   <button
                     onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center"
                   >
                     <LogOut className="h-4 w-4 mr-2" />
-                    Keluar
+                    {t('navigation.logout')}
                   </button>
                 </div>
               </div>
@@ -151,15 +153,15 @@ const Header: React.FC = () => {
               <div className="flex items-center space-x-2">
                 <Link
                   to="/login"
-                  className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-green-600 transition-colors"
+                  className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors"
                 >
-                  Masuk
+                  {t('navigation.login')}
                 </Link>
                 <Link
                   to="/register"
-                  className="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
+                  className="px-4 py-2 bg-green-600 dark:bg-green-700 text-white text-sm font-medium rounded-lg hover:bg-green-700 dark:hover:bg-green-800 transition-colors"
                 >
-                  Daftar
+                  {t('navigation.register')}
                 </Link>
               </div>
             )}

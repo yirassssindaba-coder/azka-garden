@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Leaf, Heart, Star } from 'lucide-react';
+import { useTranslation } from '../i18n/utils/translator';
 import FeaturedCollections from '../components/catalog/FeaturedCollections';
 import PlantShowcase from '../components/catalog/PlantShowcase';
 import { Plant } from '../types';
@@ -11,6 +12,7 @@ const Home: React.FC = () => {
   const [featuredPlants, setFeaturedPlants] = useState<Plant[]>([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
+  const { t, formatCurrency } = useTranslation();
 
   useEffect(() => {
     const loadFeaturedPlants = async () => {
@@ -30,7 +32,7 @@ const Home: React.FC = () => {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-green-600 via-green-700 to-green-800 text-white overflow-hidden">
+      <section className="relative bg-gradient-to-br from-green-600 via-green-700 to-green-800 dark:from-gray-800 dark:via-gray-900 dark:to-black text-white overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -43,26 +45,25 @@ const Home: React.FC = () => {
             <div className="relative z-10">
               <div className="inline-flex items-center bg-white bg-opacity-20 rounded-full px-4 py-2 mb-6">
                 <Leaf className="h-5 w-5 text-green-200 mr-2" />
-                <span className="text-green-100 text-sm font-medium">Toko Tanaman Hias #1 di Indonesia</span>
+                <span className="text-green-100 text-sm font-medium">{t('hero.badge')}</span>
               </div>
               <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6 animate-fade-in">
-                Hijaukan Rumah Anda dengan 
-                <span className="text-gradient bg-gradient-to-r from-green-200 to-green-100 bg-clip-text text-transparent"> Tanaman Hias Terbaik</span>
+                {t('hero.title')}
+                <span className="text-gradient bg-gradient-to-r from-green-200 to-green-100 bg-clip-text text-transparent"> {t('hero.title_highlight')}</span>
               </h1>
               <p className="text-xl mb-8 text-green-100 leading-relaxed animate-slide-up">
-                Koleksi lengkap 59+ tanaman hias berkualitas premium dari Jamani Dolar hingga Bonsai eksklusif. 
-                Dari tanaman indoor mudah perawatan hingga koleksi premium untuk kolektor sejati.
+                {t('hero.description')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 animate-slide-up">
                 <Link
                   to="/products"
-                  className="inline-flex items-center px-8 py-4 bg-white text-green-600 font-bold rounded-xl hover:bg-green-50 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center px-8 py-4 bg-white dark:bg-gray-800 text-green-600 dark:text-green-400 font-bold rounded-xl hover:bg-green-50 dark:hover:bg-gray-700 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
-                  Jelajahi 59+ Tanaman
+                  {t('hero.cta_primary')}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
-                <button className="inline-flex items-center px-8 py-4 border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-green-600 hover:scale-105 transition-all duration-300">
-                  Pelajari Lebih Lanjut
+                <button className="inline-flex items-center px-8 py-4 border-2 border-white text-white font-bold rounded-xl hover:bg-white dark:hover:bg-gray-800 hover:text-green-600 dark:hover:text-green-400 hover:scale-105 transition-all duration-300">
+                  {t('hero.cta_secondary')}
                 </button>
               </div>
               
