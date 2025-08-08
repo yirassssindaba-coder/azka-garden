@@ -62,9 +62,11 @@ const Profile: React.FC = () => {
                   <User className="h-10 w-10 text-green-600" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-white">{user.fullName}</h1>
+                  <h1 className="text-2xl font-bold text-white">
+                    {user?.user_metadata?.full_name || user?.email}
+                  </h1>
                   <p className="text-green-100">{user.email}</p>
-                  <p className="text-green-200 text-sm">Member sejak {new Date(user.createdAt).toLocaleDateString('id-ID')}</p>
+                  <p className="text-green-200 text-sm">Member sejak {new Date(user?.created_at || '').toLocaleDateString('id-ID')}</p>
                 </div>
               </div>
               <button
@@ -92,14 +94,14 @@ const Profile: React.FC = () => {
                       <input
                         type="text"
                         name="fullName"
-                        value={formData.fullName}
+                        value={formData.fullName || user?.user_metadata?.full_name || ''}
                         onChange={handleInputChange}
                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500"
                       />
                     ) : (
                       <div className="flex items-center space-x-2 text-gray-900 dark:text-white">
                         <User className="h-4 w-4 text-gray-400" />
-                        <span>{user.fullName}</span>
+                        <span>{user?.user_metadata?.full_name || user?.email}</span>
                       </div>
                     )}
                   </div>
@@ -122,14 +124,14 @@ const Profile: React.FC = () => {
                       <input
                         type="tel"
                         name="phoneNumber"
-                        value={formData.phoneNumber}
+                        value={formData.phoneNumber || user?.user_metadata?.phone_number || ''}
                         onChange={handleInputChange}
                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500"
                       />
                     ) : (
                       <div className="flex items-center space-x-2 text-gray-900 dark:text-white">
                         <Phone className="h-4 w-4 text-gray-400" />
-                        <span>{user.phoneNumber || 'Belum diisi'}</span>
+                        <span>{user?.user_metadata?.phone_number || 'Belum diisi'}</span>
                       </div>
                     )}
                   </div>
