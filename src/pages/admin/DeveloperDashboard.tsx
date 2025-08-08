@@ -21,7 +21,10 @@ import {
   Shield,
   Clock,
   Users,
-  UserCheck
+  UserCheck,
+  ShoppingCart,
+  Eye,
+  Package
 } from 'lucide-react';
 import { realTimeMonitor, DeveloperMetrics, MonitoringData } from '../../monitoring/RealTimeMonitor';
 import { securityManager } from '../../security/SecurityManager';
