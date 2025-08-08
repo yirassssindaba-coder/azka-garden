@@ -47,6 +47,7 @@ const Orders: React.FC = () => {
           <Package className="h-16 w-16 text-gray-400 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Belum Ada Pesanan</h2>
           <p className="text-gray-600 mb-8">
+          </p>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Belum Ada Pesanan</h2>
           <p className="text-gray-600 dark:text-gray-300 mb-8">
             Anda belum memiliki pesanan. Mulai belanja sekarang!
@@ -75,10 +76,12 @@ const Orders: React.FC = () => {
                 <div className="flex items-center space-x-4">
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900">
+                    </h3>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                       Pesanan #{order.orderNumber}
                     </h3>
                     <div className="flex items-center text-sm text-gray-600 mt-1">
+                    </div>
                     <div className="flex items-center text-sm text-gray-600 dark:text-gray-300 mt-1">
                       <Calendar className="h-4 w-4 mr-1" />
                       {new Date(order.createdAt).toLocaleDateString('id-ID', {
