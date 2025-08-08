@@ -32,17 +32,20 @@ const LanguageSelector: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex flex-col lg:flex-row lg:items-center space-y-2 lg:space-y-0 lg:space-x-2">
       {/* Language Selector */}
       <div className="relative">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center space-x-2 px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+          className="flex items-center justify-between w-full lg:w-auto space-x-2 px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors bg-gray-50 dark:bg-gray-800 rounded-lg lg:bg-transparent lg:dark:bg-transparent"
         >
-          <Globe className="h-4 w-4" />
-          <span className="text-sm font-medium">
-            {localeNames[currentLocale as keyof typeof localeNames]}
-          </span>
+          <div className="flex items-center space-x-2">
+            <Globe className="h-4 w-4" />
+            <span className="text-sm font-medium">
+              {localeNames[currentLocale as keyof typeof localeNames]}
+            </span>
+          </div>
+          <span className="lg:hidden text-xs text-gray-500">▼</span>
         </button>
 
         {isOpen && (
@@ -51,7 +54,7 @@ const LanguageSelector: React.FC = () => {
               className="fixed inset-0 z-10"
               onClick={() => setIsOpen(false)}
             />
-            <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border dark:border-gray-700 z-20">
+            <div className="absolute right-0 lg:right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border dark:border-gray-700 z-20">
               <div className="py-1">
                 {availableLocales.map((locale) => (
                   <button
@@ -75,9 +78,15 @@ const LanguageSelector: React.FC = () => {
       <div className="relative">
         <button
           onClick={() => setShowThemeMenu(!showThemeMenu)}
-          className="flex items-center space-x-2 px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+          className="flex items-center justify-between w-full lg:w-auto space-x-2 px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors bg-gray-50 dark:bg-gray-800 rounded-lg lg:bg-transparent lg:dark:bg-transparent"
         >
-          {getThemeIcon()}
+          <div className="flex items-center space-x-2">
+            {getThemeIcon()}
+            <span className="text-sm font-medium lg:hidden">
+              {theme === 'light' ? 'Terang' : theme === 'dark' ? 'Gelap' : 'Sistem'}
+            </span>
+          </div>
+          <span className="lg:hidden text-xs text-gray-500">▼</span>
         </button>
 
         {showThemeMenu && (
@@ -86,7 +95,7 @@ const LanguageSelector: React.FC = () => {
               className="fixed inset-0 z-10"
               onClick={() => setShowThemeMenu(false)}
             />
-            <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 rounded-md shadow-lg border dark:border-gray-700 z-20">
+            <div className="absolute right-0 lg:right-0 mt-2 w-40 bg-white dark:bg-gray-800 rounded-md shadow-lg border dark:border-gray-700 z-20">
               <div className="py-1">
                 <button
                   onClick={() => handleThemeChange('light')}
@@ -94,7 +103,7 @@ const LanguageSelector: React.FC = () => {
                 >
                   <div className="flex items-center space-x-2">
                     <Sun className="h-4 w-4" />
-                    <span>{t('theme.light')}</span>
+                    <span>Terang</span>
                   </div>
                   {theme === 'light' && <Check className="h-4 w-4 text-green-600" />}
                 </button>
@@ -104,7 +113,7 @@ const LanguageSelector: React.FC = () => {
                 >
                   <div className="flex items-center space-x-2">
                     <Moon className="h-4 w-4" />
-                    <span>{t('theme.dark')}</span>
+                    <span>Gelap</span>
                   </div>
                   {theme === 'dark' && <Check className="h-4 w-4 text-green-600" />}
                 </button>
@@ -114,7 +123,7 @@ const LanguageSelector: React.FC = () => {
                 >
                   <div className="flex items-center space-x-2">
                     <Monitor className="h-4 w-4" />
-                    <span>{t('theme.system')}</span>
+                    <span>Sistem</span>
                   </div>
                   {theme === 'system' && <Check className="h-4 w-4 text-green-600" />}
                 </button>

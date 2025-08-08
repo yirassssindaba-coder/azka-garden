@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingCart, Leaf, Search, Package, User, LogOut, Shield } from 'lucide-react';
+import { ShoppingCart, Leaf, Search, Package, User, LogOut, Shield, Menu, X } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from '../i18n/utils/translator';
@@ -12,6 +12,7 @@ const Header: React.FC = () => {
   const { items } = useCart();
   const { user, isAuthenticated, logout } = useAuth();
   const { t } = useTranslation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   const isActive = (path: string) => location.pathname === path;
@@ -19,25 +20,28 @@ const Header: React.FC = () => {
   const handleLogout = async () => {
     try {
       await logout();
+      setIsMobileMenuOpen(false);
     } catch (error) {
       console.error('Logout error:', error);
     }
   };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   return (
-    <header className="bg-white dark:bg-gray-900 shadow-sm sticky top-0 z-40 border-b border-gray-200 dark:border-gray-700">
+    <header className="bg-white dark:bg-gray-900 shadow-sm sticky top-0 z-50 border-b border-gray-200 dark:border-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center space-x-2">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
             <Leaf className="h-8 w-8 text-green-600" />
             <span className="text-xl font-bold text-gray-900 dark:text-white">Azka Garden</span>
           </Link>
 
-          {/* Search Bar - Hidden on mobile, shown on larger screens */}
-          <div className="hidden lg:flex flex-1 max-w-2xl mx-8">
-            <SmartSearchBar />
-          </div>
-
-          <nav className="hidden md:flex space-x-8">
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex space-x-8">
             <Link
               to="/"
               className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
@@ -72,27 +76,21 @@ const Header: React.FC = () => {
             )}
           </nav>
 
-          <div className="flex items-center space-x-4">
+          {/* Desktop Right Side */}
+          <div className="hidden lg:flex items-center space-x-4">
             {/* Admin Portal Link */}
             <Link 
               to="/admin/login"
-              className="hidden md:flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900 rounded-lg transition-colors"
+              className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900 rounded-lg transition-colors"
             >
               <Shield className="h-4 w-4 mr-1" />
               Admin
             </Link>
             
-            {/* Mobile Search Button */}
-            <Link 
-              to="/search"
-              className="lg:hidden p-2 text-gray-400 dark:text-gray-500 hover:text-green-600 dark:hover:text-green-400 transition-colors"
-            >
-              <Search className="h-5 w-5" />
-            </Link>
-            
             {/* Language Selector */}
             <LanguageSelector />
             
+            {/* Orders Link for authenticated users */}
             {isAuthenticated && (
               <Link
                 to="/orders"
@@ -102,6 +100,7 @@ const Header: React.FC = () => {
               </Link>
             )}
             
+            {/* Cart */}
             <Link
               to="/cart"
               className="relative p-2 text-gray-400 dark:text-gray-500 hover:text-green-600 dark:hover:text-green-400 transition-colors"
@@ -114,11 +113,12 @@ const Header: React.FC = () => {
               )}
             </Link>
 
+            {/* Auth Section */}
             {isAuthenticated ? (
               <div className="relative group">
                 <button className="flex items-center space-x-2 p-2 text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">
                   <User className="h-5 w-5" />
-                  <span className="hidden md:block text-sm font-medium">{user?.fullName}</span>
+                  <span className="text-sm font-medium">{user?.fullName}</span>
                 </button>
                 <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border dark:border-gray-700">
                   <Link
@@ -166,13 +166,161 @@ const Header: React.FC = () => {
               </div>
             )}
           </div>
+
+          {/* Mobile Menu Button */}
+          <div className="lg:hidden flex items-center space-x-2">
+            {/* Cart for mobile */}
+            <Link
+              to="/cart"
+              className="relative p-2 text-gray-400 dark:text-gray-500 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+            >
+              <ShoppingCart className="h-5 w-5" />
+              {itemCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-green-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {itemCount}
+                </span>
+              )}
+            </Link>
+            
+            {/* Hamburger Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 text-gray-400 dark:text-gray-500 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </button>
+          </div>
         </div>
-        
+
         {/* Mobile Search Bar */}
         <div className="lg:hidden pb-4">
           <SmartSearchBar />
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 shadow-lg">
+          <div className="px-4 py-4 space-y-2">
+            {/* Navigation Links */}
+            <Link
+              to="/"
+              onClick={closeMobileMenu}
+              className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors ${
+                isActive('/') 
+                  ? 'text-green-600 bg-green-50 dark:bg-green-900 dark:text-green-400' 
+                  : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900'
+              }`}
+            >
+              {t('navigation.home')}
+            </Link>
+            
+            <Link
+              to="/products"
+              onClick={closeMobileMenu}
+              className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors ${
+                isActive('/products') 
+                  ? 'text-green-600 bg-green-50 dark:bg-green-900 dark:text-green-400' 
+                  : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900'
+              }`}
+            >
+              {t('navigation.products')}
+            </Link>
+
+            {isAuthenticated && (
+              <Link
+                to="/orders"
+                onClick={closeMobileMenu}
+                className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors ${
+                  isActive('/orders') 
+                    ? 'text-green-600 bg-green-50 dark:bg-green-900 dark:text-green-400' 
+                    : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900'
+                }`}
+              >
+                {t('navigation.orders')}
+              </Link>
+            )}
+
+            {/* Admin Portal Link */}
+            <Link 
+              to="/admin/login"
+              onClick={closeMobileMenu}
+              className="flex items-center px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900 rounded-lg transition-colors"
+            >
+              <Shield className="h-5 w-5 mr-3" />
+              Admin Portal
+            </Link>
+
+            {/* Language & Theme Selector */}
+            <div className="px-4 py-3">
+              <LanguageSelector />
+            </div>
+
+            {/* Divider */}
+            <div className="border-t border-gray-200 dark:border-gray-700 my-4"></div>
+
+            {/* Auth Section */}
+            {isAuthenticated ? (
+              <div className="space-y-2">
+                <div className="px-4 py-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <User className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                    <div>
+                      <div className="text-sm font-medium text-gray-900 dark:text-white">{user?.fullName}</div>
+                      <div className="text-xs text-gray-600 dark:text-gray-400">{user?.email}</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <Link
+                  to="/profile"
+                  onClick={closeMobileMenu}
+                  className="block px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900 rounded-lg transition-colors"
+                >
+                  {t('navigation.profile')}
+                </Link>
+                
+                <Link
+                  to="/wishlist"
+                  onClick={closeMobileMenu}
+                  className="block px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900 rounded-lg transition-colors"
+                >
+                  Wishlist
+                </Link>
+                
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center px-4 py-3 text-base font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900 rounded-lg transition-colors"
+                >
+                  <LogOut className="h-5 w-5 mr-3" />
+                  {t('navigation.logout')}
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <Link
+                  to="/login"
+                  onClick={closeMobileMenu}
+                  className="block px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900 rounded-lg transition-colors"
+                >
+                  {t('navigation.login')}
+                </Link>
+                <Link
+                  to="/register"
+                  onClick={closeMobileMenu}
+                  className="block px-4 py-3 bg-green-600 dark:bg-green-700 text-white text-base font-medium rounded-lg hover:bg-green-700 dark:hover:bg-green-800 transition-colors text-center"
+                >
+                  {t('navigation.register')}
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </header>
   );
 };
