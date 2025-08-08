@@ -223,29 +223,18 @@ export const ReviewProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   };
 
   return (
-    <ChatContext.Provider value={{
-      sessions,
-      currentSession,
-      sendMessage,
-      startNewSession,
-      assignSession,
-      resolveSession,
-      getSessionById,
-      getUnreadCount
+    <ReviewContext.Provider value={{
+      reviews,
+      getProductReviews,
+      addReview,
+      addReply,
+      likeReview,
+      likeReply,
+      getAverageRating,
+      getReviewCount
     }}>
-      <ReviewContext.Provider value={{
-        reviews,
-        getProductReviews,
-        addReview,
-        addReply,
-        likeReview,
-        likeReply,
-        getAverageRating,
-        getReviewCount
-      }}>
-        {children}
-      </ReviewContext.Provider>
-    </ChatContext.Provider>
+      {children}
+    </ReviewContext.Provider>
   );
 };
 
@@ -256,5 +245,3 @@ export const useReviews = () => {
   }
   return context;
 };
-
-const ReviewContext = createContext<ReviewContextType | null>(null);
