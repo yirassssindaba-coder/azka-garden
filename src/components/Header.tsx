@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingCart, Leaf, Search, Package, User, LogOut } from 'lucide-react';
+import { ShoppingCart, Leaf, Search, Package, User, LogOut, Shield } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import SmartSearchBar from './advanced/SmartSearchBar';
@@ -71,6 +71,15 @@ const Header: React.FC = () => {
           </nav>
 
           <div className="flex items-center space-x-4">
+            {/* Admin Portal Link */}
+            <Link 
+              to="/admin/login"
+              className="hidden md:flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+            >
+              <Shield className="h-4 w-4 mr-1" />
+              Admin
+            </Link>
+            
             {/* Mobile Search Button */}
             <Link 
               to="/search"

@@ -16,6 +16,44 @@
 
 ---
 
+## 🔐 **Admin & Developer Access**
+
+### **Administrator Login**
+```
+URL: /admin/login
+Email: admin@azkagarden.com
+Password: admin123
+```
+
+**Fitur Admin:**
+- 📊 Dashboard analytics dengan real-time metrics
+- 👥 User management dan customer insights
+- 📦 Product management (59+ tanaman dari daftar)
+- 🛒 Order management dan tracking
+- 💳 Payment monitoring dan refunds
+- 🚚 Shipping management dan logistics
+- 📈 Sales reports dan business intelligence
+- 🎯 Marketing campaigns dan promotions
+
+### **Developer Login**
+```
+URL: /admin/login (pilih Developer)
+Email: dev@azkagarden.com
+Password: dev123
+```
+
+**Fitur Developer:**
+- 🖥️ System health monitoring
+- 🐛 Error tracking dan debugging tools
+- 📡 API endpoint monitoring
+- 🔧 Quick fix tools untuk troubleshooting
+- 📊 Performance metrics real-time
+- 🛡️ Security monitoring
+- 🔄 Cache management
+- 🚀 Deployment tools
+
+---
+
 ## 📋 **Deskripsi Proyek**
 
 **Azka Garden** adalah aplikasi e-commerce modern yang dirancang khusus untuk pasar Indonesia, focusing pada penjualan tanaman hias dengan user experience yang intuitif dan fitur-fitur lengkap untuk transaksi online yang aman dan nyaman.

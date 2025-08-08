@@ -15,6 +15,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import SearchResults from './pages/SearchResults';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminLogin from './pages/admin/AdminLogin';
+import DeveloperDashboard from './pages/admin/DeveloperDashboard';
 import { CartProvider } from './contexts/CartContext';
 import { OrderProvider } from './contexts/OrderContext';
 import { AuthProvider } from './contexts/AuthContext';
@@ -42,6 +44,8 @@ function App() {
                   <Route path="/search" element={<SearchResults />} />
                   <Route path="/admin" element={<AdminDashboard />} />
                   <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                  <Route path="/admin/login" element={<AdminLogin />} />
+                  <Route path="/admin/developer" element={<DeveloperDashboard />} />
                 </Routes>
               </main>
               <Footer />
