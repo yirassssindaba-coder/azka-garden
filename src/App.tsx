@@ -31,6 +31,7 @@ import Profile from './pages/Profile';
 import Wishlist from './pages/Wishlist';
 import Blog from './pages/Blog';
 import Careers from './pages/Careers';
+import ReviewsAndComments from './components/reviews/ReviewsAndComments';
 import { CartProvider } from './contexts/CartContext';
 import { OrderProvider } from './contexts/OrderContext';
 import { AuthProvider } from './contexts/AuthContext';
@@ -79,6 +80,7 @@ function App() {
                       <Route path="/shipping" element={<Shipping />} />
                       <Route path="/returns" element={<Returns />} />
                       <Route path="/care-guide" element={<CareGuide />} />
+                      <Route path="/reviews" element={<ReviewsAndComments />} />
                       <Route path="/profile" element={
                         <ProtectedRoute>
                           <Profile />

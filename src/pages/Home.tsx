@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Leaf, Heart, Star, MapPin, Phone, MessageCircle, ExternalLink, Award, Shield, Clock, Users } from 'lucide-react';
 import FeaturedCollections from '../components/catalog/FeaturedCollections';
 import PlantShowcase from '../components/catalog/PlantShowcase';
+import ReviewsAndComments from '../components/reviews/ReviewsAndComments';
 import { Plant } from '../types';
 import { getFeaturedPlants } from '../services/database';
 import { useAuth } from '../contexts/AuthContext';
@@ -27,6 +28,71 @@ const Home: React.FC = () => {
     loadFeaturedPlants();
   }, []);
 
+  useEffect(() => {
+    // Create floating flower petals effect
+    const createPetal = () => {
+      const petal = document.createElement('div');
+      petal.className = 'floating-petal';
+      petal.innerHTML = ['🌸', '🌺', '🌻', '🌷', '🌹'][Math.floor(Math.random() * 5)];
+      petal.style.cssText = `
+        position: fixed;
+        top: -50px;
+        left: ${Math.random() * 100}vw;
+        font-size: ${Math.random() * 20 + 15}px;
+        opacity: ${Math.random() * 0.7 + 0.3};
+        pointer-events: none;
+        z-index: 1;
+        animation: floatDown ${Math.random() * 10 + 10}s linear infinite;
+        transform: rotate(${Math.random() * 360}deg);
+      `;
+      
+      document.body.appendChild(petal);
+      
+      setTimeout(() => {
+        if (petal.parentNode) {
+          petal.parentNode.removeChild(petal);
+        }
+      }, 20000);
+    };
+
+    // Add CSS animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes floatDown {
+        0% {
+          transform: translateY(-50px) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+      .floating-petal {
+        animation: floatDown linear infinite;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Create petals periodically
+    const interval = setInterval(createPetal, 3000);
+    
+    // Initial petals
+    for (let i = 0; i < 5; i++) {
+      setTimeout(createPetal, i * 1000);
+    }
+
+    return () => {
+      clearInterval(interval);
+      document.head.removeChild(style);
+      // Clean up existing petals
+      document.querySelectorAll('.floating-petal').forEach(petal => {
+        if (petal.parentNode) {
+          petal.parentNode.removeChild(petal);
+        }
+      });
+    };
+  }, []);
   return (
     <div>
       {/* Hero Section */}
@@ -471,6 +537,9 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Reviews and Comments Section */}
+      <ReviewsAndComments />
     </div>
   );
 };
