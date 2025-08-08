@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingCart, Leaf, Search, Package, User, LogOut, Shield, Menu, X } from 'lucide-react';
+import { ShoppingCart, Leaf, Package, User, LogOut, Shield, Menu, X, Sun, Moon, Monitor } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
-import { useTranslation } from '../i18n/utils/translator';
+import { useTheme } from '../contexts/ThemeContext';
 import SmartSearchBar from './advanced/SmartSearchBar';
-import LanguageSelector from './i18n/LanguageSelector';
 
 const Header: React.FC = () => {
   const location = useLocation();
   const { items } = useCart();
   const { user, isAuthenticated, logout } = useAuth();
-  const { t } = useTranslation();
+  const { theme, setTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -28,6 +27,18 @@ const Header: React.FC = () => {
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
+  };
+
+  const getThemeIcon = () => {
+    switch (theme) {
+      case 'light': return <Sun className="h-5 w-5" />;
+      case 'dark': return <Moon className="h-5 w-5" />;
+      default: return <Monitor className="h-5 w-5" />;
+    }
+  };
+
+  const handleThemeChange = (newTheme: 'light' | 'dark' | 'system') => {
+    setTheme(newTheme);
   };
 
   return (
@@ -50,7 +61,7 @@ const Header: React.FC = () => {
                   : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900'
               }`}
             >
-              {t('navigation.home')}
+              Beranda
             </Link>
             <Link
               to="/products"
@@ -60,7 +71,7 @@ const Header: React.FC = () => {
                   : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900'
               }`}
             >
-              {t('navigation.products')}
+              Produk
             </Link>
             {isAuthenticated && (
               <Link
@@ -71,7 +82,7 @@ const Header: React.FC = () => {
                     : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900'
                 }`}
               >
-                {t('navigation.orders')}
+                Pesanan
               </Link>
             )}
           </nav>
@@ -86,9 +97,6 @@ const Header: React.FC = () => {
               <Shield className="h-4 w-4 mr-1" />
               Admin
             </Link>
-            
-            {/* Language Selector */}
-            <LanguageSelector />
             
             {/* Orders Link for authenticated users */}
             {isAuthenticated && (
@@ -125,13 +133,13 @@ const Header: React.FC = () => {
                     to="/profile"
                     className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
-                    {t('navigation.profile')}
+                    Profil
                   </Link>
                   <Link
                     to="/orders"
                     className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
-                    {t('navigation.orders')}
+                    Pesanan
                   </Link>
                   <Link
                     to="/wishlist"
@@ -145,7 +153,7 @@ const Header: React.FC = () => {
                     className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center"
                   >
                     <LogOut className="h-4 w-4 mr-2" />
-                    {t('navigation.logout')}
+                    Keluar
                   </button>
                 </div>
               </div>
@@ -155,20 +163,61 @@ const Header: React.FC = () => {
                   to="/login"
                   className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors"
                 >
-                  {t('navigation.login')}
+                  Masuk
                 </Link>
                 <Link
                   to="/register"
                   className="px-4 py-2 bg-green-600 dark:bg-green-700 text-white text-sm font-medium rounded-lg hover:bg-green-700 dark:hover:bg-green-800 transition-colors"
                 >
-                  {t('navigation.register')}
+                  Registrasi
                 </Link>
               </div>
             )}
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Right Side - Theme + Cart + Menu */}
           <div className="lg:hidden flex items-center space-x-2">
+            {/* Theme Selector - Sebelah kiri hamburger */}
+            <div className="relative group">
+              <button className="p-2 text-gray-400 dark:text-gray-500 hover:text-green-600 dark:hover:text-green-400 transition-colors">
+                {getThemeIcon()}
+              </button>
+              <div className="absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 rounded-md shadow-lg border dark:border-gray-700 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                <div className="py-1">
+                  <button
+                    onClick={() => handleThemeChange('light')}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-between"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <Sun className="h-4 w-4" />
+                      <span>Terang</span>
+                    </div>
+                    {theme === 'light' && <div className="w-2 h-2 bg-green-600 rounded-full"></div>}
+                  </button>
+                  <button
+                    onClick={() => handleThemeChange('dark')}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-between"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <Moon className="h-4 w-4" />
+                      <span>Gelap</span>
+                    </div>
+                    {theme === 'dark' && <div className="w-2 h-2 bg-green-600 rounded-full"></div>}
+                  </button>
+                  <button
+                    onClick={() => handleThemeChange('system')}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-between"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <Monitor className="h-4 w-4" />
+                      <span>Sistem</span>
+                    </div>
+                    {theme === 'system' && <div className="w-2 h-2 bg-green-600 rounded-full"></div>}
+                  </button>
+                </div>
+              </div>
+            </div>
+            
             {/* Cart for mobile */}
             <Link
               to="/cart"
@@ -216,7 +265,7 @@ const Header: React.FC = () => {
                   : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900'
               }`}
             >
-              {t('navigation.home')}
+              🏠 Beranda
             </Link>
             
             <Link
@@ -228,7 +277,7 @@ const Header: React.FC = () => {
                   : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900'
               }`}
             >
-              {t('navigation.products')}
+              📦 Produk
             </Link>
 
             {isAuthenticated && (
@@ -241,7 +290,7 @@ const Header: React.FC = () => {
                     : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900'
                 }`}
               >
-                {t('navigation.orders')}
+                📋 Pesanan
               </Link>
             )}
 
@@ -254,11 +303,6 @@ const Header: React.FC = () => {
               <Shield className="h-5 w-5 mr-3" />
               Admin Portal
             </Link>
-
-            {/* Language & Theme Selector */}
-            <div className="px-4 py-3">
-              <LanguageSelector />
-            </div>
 
             {/* Divider */}
             <div className="border-t border-gray-200 dark:border-gray-700 my-4"></div>
@@ -281,7 +325,7 @@ const Header: React.FC = () => {
                   onClick={closeMobileMenu}
                   className="block px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900 rounded-lg transition-colors"
                 >
-                  {t('navigation.profile')}
+                  👤 Profil
                 </Link>
                 
                 <Link
@@ -289,7 +333,7 @@ const Header: React.FC = () => {
                   onClick={closeMobileMenu}
                   className="block px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900 rounded-lg transition-colors"
                 >
-                  Wishlist
+                  ❤️ Wishlist
                 </Link>
                 
                 <button
@@ -297,7 +341,7 @@ const Header: React.FC = () => {
                   className="w-full flex items-center px-4 py-3 text-base font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900 rounded-lg transition-colors"
                 >
                   <LogOut className="h-5 w-5 mr-3" />
-                  {t('navigation.logout')}
+                  Keluar
                 </button>
               </div>
             ) : (
@@ -307,14 +351,14 @@ const Header: React.FC = () => {
                   onClick={closeMobileMenu}
                   className="block px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900 rounded-lg transition-colors"
                 >
-                  {t('navigation.login')}
+                  🔑 Masuk
                 </Link>
                 <Link
                   to="/register"
                   onClick={closeMobileMenu}
                   className="block px-4 py-3 bg-green-600 dark:bg-green-700 text-white text-base font-medium rounded-lg hover:bg-green-700 dark:hover:bg-green-800 transition-colors text-center"
                 >
-                  {t('navigation.register')}
+                  📝 Registrasi
                 </Link>
               </div>
             )}

@@ -17,6 +17,12 @@ import SearchResults from './pages/SearchResults';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminLogin from './pages/admin/AdminLogin';
 import DeveloperDashboard from './pages/admin/DeveloperDashboard';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import FAQ from './pages/FAQ';
+import Shipping from './pages/Shipping';
+import Returns from './pages/Returns';
+import CareGuide from './pages/CareGuide';
 import { CartProvider } from './contexts/CartContext';
 import { OrderProvider } from './contexts/OrderContext';
 import { AuthProvider } from './contexts/AuthContext';
@@ -44,6 +50,12 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/search" element={<SearchResults />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/faq" element={<FAQ />} />
+                    <Route path="/shipping" element={<Shipping />} />
+                    <Route path="/returns" element={<Returns />} />
+                    <Route path="/care-guide" element={<CareGuide />} />
                     <Route path="/admin" element={<AdminDashboard />} />
                     <Route path="/admin/dashboard" element={<AdminDashboard />} />
                     <Route path="/admin/login" element={<AdminLogin />} />

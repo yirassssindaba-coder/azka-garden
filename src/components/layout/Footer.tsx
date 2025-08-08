@@ -1,22 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from '../../i18n/utils/translator';
 import { 
   Leaf, 
   MapPin, 
   Phone, 
   Mail, 
   Clock,
-  Facebook,
-  Instagram,
-  Twitter,
-  Youtube,
-  MessageCircle
+  MessageCircle,
+  ExternalLink
 } from 'lucide-react';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
-  const { t } = useTranslation();
 
   return (
     <footer className="bg-gray-900 dark:bg-black text-white">
@@ -25,19 +20,19 @@ const Footer: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="mb-4 md:mb-0">
-              <h3 className="text-xl font-bold mb-2">{t('footer.newsletter.title')}</h3>
+              <h3 className="text-xl font-bold mb-2">Newsletter Azka Garden</h3>
               <p className="text-green-100">
-                {t('footer.newsletter.description')}
+                Dapatkan tips perawatan tanaman dan penawaran khusus langsung di email Anda
               </p>
             </div>
             <div className="flex w-full md:w-auto">
               <input
                 type="email"
-                placeholder={t('footer.newsletter.placeholder')}
+                placeholder="Masukkan email Anda"
                 className="flex-1 md:w-80 px-4 py-3 rounded-l-lg text-gray-900 dark:text-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-300"
               />
               <button className="bg-green-800 dark:bg-green-900 hover:bg-green-900 dark:hover:bg-black px-6 py-3 rounded-r-lg font-semibold transition-colors">
-                {t('footer.newsletter.subscribe')}
+                Berlangganan
               </button>
             </div>
           </div>
@@ -54,48 +49,27 @@ const Footer: React.FC = () => {
               <span className="text-2xl font-bold">Azka Garden</span>
             </div>
             <p className="text-gray-300 dark:text-gray-400 mb-6 leading-relaxed">
-              {t('footer.company.description')}
+              Toko tanaman hias online terpercaya dengan koleksi lengkap 59+ varietas premium. 
+              Dari Jamani Dolar hingga Bonsai eksklusif untuk semua pecinta tanaman di Indonesia.
             </p>
             
             {/* Social Media */}
             <div className="flex space-x-4">
               <a 
-                href="https://facebook.com/azkagarden" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="bg-gray-800 hover:bg-blue-600 p-2 rounded-full transition-colors"
-              >
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a 
-                href="https://instagram.com/azkagarden" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="bg-gray-800 hover:bg-pink-600 p-2 rounded-full transition-colors"
-              >
-                <Instagram className="h-5 w-5" />
-              </a>
-              <a 
-                href="https://twitter.com/azkagarden" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="bg-gray-800 hover:bg-blue-400 p-2 rounded-full transition-colors"
-              >
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a 
-                href="https://youtube.com/azkagarden" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="bg-gray-800 hover:bg-red-600 p-2 rounded-full transition-colors"
-              >
-                <Youtube className="h-5 w-5" />
-              </a>
-              <a 
-                href="https://wa.me/6281234567890" 
+                href="https://www.tokopedia.com/hendrikfloris" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="bg-gray-800 hover:bg-green-600 p-2 rounded-full transition-colors"
+                title="Tokopedia Hendrik Floris"
+              >
+                <ExternalLink className="h-5 w-5" />
+              </a>
+              <a 
+                href="https://wa.me/6289635086182" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-gray-800 hover:bg-green-600 p-2 rounded-full transition-colors"
+                title="WhatsApp Azka Garden"
               >
                 <MessageCircle className="h-5 w-5" />
               </a>
@@ -108,17 +82,17 @@ const Footer: React.FC = () => {
             <ul className="space-y-3">
               <li>
                 <Link to="/about" className="text-gray-300 hover:text-green-400 transition-colors">
-                  Tentang Kami
+                  Tentang Azka Garden
                 </Link>
               </li>
               <li>
                 <Link to="/contact" className="text-gray-300 hover:text-green-400 transition-colors">
-                  Kontak
+                  Kontak Kami
                 </Link>
               </li>
               <li>
                 <Link to="/faq" className="text-gray-300 hover:text-green-400 transition-colors">
-                  FAQ
+                  FAQ & Bantuan
                 </Link>
               </li>
               <li>
@@ -133,7 +107,17 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link to="/care-guide" className="text-gray-300 hover:text-green-400 transition-colors">
-                  Panduan Perawatan
+                  Panduan Perawatan Tanaman
+                </Link>
+              </li>
+              <li>
+                <Link to="/blog" className="text-gray-300 hover:text-green-400 transition-colors">
+                  Blog & Tips
+                </Link>
+              </li>
+              <li>
+                <Link to="/careers" className="text-gray-300 hover:text-green-400 transition-colors">
+                  Karir
                 </Link>
               </li>
             </ul>
@@ -144,33 +128,33 @@ const Footer: React.FC = () => {
             <h3 className="text-lg font-semibold mb-4">Kategori Populer</h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/products?category=indoor" className="text-gray-300 hover:text-green-400 transition-colors">
-                  Tanaman Indoor
+                <Link to="/products?category=6" className="text-gray-300 hover:text-green-400 transition-colors">
+                  🪨 Batu Taman
                 </Link>
               </li>
               <li>
-                <Link to="/products?category=outdoor" className="text-gray-300 hover:text-green-400 transition-colors">
-                  Tanaman Outdoor
+                <Link to="/products?category=7" className="text-gray-300 hover:text-green-400 transition-colors">
+                  🌱 Media Tanah
                 </Link>
               </li>
               <li>
-                <Link to="/products?category=succulent" className="text-gray-300 hover:text-green-400 transition-colors">
-                  Sukulen
+                <Link to="/products?category=1" className="text-gray-300 hover:text-green-400 transition-colors">
+                  🌿 Tanaman Hias
                 </Link>
               </li>
               <li>
-                <Link to="/products?category=flowering" className="text-gray-300 hover:text-green-400 transition-colors">
-                  Tanaman Berbunga
+                <Link to="/products?category=6" className="text-gray-300 hover:text-green-400 transition-colors">
+                  🏺 Pot & Aksesoris
                 </Link>
               </li>
               <li>
-                <Link to="/products?category=herbs" className="text-gray-300 hover:text-green-400 transition-colors">
-                  Tanaman Herbal
+                <Link to="/products?category=4" className="text-gray-300 hover:text-green-400 transition-colors">
+                  🌳 Bonsai Premium
                 </Link>
               </li>
               <li>
-                <Link to="/products?category=accessories" className="text-gray-300 hover:text-green-400 transition-colors">
-                  Aksesoris & Pupuk
+                <Link to="/products?category=5" className="text-gray-300 hover:text-green-400 transition-colors">
+                  🌸 Tanaman Berbunga
                 </Link>
               </li>
             </ul>
@@ -184,17 +168,26 @@ const Footer: React.FC = () => {
                 <MapPin className="h-5 w-5 text-green-400 mt-1 flex-shrink-0" />
                 <div>
                   <p className="text-gray-300">
-                    Jl. Raya Tanaman Hias No. 123<br />
-                    Jakarta Selatan 12345<br />
-                    Indonesia
+                    Jl. Raya KSU, Tirtajaya<br />
+                    Kec. Sukmajaya, Kota Depok<br />
+                    Jawa Barat 16412, Indonesia
                   </p>
+                  <a 
+                    href="https://maps.app.goo.gl/j5AuLF1AZ3VVgovcA"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-green-400 hover:text-green-300 text-sm mt-1 inline-flex items-center"
+                  >
+                    Lihat di Google Maps
+                    <ExternalLink className="h-3 w-3 ml-1" />
+                  </a>
                 </div>
               </div>
               
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-green-400 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-300">+62 812-3456-7890</p>
+                  <p className="text-gray-300">0896-3508-6182</p>
                   <p className="text-sm text-gray-400">WhatsApp & Telepon</p>
                 </div>
               </div>
@@ -211,8 +204,8 @@ const Footer: React.FC = () => {
                 <Clock className="h-5 w-5 text-green-400 mt-1 flex-shrink-0" />
                 <div>
                   <p className="text-gray-300">
-                    Senin - Sabtu: 08:00 - 17:00 WIB<br />
-                    Minggu: 09:00 - 15:00 WIB
+                    Buka 24 Jam Setiap Hari<br />
+                    Konsultasi & Pemesanan
                   </p>
                 </div>
               </div>
@@ -226,7 +219,7 @@ const Footer: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="text-gray-400 text-sm mb-4 md:mb-0">
-              © {currentYear} Azka Garden. Semua hak dilindungi undang-undang.
+              © {currentYear} Azka Garden - Toko Bunga Hendrik. Semua hak dilindungi undang-undang.
             </div>
             
             <div className="flex flex-wrap items-center space-x-6 text-sm">
@@ -273,7 +266,7 @@ const Footer: React.FC = () => {
                 <div className="w-8 h-8 bg-yellow-600 rounded flex items-center justify-center">
                   <span className="text-white font-bold text-xs">⭐</span>
                 </div>
-                <span>Rating 4.8/5</span>
+                <span>Rating 4.9/5</span>
               </div>
             </div>
           </div>
