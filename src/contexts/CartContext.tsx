@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { adminService } from '../services/supabase/admin.service';
 import { useAuth } from './AuthContext';
 
 export interface CartItem {
@@ -109,55 +108,18 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const addToCart = async (item: CartItem) => {
     dispatch({ type: 'ADD_TO_CART', payload: item });
-    
-    // Track user activity
-    if (user) {
-      await adminService.recordSystemMetric('add_to_cart', 1, {
-        user_id: user.id,
-        product_id: item.id,
-        quantity: item.quantity,
-        price: item.price
-      });
-    }
   };
 
   const removeFromCart = async (id: string) => {
-    const item = state.items.find(item => item.id === id);
     dispatch({ type: 'REMOVE_FROM_CART', payload: id });
-    
-    // Track user activity
-    if (user && item) {
-      await adminService.recordSystemMetric('remove_from_cart', 1, {
-        user_id: user.id,
-        product_id: id,
-        quantity: item.quantity
-      });
-    }
   };
 
   const updateQuantity = async (id: string, quantity: number) => {
     dispatch({ type: 'UPDATE_QUANTITY', payload: { id, quantity } });
-    
-    // Track user activity
-    if (user) {
-      await adminService.recordSystemMetric('update_cart_quantity', 1, {
-        user_id: user.id,
-        product_id: id,
-        new_quantity: quantity
-      });
-    }
   };
 
   const clearCart = async () => {
     dispatch({ type: 'CLEAR_CART' });
-    
-    // Track user activity
-    if (user) {
-      await adminService.recordSystemMetric('clear_cart', 1, {
-        user_id: user.id,
-        items_count: state.items.length
-      });
-    }
   };
 
   const getTotalPrice = () => {
