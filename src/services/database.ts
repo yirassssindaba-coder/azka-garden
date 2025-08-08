@@ -62,7 +62,7 @@ const mockPlants: Plant[] = [
     name: 'Jamani Dolar (ZZ Plant)',
     description: 'Zamioculcas zamiifolia - Tanaman perennial tropis dari Afrika Timur dengan daun mengkilap hijau pekat. Sangat toleran cahaya rendah dan tahan kekeringan, perfect untuk pemula.',
     price: 70000,
-    image: 'https://images.pexels.com/photos/1005058/pexels-photo-1005058.jpeg',
+    image: '/images/plants/jamani-dolar.jpg', // Gambar yang Anda upload
     category_id: '1',
     category: 'Tanaman Indoor',
     height: '40-60 cm',
@@ -77,7 +77,7 @@ const mockPlants: Plant[] = [
     name: 'Dragon Sekel/Tengkorak',
     description: 'Alocasia baginda Dragon Scale - Varietas eksotis dengan motif daun menyerupai sisik naga. Daun hijau zamrud dengan urat perak metalik yang mencolok.',
     price: 125000,
-    image: 'https://images.pexels.com/photos/2123482/pexels-photo-2123482.jpeg',
+    image: '/images/plants/dragon-sekel.jpg', // Gambar yang Anda upload
     category_id: '1',
     category: 'Tanaman Indoor',
     height: '30-50 cm',
