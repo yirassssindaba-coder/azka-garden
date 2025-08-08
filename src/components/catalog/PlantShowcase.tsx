@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Crown, Leaf, Heart, TrendingUp, Award, Star } from 'lucide-react';
+import { Crown, Leaf, Heart, TrendingUp, Award, Star, ArrowRight } from 'lucide-react';
 import ProductCard from '../ProductCard';
 import { Plant } from '../../types';
 import { getPlants } from '../../services/database';
