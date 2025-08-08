@@ -32,24 +32,53 @@ const AdminLogin: React.FC = () => {
     setIsLoading(true);
     setError('');
 
+    // Security validation
+    const sanitizedEmail = credentials.email.trim().toLowerCase();
+    const securityCheck = securityManager.validateLogin(
+      sanitizedEmail,
+      credentials.password,
+      '127.0.0.1'
+    );
+    
+    if (!securityCheck.isValid) {
+      setError('Access denied: ' + securityCheck.reason);
+      setIsLoading(false);
+      return;
+    }
+
     // Simulate authentication
     setTimeout(() => {
-      const { email, password, role } = credentials;
+      const { password, role } = credentials;
       
       if (role === 'admin' && 
-          email === demoCredentials.admin.email && 
+          sanitizedEmail === demoCredentials.admin.email && 
           password === demoCredentials.admin.password) {
         localStorage.setItem('adminToken', 'admin-token-123');
         localStorage.setItem('adminRole', 'admin');
+        
+        // Create secure session and track login
+        securityManager.createSecureSession('admin-1', 'admin');
+        realTimeMonitor.trackAdmin('admin-1', 'login');
+        
         navigate('/admin/dashboard');
       } else if (role === 'developer' && 
-                 email === demoCredentials.developer.email && 
+                 sanitizedEmail === demoCredentials.developer.email && 
                  password === demoCredentials.developer.password) {
         localStorage.setItem('adminToken', 'dev-token-123');
         localStorage.setItem('adminRole', 'developer');
+        
+        // Create secure session and track login
+        securityManager.createSecureSession('dev-1', 'developer');
+        realTimeMonitor.trackAdmin('dev-1', 'login');
+        
         navigate('/admin/developer');
       } else {
         setError('Email atau password salah');
+        realTimeMonitor.trackSecurityThreat('FAILED_ADMIN_LOGIN', { 
+          email: sanitizedEmail, 
+          role, 
+          timestamp: new Date() 
+        });
       }
       setIsLoading(false);
     }, 1000);

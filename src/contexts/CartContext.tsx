@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
+import { realTimeMonitor } from '../monitoring/RealTimeMonitor';
 
 export interface CartItem {
   id: string;
@@ -81,18 +82,22 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const addToCart = (item: CartItem) => {
     dispatch({ type: 'ADD_TO_CART', payload: item });
+    realTimeMonitor.trackUser('current-user', 'add_to_cart', { productId: item.id, quantity: item.quantity });
   };
 
   const removeFromCart = (id: string) => {
     dispatch({ type: 'REMOVE_FROM_CART', payload: id });
+    realTimeMonitor.trackUser('current-user', 'remove_from_cart', { productId: id });
   };
 
   const updateQuantity = (id: string, quantity: number) => {
     dispatch({ type: 'UPDATE_QUANTITY', payload: { id, quantity } });
+    realTimeMonitor.trackUser('current-user', 'update_cart_quantity', { productId: id, quantity });
   };
 
   const clearCart = () => {
     dispatch({ type: 'CLEAR_CART' });
+    realTimeMonitor.trackUser('current-user', 'clear_cart');
   };
 
   const getTotalPrice = () => {

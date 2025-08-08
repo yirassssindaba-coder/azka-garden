@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { CartItem } from './CartContext';
+import { realTimeMonitor } from '../monitoring/RealTimeMonitor';
 
 export interface ShippingInfo {
   fullName: string;
@@ -124,6 +125,11 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     };
 
     setOrders(prev => [newOrder, ...prev]);
+    
+    // Track order creation
+    realTimeMonitor.trackOrder(newOrder.id, newOrder.status, newOrder.total);
+    realTimeMonitor.trackRevenue(newOrder.total, 'online_order');
+    
     return newOrder.id;
   };
 
@@ -137,6 +143,12 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         ? { ...order, status, updatedAt: new Date().toISOString() }
         : order
     ));
+    
+    // Track status update
+    const order = orders.find(o => o.id === id);
+    if (order) {
+      realTimeMonitor.trackOrder(id, status, order.total);
+    }
   };
 
   return (

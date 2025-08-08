@@ -25,6 +25,45 @@
   --gray-900: #111827;
   --black: #000000;
   --white: #ffffff;
+  
+  /* Security indicators */
+  --security-safe: #16a34a;
+  --security-warning: #6b7280;
+  --security-danger: #000000;
+}
+
+/* Security status indicators */
+.security-safe {
+  @apply bg-green-100 text-green-800 border border-green-200;
+}
+
+.security-warning {
+  @apply bg-gray-100 text-gray-800 border border-gray-200;
+}
+
+.security-danger {
+  @apply bg-gray-200 text-black border border-gray-300;
+}
+
+/* Real-time monitoring styles */
+.live-indicator {
+  @apply flex items-center space-x-2;
+}
+
+.live-dot {
+  @apply w-2 h-2 bg-green-500 rounded-full animate-pulse;
+}
+
+.monitoring-card {
+  @apply bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300;
+}
+
+.activity-stream {
+  @apply space-y-3 max-h-80 overflow-y-auto;
+}
+
+.activity-item {
+  @apply flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors;
 }
 
 /* Smooth animations */
@@ -32,6 +71,48 @@
   transition: all 0.2s ease-in-out;
 }
 
+/* Enhanced security animations */
+@keyframes securityPulse {
+  0%, 100% { 
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
+  }
+  50% { 
+    box-shadow: 0 0 0 10px rgba(22, 163, 74, 0);
+  }
+}
+
+.security-pulse {
+  animation: securityPulse 2s infinite;
+}
+
+/* Real-time data visualization */
+.metric-card {
+  @apply bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300;
+}
+
+.metric-value {
+  @apply text-3xl font-bold text-gray-900;
+}
+
+.metric-label {
+  @apply text-sm font-medium text-gray-600;
+}
+
+.metric-trend {
+  @apply text-sm font-medium;
+}
+
+.trend-positive {
+  @apply text-green-600;
+}
+
+.trend-negative {
+  @apply text-gray-600;
+}
+
+.trend-neutral {
+  @apply text-gray-500;
+}
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

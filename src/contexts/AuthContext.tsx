@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
 import { User, LoginRequest, RegisterRequest, AuthResponse } from '../types/auth';
 import { authService } from '../services/auth';
+import { securityManager } from '../security/SecurityManager';
+import { realTimeMonitor } from '../monitoring/RealTimeMonitor';
 
 interface AuthState {
   user: User | null;
@@ -110,13 +112,32 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const login = async (credentials: LoginRequest) => {
     try {
       dispatch({ type: 'AUTH_START' });
+      
+      // Security validation
+      const securityCheck = securityManager.validateLogin(
+        credentials.email, 
+        credentials.password, 
+        '127.0.0.1'
+      );
+      
+      if (!securityCheck.isValid) {
+        throw new Error(securityCheck.reason || 'Security validation failed');
+      }
+      
       const response = await authService.login(credentials);
       
       // Store token in localStorage
       localStorage.setItem('authToken', response.token);
       
+      // Create secure session
+      const sessionId = securityManager.createSecureSession(response.user.id, response.user.role);
+      
+      // Track user login
+      realTimeMonitor.trackUser(response.user.id, 'login');
+      
       dispatch({ type: 'AUTH_SUCCESS', payload: response });
     } catch (error) {
+      realTimeMonitor.trackSystemError(error as Error, 'AuthContext.login');
       dispatch({ 
         type: 'AUTH_FAILURE', 
         payload: error instanceof Error ? error.message : 'Login failed' 
@@ -149,6 +170,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const logout = async () => {
     try {
+      if (state.user) {
+        realTimeMonitor.trackUser(state.user.id, 'logout');
+      }
+      
       if (state.token) {
         await authService.logout(state.token);
       }
@@ -156,6 +181,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       dispatch({ type: 'LOGOUT' });
     } catch (error) {
       console.error('Logout error:', error);
+      realTimeMonitor.trackSystemError(error as Error, 'AuthContext.logout');
       // Still clear local state even if server logout fails
       localStorage.removeItem('authToken');
       dispatch({ type: 'LOGOUT' });

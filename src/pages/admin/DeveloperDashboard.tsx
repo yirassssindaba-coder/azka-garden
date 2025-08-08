@@ -19,43 +19,19 @@ import {
   Bell,
   Zap,
   Shield,
-  Clock
+  Clock,
+  Users,
+  UserCheck
 } from 'lucide-react';
-
-interface SystemMetrics {
-  uptime: number;
-  cpuUsage: number;
-  memoryUsage: number;
-  diskUsage: number;
-  networkLatency: number;
-  activeConnections: number;
-  errorRate: number;
-  responseTime: number;
-}
-
-interface ErrorLog {
-  id: string;
-  timestamp: Date;
-  level: 'error' | 'warning' | 'info';
-  message: string;
-  component: string;
-  userId?: string;
-  stack?: string;
-}
-
-interface APIEndpoint {
-  path: string;
-  method: string;
-  status: 'healthy' | 'warning' | 'error';
-  responseTime: number;
-  errorRate: number;
-  lastChecked: Date;
-}
+import { realTimeMonitor, DeveloperMetrics, MonitoringData } from '../../monitoring/RealTimeMonitor';
+import { securityManager } from '../../security/SecurityManager';
 
 const DeveloperDashboard: React.FC = () => {
-  const [metrics, setMetrics] = useState<SystemMetrics | null>(null);
-  const [errorLogs, setErrorLogs] = useState<ErrorLog[]>([]);
-  const [apiEndpoints, setApiEndpoints] = useState<APIEndpoint[]>([]);
+  const [devMetrics, setDevMetrics] = useState<DeveloperMetrics | null>(null);
+  const [userActivity, setUserActivity] = useState<MonitoringData[]>([]);
+  const [adminActivity, setAdminActivity] = useState<MonitoringData[]>([]);
+  const [systemErrors, setSystemErrors] = useState<MonitoringData[]>([]);
+  const [securityThreats, setSecurityThreats] = useState<MonitoringData[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -68,94 +44,53 @@ const DeveloperDashboard: React.FC = () => {
       return;
     }
 
+    // Subscribe to real-time updates
+    realTimeMonitor.subscribe('dev-dashboard', handleRealTimeUpdate);
+    
+    // Load initial data
     loadDeveloperData();
     
-    // Auto-refresh every 30 seconds
-    const interval = setInterval(loadDeveloperData, 30000);
-    return () => clearInterval(interval);
+    // Auto-refresh every 3 seconds for real-time monitoring
+    const interval = setInterval(loadDeveloperData, 3000);
+    
+    return () => {
+      realTimeMonitor.unsubscribe('dev-dashboard');
+      clearInterval(interval);
+    };
   }, []);
 
-  const loadDeveloperData = async () => {
+  const handleRealTimeUpdate = (data: MonitoringData) => {
+    // Update streams based on data type
+    if (data.type === 'user') {
+      setUserActivity(prev => [data, ...prev.slice(0, 49)]);
+    } else if (data.type === 'admin') {
+      setAdminActivity(prev => [data, ...prev.slice(0, 29)]);
+    } else if (data.type === 'system' && data.severity === 'error') {
+      setSystemErrors(prev => [data, ...prev.slice(0, 19)]);
+    } else if (data.type === 'security') {
+      setSecurityThreats(prev => [data, ...prev.slice(0, 9)]);
+    }
+    
+    // Refresh metrics
+    setDevMetrics(realTimeMonitor.getDeveloperMetrics());
+  };
+
+  const loadDeveloperData = () => {
     try {
-      // Simulate loading developer metrics
-      const mockMetrics: SystemMetrics = {
-        uptime: 99.9,
-        cpuUsage: Math.floor(Math.random() * 30) + 20,
-        memoryUsage: Math.floor(Math.random() * 20) + 60,
-        diskUsage: Math.floor(Math.random() * 10) + 75,
-        networkLatency: Math.floor(Math.random() * 50) + 100,
-        activeConnections: Math.floor(Math.random() * 50) + 150,
-        errorRate: Math.random() * 2,
-        responseTime: Math.floor(Math.random() * 100) + 120
-      };
+      const metrics = realTimeMonitor.getDeveloperMetrics();
+      const users = realTimeMonitor.getUserActivityStream();
+      const admins = realTimeMonitor.getAdminActivityStream();
+      const errors = realTimeMonitor.getSystemErrorStream();
+      const threats = realTimeMonitor.getSecurityThreatStream();
 
-      const mockErrorLogs: ErrorLog[] = [
-        {
-          id: '1',
-          timestamp: new Date(),
-          level: 'error',
-          message: 'Database connection timeout',
-          component: 'ProductService',
-          userId: 'user123',
-          stack: 'Error: Connection timeout at ProductService.getProducts()'
-        },
-        {
-          id: '2',
-          timestamp: new Date(Date.now() - 300000),
-          level: 'warning',
-          message: 'High memory usage detected',
-          component: 'ImageProcessor',
-          stack: 'Warning: Memory usage above 80%'
-        },
-        {
-          id: '3',
-          timestamp: new Date(Date.now() - 600000),
-          level: 'info',
-          message: 'Cache cleared successfully',
-          component: 'CacheService'
-        }
-      ];
-
-      const mockAPIEndpoints: APIEndpoint[] = [
-        {
-          path: '/api/products',
-          method: 'GET',
-          status: 'healthy',
-          responseTime: 120,
-          errorRate: 0.1,
-          lastChecked: new Date()
-        },
-        {
-          path: '/api/orders',
-          method: 'POST',
-          status: 'warning',
-          responseTime: 350,
-          errorRate: 2.1,
-          lastChecked: new Date()
-        },
-        {
-          path: '/api/payments',
-          method: 'POST',
-          status: 'healthy',
-          responseTime: 200,
-          errorRate: 0.5,
-          lastChecked: new Date()
-        },
-        {
-          path: '/api/users',
-          method: 'GET',
-          status: 'error',
-          responseTime: 1200,
-          errorRate: 5.2,
-          lastChecked: new Date()
-        }
-      ];
-
-      setMetrics(mockMetrics);
-      setErrorLogs(mockErrorLogs);
-      setApiEndpoints(mockAPIEndpoints);
+      setDevMetrics(metrics);
+      setUserActivity(users);
+      setAdminActivity(admins);
+      setSystemErrors(errors);
+      setSecurityThreats(threats);
     } catch (error) {
       console.error('Error loading developer data:', error);
+      realTimeMonitor.trackSystemError(error as Error, 'DeveloperDashboard');
     } finally {
       setLoading(false);
     }
@@ -167,28 +102,40 @@ const DeveloperDashboard: React.FC = () => {
     navigate('/admin/login');
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'healthy': return 'text-green-600 bg-green-100';
-      case 'warning': return 'text-yellow-600 bg-yellow-100';
-      case 'error': return 'text-red-600 bg-red-100';
-      default: return 'text-gray-600 bg-gray-100';
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString('id-ID', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+  };
+
+  const getActivityIcon = (action: string) => {
+    switch (action) {
+      case 'login': return <UserCheck className="h-4 w-4 text-green-600" />;
+      case 'logout': return <XCircle className="h-4 w-4 text-gray-600" />;
+      case 'view_product': return <Eye className="h-4 w-4 text-gray-600" />;
+      case 'add_to_cart': return <ShoppingCart className="h-4 w-4 text-green-600" />;
+      default: return <Activity className="h-4 w-4 text-gray-600" />;
     }
   };
 
-  const getLogLevelColor = (level: string) => {
-    switch (level) {
-      case 'error': return 'text-red-600 bg-red-100';
-      case 'warning': return 'text-yellow-600 bg-yellow-100';
-      case 'info': return 'text-blue-600 bg-blue-100';
-      default: return 'text-gray-600 bg-gray-100';
+  const getAdminActionIcon = (action: string) => {
+    switch (action) {
+      case 'view_dashboard': return <Monitor className="h-4 w-4 text-gray-600" />;
+      case 'update_product': return <Package className="h-4 w-4 text-green-600" />;
+      case 'process_order': return <ShoppingCart className="h-4 w-4 text-green-600" />;
+      default: return <Settings className="h-4 w-4 text-gray-600" />;
     }
   };
 
-  const getMetricColor = (value: number, threshold: { warning: number; critical: number }) => {
-    if (value >= threshold.critical) return 'text-red-600';
-    if (value >= threshold.warning) return 'text-yellow-600';
-    return 'text-green-600';
+  const getSeverityColor = (severity: string) => {
+    switch (severity) {
+      case 'critical': return 'text-black bg-gray-200';
+      case 'error': return 'text-gray-800 bg-gray-100';
+      case 'warning': return 'text-gray-600 bg-gray-50';
+      default: return 'text-green-600 bg-green-100';
+    }
   };
 
   if (loading) {
@@ -214,18 +161,19 @@ const DeveloperDashboard: React.FC = () => {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-900">Developer Dashboard</h1>
-                <p className="text-sm text-gray-600">System Monitoring & Debugging</p>
+                <p className="text-sm text-gray-600">Real-time System Monitoring</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 bg-green-100 px-3 py-1 rounded-full">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span className="text-green-800 text-sm font-medium">Live Monitoring</span>
+              </div>
               <button className="relative p-2 text-gray-400 hover:text-green-600 transition-colors">
                 <Bell className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                  {errorLogs.filter(log => log.level === 'error').length}
+                <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                  {systemErrors.length}
                 </span>
-              </button>
-              <button className="p-2 text-gray-400 hover:text-green-600 transition-colors">
-                <Settings className="h-5 w-5" />
               </button>
               <button 
                 onClick={handleLogout}
@@ -240,105 +188,181 @@ const DeveloperDashboard: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* System Status Overview */}
+        {/* Real-time System Status */}
         <div className="mb-8">
           <div className="bg-gradient-to-r from-gray-800 to-black rounded-2xl p-6 text-white">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-bold">System Status</h2>
-              <button 
-                onClick={loadDeveloperData}
-                className="bg-white bg-opacity-20 hover:bg-opacity-30 p-2 rounded-lg transition-colors"
-              >
-                <RefreshCw className="h-5 w-5" />
-              </button>
+              <h2 className="text-2xl font-bold">Real-time System Status</h2>
+              <div className="flex items-center space-x-2">
+                <Activity className="h-5 w-5 animate-pulse text-green-400" />
+                <span className="text-sm">Live Monitoring</span>
+              </div>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-white bg-opacity-10 rounded-lg p-4">
-                <div className="text-2xl font-bold text-green-400">{metrics?.uptime}%</div>
-                <div className="text-gray-300 text-sm">Uptime</div>
-              </div>
-              <div className="bg-white bg-opacity-10 rounded-lg p-4">
-                <div className={`text-2xl font-bold ${getMetricColor(metrics?.errorRate || 0, { warning: 1, critical: 3 })}`}>
-                  {metrics?.errorRate.toFixed(1)}%
+            {devMetrics && (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-white bg-opacity-10 rounded-lg p-4">
+                  <div className="text-2xl font-bold text-green-400">{devMetrics.activeUsers}</div>
+                  <div className="text-gray-300 text-sm">Active Users</div>
                 </div>
-                <div className="text-gray-300 text-sm">Error Rate</div>
+                <div className="bg-white bg-opacity-10 rounded-lg p-4">
+                  <div className="text-2xl font-bold text-white">{devMetrics.activeAdmins}</div>
+                  <div className="text-gray-300 text-sm">Active Admins</div>
+                </div>
+                <div className="bg-white bg-opacity-10 rounded-lg p-4">
+                  <div className="text-2xl font-bold text-gray-300">{devMetrics.systemLoad.toFixed(1)}%</div>
+                  <div className="text-gray-300 text-sm">System Load</div>
+                </div>
+                <div className="bg-white bg-opacity-10 rounded-lg p-4">
+                  <div className="text-2xl font-bold text-green-400">{devMetrics.responseTime}ms</div>
+                  <div className="text-gray-300 text-sm">Response Time</div>
+                </div>
               </div>
-              <div className="bg-white bg-opacity-10 rounded-lg p-4">
-                <div className="text-2xl font-bold text-blue-400">{metrics?.activeConnections}</div>
-                <div className="text-gray-300 text-sm">Active Connections</div>
+            )}
+          </div>
+        </div>
+
+        {/* Real-time Activity Streams */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {/* User Activity Stream */}
+          <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center space-x-2">
+                <Users className="h-6 w-6 text-green-600" />
+                <h2 className="text-xl font-bold text-gray-900">Live User Activity</h2>
               </div>
-              <div className="bg-white bg-opacity-10 rounded-lg p-4">
-                <div className="text-2xl font-bold text-purple-400">{metrics?.responseTime}ms</div>
-                <div className="text-gray-300 text-sm">Avg Response</div>
+              <div className="flex items-center space-x-2 bg-green-100 px-3 py-1 rounded-full">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span className="text-green-800 text-sm">Real-time</span>
               </div>
+            </div>
+            <div className="space-y-3 max-h-80 overflow-y-auto">
+              {userActivity.map((activity, index) => (
+                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                  <div className="flex items-center space-x-3">
+                    {getActivityIcon(activity.data.action)}
+                    <div>
+                      <div className="font-medium text-gray-900 text-sm">
+                        User {activity.data.userId.slice(-4)} - {activity.data.action}
+                      </div>
+                      <div className="text-xs text-gray-600">{formatTime(activity.timestamp)}</div>
+                    </div>
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    {activity.data.ipAddress}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Admin Activity Stream */}
+          <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center space-x-2">
+                <UserCheck className="h-6 w-6 text-gray-600" />
+                <h2 className="text-xl font-bold text-gray-900">Live Admin Activity</h2>
+              </div>
+              <div className="flex items-center space-x-2 bg-gray-100 px-3 py-1 rounded-full">
+                <div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse"></div>
+                <span className="text-gray-800 text-sm">Monitoring</span>
+              </div>
+            </div>
+            <div className="space-y-3 max-h-80 overflow-y-auto">
+              {adminActivity.map((activity, index) => (
+                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                  <div className="flex items-center space-x-3">
+                    {getAdminActionIcon(activity.data.action)}
+                    <div>
+                      <div className="font-medium text-gray-900 text-sm">
+                        Admin {activity.data.adminId.slice(-4)} - {activity.data.action}
+                      </div>
+                      <div className="text-xs text-gray-600">{formatTime(activity.timestamp)}</div>
+                    </div>
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    {activity.data.resource || 'dashboard'}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* System Health & Security */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {/* System Errors */}
+          <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center space-x-2">
+                <Bug className="h-6 w-6 text-black" />
+                <h2 className="text-xl font-bold text-gray-900">System Errors</h2>
+              </div>
+              <span className="bg-black text-white text-xs px-2 py-1 rounded-full">
+                {systemErrors.length} errors
+              </span>
+            </div>
+            <div className="space-y-3 max-h-80 overflow-y-auto">
+              {systemErrors.map((error, index) => (
+                <div key={index} className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                  <div className="flex items-start justify-between mb-2">
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getSeverityColor(error.severity)}`}>
+                      {error.severity.toUpperCase()}
+                    </span>
+                    <div className="flex items-center text-xs text-gray-500">
+                      <Clock className="h-3 w-3 mr-1" />
+                      {formatTime(error.timestamp)}
+                    </div>
+                  </div>
+                  <div className="text-sm font-medium text-gray-900 mb-1">{error.data.error}</div>
+                  <div className="text-xs text-gray-600">Component: {error.data.component}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Security Threats */}
+          <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center space-x-2">
+                <Shield className="h-6 w-6 text-green-600" />
+                <h2 className="text-xl font-bold text-gray-900">Security Monitoring</h2>
+              </div>
+              <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                {securityThreats.length} threats
+              </span>
+            </div>
+            <div className="space-y-3 max-h-80 overflow-y-auto">
+              {securityThreats.map((threat, index) => (
+                <div key={index} className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                  <div className="flex items-start justify-between mb-2">
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getSeverityColor(threat.severity)}`}>
+                      {threat.severity.toUpperCase()}
+                    </span>
+                    <div className="flex items-center text-xs text-gray-500">
+                      <Clock className="h-3 w-3 mr-1" />
+                      {formatTime(threat.timestamp)}
+                    </div>
+                  </div>
+                  <div className="text-sm font-medium text-gray-900 mb-1">{threat.data.threatType}</div>
+                  <div className="text-xs text-gray-600">IP: {threat.data.ipAddress}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
         {/* System Metrics */}
-        {metrics && (
+        {devMetrics && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-              <div className="flex items-center justify-between mb-4">
-                <div className="bg-blue-100 p-2 rounded-lg">
-                  <Activity className="h-6 w-6 text-blue-600" />
-                </div>
-                <span className={`text-2xl font-bold ${getMetricColor(metrics.cpuUsage, { warning: 70, critical: 90 })}`}>
-                  {metrics.cpuUsage}%
-                </span>
-              </div>
-              <div className="text-sm font-medium text-gray-900 mb-1">CPU Usage</div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  className={`h-2 rounded-full ${
-                    metrics.cpuUsage >= 90 ? 'bg-red-500' : 
-                    metrics.cpuUsage >= 70 ? 'bg-yellow-500' : 'bg-green-500'
-                  }`}
-                  style={{ width: `${metrics.cpuUsage}%` }}
-                ></div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-              <div className="flex items-center justify-between mb-4">
-                <div className="bg-gray-100 p-2 rounded-lg">
-                  <Monitor className="h-6 w-6 text-gray-600" />
-                </div>
-                <span className={`text-2xl font-bold ${getMetricColor(metrics.memoryUsage, { warning: 80, critical: 95 })}`}>
-                  {metrics.memoryUsage}%
-                </span>
-              </div>
-              <div className="text-sm font-medium text-gray-900 mb-1">Memory Usage</div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  className={`h-2 rounded-full ${
-                    metrics.memoryUsage >= 95 ? 'bg-red-500' : 
-                    metrics.memoryUsage >= 80 ? 'bg-yellow-500' : 'bg-green-500'
-                  }`}
-                  style={{ width: `${metrics.memoryUsage}%` }}
-                ></div>
-              </div>
-            </div>
-
             <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
               <div className="flex items-center justify-between mb-4">
                 <div className="bg-green-100 p-2 rounded-lg">
                   <Database className="h-6 w-6 text-green-600" />
                 </div>
-                <span className={`text-2xl font-bold ${getMetricColor(metrics.diskUsage, { warning: 85, critical: 95 })}`}>
-                  {metrics.diskUsage}%
-                </span>
+                <span className="text-2xl font-bold text-gray-900">{devMetrics.databaseConnections}</span>
               </div>
-              <div className="text-sm font-medium text-gray-900 mb-1">Disk Usage</div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  className={`h-2 rounded-full ${
-                    metrics.diskUsage >= 95 ? 'bg-red-500' : 
-                    metrics.diskUsage >= 85 ? 'bg-yellow-500' : 'bg-green-500'
-                  }`}
-                  style={{ width: `${metrics.diskUsage}%` }}
-                ></div>
-              </div>
+              <div className="text-sm font-medium text-gray-900 mb-1">DB Connections</div>
+              <div className="text-xs text-green-600">Healthy</div>
             </div>
 
             <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
@@ -346,131 +370,53 @@ const DeveloperDashboard: React.FC = () => {
                 <div className="bg-gray-100 p-2 rounded-lg">
                   <Zap className="h-6 w-6 text-gray-600" />
                 </div>
-                <span className="text-2xl font-bold text-gray-900">{metrics.networkLatency}ms</span>
+                <span className="text-2xl font-bold text-gray-900">{devMetrics.cacheHitRate.toFixed(1)}%</span>
               </div>
-              <div className="text-sm font-medium text-gray-900 mb-1">Network Latency</div>
-              <div className={`text-xs ${
-                metrics.networkLatency > 500 ? 'text-red-600' : 
-                metrics.networkLatency > 200 ? 'text-yellow-600' : 'text-green-600'
-              }`}>
-                {metrics.networkLatency > 500 ? 'High' : 
-                 metrics.networkLatency > 200 ? 'Medium' : 'Low'}
+              <div className="text-sm font-medium text-gray-900 mb-1">Cache Hit Rate</div>
+              <div className="text-xs text-green-600">Optimal</div>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+              <div className="flex items-center justify-between mb-4">
+                <div className="bg-gray-100 p-2 rounded-lg">
+                  <Activity className="h-6 w-6 text-gray-600" />
+                </div>
+                <span className="text-2xl font-bold text-gray-900">{devMetrics.errorRate}</span>
               </div>
+              <div className="text-sm font-medium text-gray-900 mb-1">Error Count</div>
+              <div className="text-xs text-gray-600">Last hour</div>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+              <div className="flex items-center justify-between mb-4">
+                <div className="bg-black p-2 rounded-lg">
+                  <Shield className="h-6 w-6 text-white" />
+                </div>
+                <span className="text-2xl font-bold text-gray-900">{devMetrics.securityThreats}</span>
+              </div>
+              <div className="text-sm font-medium text-gray-900 mb-1">Security Threats</div>
+              <div className="text-xs text-green-600">Blocked</div>
             </div>
           </div>
         )}
 
-        {/* API Endpoints Status */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900">API Endpoints</h2>
-              <button className="text-green-600 hover:text-green-700 text-sm font-medium">
-                Test All
-              </button>
-            </div>
-            <div className="space-y-3">
-              {apiEndpoints.map((endpoint, index) => (
-                <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                  <div className="flex items-center space-x-3">
-                    <div className={`w-3 h-3 rounded-full ${
-                      endpoint.status === 'healthy' ? 'bg-green-500' :
-                      endpoint.status === 'warning' ? 'bg-yellow-500' : 'bg-red-500'
-                    }`}></div>
-                    <div>
-                      <div className="font-medium text-gray-900">
-                        <span className="text-xs bg-gray-200 px-2 py-1 rounded mr-2">{endpoint.method}</span>
-                        {endpoint.path}
-                      </div>
-                      <div className="text-sm text-gray-600">
-                        {endpoint.responseTime}ms • {endpoint.errorRate}% errors
-                      </div>
-                    </div>
-                  </div>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(endpoint.status)}`}>
-                    {endpoint.status}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900">Recent Error Logs</h2>
-              <button className="flex items-center space-x-2 px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
-                <Download className="h-4 w-4" />
-                <span className="text-sm">Export</span>
-              </button>
-            </div>
-            <div className="space-y-3 max-h-80 overflow-y-auto">
-              {errorLogs.map((log) => (
-                <div key={log.id} className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                  <div className="flex items-start justify-between mb-2">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getLogLevelColor(log.level)}`}>
-                      {log.level.toUpperCase()}
-                    </span>
-                    <div className="flex items-center text-xs text-gray-500">
-                      <Clock className="h-3 w-3 mr-1" />
-                      {log.timestamp.toLocaleTimeString()}
-                    </div>
-                  </div>
-                  <div className="text-sm font-medium text-gray-900 mb-1">{log.message}</div>
-                  <div className="text-xs text-gray-600">Component: {log.component}</div>
-                  {log.userId && (
-                    <div className="text-xs text-gray-600">User: {log.userId}</div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
         {/* Developer Tools */}
         <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-900">Developer Tools</h2>
-            <div className="flex items-center space-x-2">
-              <button className="text-gray-400 hover:text-gray-600">
-                <Terminal className="h-5 w-5" />
-              </button>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <button className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-xl transition-all duration-300 text-center group">
-              <Database className="h-8 w-8 text-blue-600 mx-auto mb-3 group-hover:scale-110 transition-transform" />
-              <div className="text-sm font-semibold text-blue-800">Database Console</div>
-              <div className="text-xs text-blue-600 mt-1">Query & Monitor</div>
-            </button>
-            
-            <button className="p-6 bg-gradient-to-br from-red-50 to-red-100 hover:from-red-100 hover:to-red-200 rounded-xl transition-all duration-300 text-center group">
-              <Bug className="h-8 w-8 text-red-600 mx-auto mb-3 group-hover:scale-110 transition-transform" />
-              <div className="text-sm font-semibold text-red-800">Error Tracking</div>
-              <div className="text-xs text-red-600 mt-1">{errorLogs.filter(log => log.level === 'error').length} errors</div>
-            </button>
-            
-            <button className="p-6 bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 rounded-xl transition-all duration-300 text-center group">
-              <Server className="h-8 w-8 text-green-600 mx-auto mb-3 group-hover:scale-110 transition-transform" />
-              <div className="text-sm font-semibold text-green-800">Server Monitor</div>
-              <div className="text-xs text-green-600 mt-1">Real-time metrics</div>
-            </button>
-            
-            <button className="p-6 bg-gradient-to-br from-gray-50 to-gray-100 hover:from-gray-100 hover:to-gray-200 rounded-xl transition-all duration-300 text-center group">
-              <GitBranch className="h-8 w-8 text-gray-600 mx-auto mb-3 group-hover:scale-110 transition-transform" />
-              <div className="text-sm font-semibold text-gray-800">Deployment</div>
-              <div className="text-xs text-gray-600 mt-1">CI/CD Pipeline</div>
+            <h2 className="text-xl font-bold text-gray-900">Developer Tools & Quick Fixes</h2>
+            <button 
+              onClick={loadDeveloperData}
+              className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            >
+              <RefreshCw className="h-4 w-4" />
+              <span className="text-sm">Refresh</span>
             </button>
           </div>
-        </div>
-
-        {/* Quick Fix Tools */}
-        <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Quick Fix Tools</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-green-500 transition-colors">
               <div className="text-center">
                 <Shield className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                <h3 className="font-medium text-gray-900 mb-2">Clear Cache</h3>
+                <h3 className="font-medium text-gray-900 mb-2">Clear System Cache</h3>
                 <p className="text-sm text-gray-600 mb-4">Clear application cache to resolve performance issues</p>
                 <button className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition-colors">
                   Clear Cache
@@ -483,7 +429,7 @@ const DeveloperDashboard: React.FC = () => {
                 <Database className="h-8 w-8 text-gray-400 mx-auto mb-2" />
                 <h3 className="font-medium text-gray-900 mb-2">Restart Services</h3>
                 <p className="text-sm text-gray-600 mb-4">Restart backend services to fix connection issues</p>
-                <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                <button className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors">
                   Restart Services
                 </button>
               </div>
@@ -492,9 +438,9 @@ const DeveloperDashboard: React.FC = () => {
             <div className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-green-500 transition-colors">
               <div className="text-center">
                 <Bug className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                <h3 className="font-medium text-gray-900 mb-2">Debug Mode</h3>
-                <p className="text-sm text-gray-600 mb-4">Enable debug mode for detailed error tracking</p>
-                <button className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition-colors">
+                <h3 className="font-medium text-gray-900 mb-2">Enable Debug Mode</h3>
+                <p className="text-sm text-gray-600 mb-4">Enable detailed error tracking and logging</p>
+                <button className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition-colors">
                   Enable Debug
                 </button>
               </div>
@@ -504,6 +450,15 @@ const DeveloperDashboard: React.FC = () => {
       </div>
     </div>
   );
+
+  function getSeverityColor(severity: string) {
+    switch (severity) {
+      case 'critical': return 'text-black bg-gray-200';
+      case 'error': return 'text-gray-800 bg-gray-100';
+      case 'warning': return 'text-gray-600 bg-gray-50';
+      default: return 'text-green-600 bg-green-100';
+    }
+  }
 };
 
 export default DeveloperDashboard;
