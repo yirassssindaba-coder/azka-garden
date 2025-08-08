@@ -22,7 +22,7 @@
 ```
 URL: /admin/login
 Email: admin@azkagarden.com
-Password: admin123
+Password: Admin123!
 ```
 
 **Fitur Admin:**
@@ -39,7 +39,7 @@ Password: admin123
 ```
 URL: /admin/login (pilih Developer)
 Email: dev@azkagarden.com
-Password: dev123
+Password: Dev123!
 ```
 
 **Fitur Developer:**

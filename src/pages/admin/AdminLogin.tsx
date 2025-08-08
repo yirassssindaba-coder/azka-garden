@@ -19,12 +19,12 @@ const AdminLogin: React.FC = () => {
   const demoCredentials = {
     admin: {
       email: 'admin@azkagarden.com',
-      password: 'admin123',
+      password: 'Admin123!',
       role: 'admin'
     },
     developer: {
       email: 'dev@azkagarden.com',
-      password: 'dev123',
+      password: 'Dev123!',
       role: 'developer'
     }
   };
