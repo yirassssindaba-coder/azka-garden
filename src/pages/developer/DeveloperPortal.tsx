@@ -33,13 +33,19 @@ import {
   RotateCcw,
   Plus,
   Eye,
-  Edit
+  Edit,
+  MessageSquare,
+  Reply,
+  Send
 } from 'lucide-react';
 
 const DeveloperPortal: React.FC = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('monitoring');
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [replyTo, setReplyTo] = useState<string | null>(null);
+  const [replyComment, setReplyComment] = useState('');
   const [systemStats, setSystemStats] = useState({
     uptime: '99.9%',
     responseTime: '120ms',
@@ -94,6 +100,9 @@ const DeveloperPortal: React.FC = () => {
       const allOrders = JSON.parse(localStorage.getItem('all_orders') || '[]');
       const allUsers = JSON.parse(localStorage.getItem('all_users') || '[]');
       const activeSessions = JSON.parse(localStorage.getItem('active_sessions') || '[]');
+      const reviewsData = JSON.parse(localStorage.getItem('global-reviews') || '[]');
+      
+      setReviews(reviewsData);
       
       const totalRevenue = allOrders
         .filter((order: any) => order.status === 'delivered')
@@ -118,6 +127,35 @@ const DeveloperPortal: React.FC = () => {
     } catch (error) {
       console.error('Error loading developer data:', error);
     }
+  };
+
+  const handleReplyToReview = async (reviewId: string) => {
+    if (!user || !replyComment.trim()) return;
+
+    const newReply = {
+      id: 'reply-' + Date.now(),
+      userId: user.id,
+      userName: user.fullName || user.email,
+      userRole: 'developer',
+      comment: replyComment,
+      likes: [],
+      createdAt: new Date()
+    };
+
+    const updatedReviews = reviews.map(review =>
+      review.id === reviewId
+        ? {
+            ...review,
+            replies: [...(review.replies || []), newReply],
+            updatedAt: new Date()
+          }
+        : review
+    );
+
+    setReviews(updatedReviews);
+    localStorage.setItem('global-reviews', JSON.stringify(updatedReviews));
+    setReplyComment('');
+    setReplyTo(null);
   };
 
   const handleLogout = async () => {
@@ -157,6 +195,25 @@ const DeveloperPortal: React.FC = () => {
       case 'warning': return 'text-yellow-800 bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-200';
       case 'info': return 'text-green-800 bg-green-100 dark:bg-green-900 dark:text-green-200';
       default: return 'text-gray-800 bg-gray-100 dark:bg-gray-700 dark:text-gray-200';
+    }
+  };
+
+  const getRoleColor = (role: string) => {
+    switch (role) {
+      case 'admin':
+        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+      case 'developer':
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+      default:
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200';
+    }
+  };
+
+  const getRoleLabel = (role: string) => {
+    switch (role) {
+      case 'admin': return 'Administrator';
+      case 'developer': return 'Pengembang';
+      default: return 'Pelanggan';
     }
   };
 
@@ -226,6 +283,7 @@ const DeveloperPortal: React.FC = () => {
               { id: 'monitoring', label: 'System Monitoring', icon: Monitor },
               { id: 'api', label: 'API Management', icon: Globe },
               { id: 'database', label: 'Database Console', icon: Database },
+              { id: 'reviews', label: 'Ulasan Teknis', icon: MessageSquare },
               { id: 'testing', label: 'Testing & QA', icon: Bug },
               { id: 'deployment', label: 'Deployment', icon: GitBranch },
               { id: 'security', label: 'Security Audit', icon: Shield },
@@ -376,6 +434,140 @@ const DeveloperPortal: React.FC = () => {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Technical Reviews Tab */}
+        {activeTab === 'reviews' && (
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Ulasan Teknis & Bug Reports</h2>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Total: {reviews.filter(r => r.comment.toLowerCase().includes('bug') || r.comment.toLowerCase().includes('error') || r.comment.toLowerCase().includes('teknis')).length} laporan teknis
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              {reviews.filter(review => 
+                review.comment.toLowerCase().includes('bug') || 
+                review.comment.toLowerCase().includes('error') || 
+                review.comment.toLowerCase().includes('teknis') ||
+                review.comment.toLowerCase().includes('sistem')
+              ).map((review) => (
+                <div key={review.id} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+                        <span className="text-blue-600 dark:text-blue-400 font-bold">
+                          {review.userName.charAt(0)}
+                        </span>
+                      </div>
+                      <div>
+                        <div className="flex items-center space-x-2">
+                          <span className="font-medium text-gray-900 dark:text-white">{review.userName}</span>
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRoleColor(review.userRole)}`}>
+                            {getRoleLabel(review.userRole)}
+                          </span>
+                          <span className="px-2 py-1 bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 rounded-full text-xs font-medium">
+                            TEKNIS
+                          </span>
+                        </div>
+                        <div className="flex items-center space-x-2 mt-1">
+                          <span className="text-sm text-gray-600 dark:text-gray-400">
+                            {new Date(review.createdAt).toLocaleDateString('id-ID')}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">{review.comment}</p>
+                  
+                  <div className="flex items-center space-x-4 mb-4">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      Priority: HIGH • {review.replies?.length || 0} balasan
+                    </span>
+                    
+                    <button
+                      onClick={() => setReplyTo(replyTo === review.id ? null : review.id)}
+                      className="flex items-center space-x-1 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+                    >
+                      <Reply className="h-4 w-4" />
+                      <span>Balas sebagai Developer</span>
+                    </button>
+                  </div>
+
+                  {/* Developer Reply Form */}
+                  {replyTo === review.id && (
+                    <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900 rounded-lg">
+                      <div className="flex space-x-3">
+                        <div className="w-8 h-8 bg-blue-100 dark:bg-blue-800 rounded-full flex items-center justify-center flex-shrink-0">
+                          <Code className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                        </div>
+                        <div className="flex-1">
+                          <textarea
+                            rows={3}
+                            value={replyComment}
+                            onChange={(e) => setReplyComment(e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                            placeholder="Tulis balasan teknis sebagai Developer..."
+                          />
+                          <div className="flex justify-end space-x-2 mt-2">
+                            <button
+                              onClick={() => setReplyTo(null)}
+                              className="px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
+                            >
+                              Batal
+                            </button>
+                            <button
+                              onClick={() => handleReplyToReview(review.id)}
+                              disabled={!replyComment.trim()}
+                              className="flex items-center space-x-1 px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors disabled:opacity-50"
+                            >
+                              <Send className="h-3 w-3" />
+                              <span>Kirim Balasan</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Existing Replies */}
+                  {review.replies && review.replies.length > 0 && (
+                    <div className="ml-8 space-y-4 border-l-2 border-gray-200 dark:border-gray-600 pl-4">
+                      {review.replies.map((reply: any) => (
+                        <div key={reply.id} className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <div className="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+                              <span className="text-blue-600 dark:text-blue-400 font-bold text-xs">
+                                {reply.userName.charAt(0)}
+                              </span>
+                            </div>
+                            <span className="font-medium text-gray-900 dark:text-white text-sm">{reply.userName}</span>
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRoleColor(reply.userRole)}`}>
+                              {getRoleLabel(reply.userRole)}
+                            </span>
+                            <span className="text-xs text-gray-500 dark:text-gray-400">
+                              {new Date(reply.createdAt).toLocaleDateString('id-ID')}
+                            </span>
+                          </div>
+                          <p className="text-gray-700 dark:text-gray-300 text-sm">{reply.comment}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+              
+              {reviews.filter(r => r.comment.toLowerCase().includes('bug') || r.comment.toLowerCase().includes('error') || r.comment.toLowerCase().includes('teknis')).length === 0 && (
+                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  <Bug className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                  <p>Tidak ada laporan teknis</p>
+                  <p className="text-sm">Semua sistem berjalan normal</p>
+                </div>
+              )}
             </div>
           </div>
         )}
