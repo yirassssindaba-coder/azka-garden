@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Shield, Lock, User, Eye, EyeOff } from 'lucide-react';
+import { securityManager } from '../../security/SecurityManager';
+import { realTimeMonitor } from '../../monitoring/RealTimeMonitor';
 
 const AdminLogin: React.FC = () => {
   const [credentials, setCredentials] = useState({
