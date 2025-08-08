@@ -136,7 +136,7 @@ const Header: React.FC = () => {
               <div className="relative group">
                 <button className="flex items-center space-x-2 p-2 text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">
                   <User className="h-5 w-5" />
-                  <span className="text-sm font-medium">{user?.user_metadata?.full_name || user?.email}</span>
+                  <span className="text-sm font-medium">{user?.fullName || user?.email}</span>
                 </button>
                 <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border dark:border-gray-700">
                   <Link
@@ -326,6 +326,16 @@ const Header: React.FC = () => {
               Admin Portal
             </Link>
 
+            {/* Developer Portal Link */}
+            <Link 
+              to="/developer/login"
+              onClick={closeMobileMenu}
+              className="flex items-center px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900 rounded-lg transition-colors"
+            >
+              <Code className="h-5 w-5 mr-3" />
+              Developer Portal
+            </Link>
+
             {/* Divider */}
             <div className="border-t border-gray-200 dark:border-gray-700 my-4"></div>
 
@@ -337,7 +347,7 @@ const Header: React.FC = () => {
                     <User className="h-5 w-5 text-gray-600 dark:text-gray-400" />
                     <div>
                       <div className="text-sm font-medium text-gray-900 dark:text-white">
-                        {user?.user_metadata?.full_name || user?.email}
+                        {user?.fullName || user?.email}
                       </div>
                       <div className="text-xs text-gray-600 dark:text-gray-400">{user?.email}</div>
                     </div>

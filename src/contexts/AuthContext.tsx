@@ -1,13 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { supabase } from '../lib/supabase';
-import type { User as SupabaseUser } from '@supabase/supabase-js';
-
-export interface User extends SupabaseUser {
-  user_metadata: {
-    full_name?: string;
-    phone_number?: string;
-  };
-}
+import { authService } from '../services/auth';
+import { User } from '../types/auth';
 
 interface AuthState {
   user: User | null;
@@ -65,41 +58,28 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   useEffect(() => {
-    // Check for existing Supabase session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        dispatch({ type: 'AUTH_SUCCESS', payload: session.user as User });
+    // Check for existing session in localStorage
+    const savedUser = localStorage.getItem('azka_garden_user');
+    if (savedUser) {
+      try {
+        const user = JSON.parse(savedUser);
+        dispatch({ type: 'AUTH_SUCCESS', payload: user });
+      } catch (error) {
+        localStorage.removeItem('azka_garden_user');
       }
-    });
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session?.user) {
-        dispatch({ type: 'AUTH_SUCCESS', payload: session.user as User });
-      } else if (event === 'SIGNED_OUT') {
-        dispatch({ type: 'LOGOUT' });
-      }
-    });
-
-    return () => subscription.unsubscribe();
+    }
   }, []);
 
   const login = async (email: string, password: string) => {
     try {
       dispatch({ type: 'AUTH_START' });
       
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
-
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      if (data.user) {
-        dispatch({ type: 'AUTH_SUCCESS', payload: data.user as User });
-      }
+      const response = await authService.login({ email, password });
+      
+      // Save user to localStorage
+      localStorage.setItem('azka_garden_user', JSON.stringify(response.user));
+      
+      dispatch({ type: 'AUTH_SUCCESS', payload: response.user });
     } catch (error) {
       dispatch({ 
         type: 'AUTH_FAILURE', 
@@ -113,25 +93,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       dispatch({ type: 'AUTH_START' });
       
-      const { data, error } = await supabase.auth.signUp({
-        email: userData.email,
-        password: userData.password,
-        options: {
-          data: {
-            full_name: userData.fullName,
-            phone_number: userData.phoneNumber,
-            username: userData.username
-          }
-        }
-      });
-
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      if (data.user) {
-        dispatch({ type: 'AUTH_SUCCESS', payload: data.user as User });
-      }
+      const user = await authService.register(userData);
+      
+      // Save user to localStorage
+      localStorage.setItem('azka_garden_user', JSON.stringify(user));
+      
+      dispatch({ type: 'AUTH_SUCCESS', payload: user });
     } catch (error) {
       dispatch({ 
         type: 'AUTH_FAILURE', 
@@ -143,7 +110,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const logout = async () => {
     try {
-      await supabase.auth.signOut();
+      localStorage.removeItem('azka_garden_user');
       dispatch({ type: 'LOGOUT' });
     } catch (error) {
       console.error('Logout error:', error);
@@ -156,21 +123,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const updateProfile = async (data: any) => {
     try {
-      const { data: updatedUser, error } = await supabase.auth.updateUser({
-        data: {
-          full_name: data.fullName,
-          phone_number: data.phoneNumber,
-          ...data
-        }
-      });
-
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      if (updatedUser.user) {
-        dispatch({ type: 'AUTH_SUCCESS', payload: updatedUser.user as User });
-      }
+      if (!state.user) throw new Error('User not found');
+      
+      const updatedUser = await authService.updateProfile(state.user.id, data);
+      
+      // Update localStorage
+      localStorage.setItem('azka_garden_user', JSON.stringify(updatedUser));
+      
+      dispatch({ type: 'AUTH_SUCCESS', payload: updatedUser });
     } catch (error) {
       console.error('Error updating profile:', error);
       throw error;

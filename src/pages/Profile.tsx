@@ -6,7 +6,7 @@ const Profile: React.FC = () => {
   const { user, updateProfile } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    fullName: user?.fullName || '',
+    fullName: user?.fullName || user?.email || '',
     email: user?.email || '',
     phoneNumber: user?.phoneNumber || '',
     dateOfBirth: '',
@@ -31,7 +31,7 @@ const Profile: React.FC = () => {
 
   const handleCancel = () => {
     setFormData({
-      fullName: user?.fullName || '',
+      fullName: user?.fullName || user?.email || '',
       email: user?.email || '',
       phoneNumber: user?.phoneNumber || '',
       dateOfBirth: '',
@@ -63,10 +63,10 @@ const Profile: React.FC = () => {
                 </div>
                 <div>
                   <h1 className="text-2xl font-bold text-white">
-                    {user?.user_metadata?.full_name || user?.email}
+                    {user?.fullName || user?.email}
                   </h1>
                   <p className="text-green-100">{user.email}</p>
-                  <p className="text-green-200 text-sm">Member sejak {new Date(user?.created_at || '').toLocaleDateString('id-ID')}</p>
+                  <p className="text-green-200 text-sm">Member sejak {new Date(user?.createdAt || '').toLocaleDateString('id-ID')}</p>
                 </div>
               </div>
               <button
@@ -94,14 +94,14 @@ const Profile: React.FC = () => {
                       <input
                         type="text"
                         name="fullName"
-                        value={formData.fullName || user?.user_metadata?.full_name || ''}
+                        value={formData.fullName || user?.fullName || ''}
                         onChange={handleInputChange}
                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500"
                       />
                     ) : (
                       <div className="flex items-center space-x-2 text-gray-900 dark:text-white">
                         <User className="h-4 w-4 text-gray-400" />
-                        <span>{user?.user_metadata?.full_name || user?.email}</span>
+                        <span>{user?.fullName || user?.email}</span>
                       </div>
                     )}
                   </div>
@@ -124,14 +124,14 @@ const Profile: React.FC = () => {
                       <input
                         type="tel"
                         name="phoneNumber"
-                        value={formData.phoneNumber || user?.user_metadata?.phone_number || ''}
+                        value={formData.phoneNumber || user?.phoneNumber || ''}
                         onChange={handleInputChange}
                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500"
                       />
                     ) : (
                       <div className="flex items-center space-x-2 text-gray-900 dark:text-white">
                         <Phone className="h-4 w-4 text-gray-400" />
-                        <span>{user?.user_metadata?.phone_number || 'Belum diisi'}</span>
+                        <span>{user?.phoneNumber || 'Belum diisi'}</span>
                       </div>
                     )}
                   </div>

@@ -1,9 +1,122 @@
 import { IUserService } from './interfaces/IUserService';
 import { User, LoginRequest, RegisterRequest, AuthResponse, UpdateProfileRequest, ChangePasswordRequest } from '../types/auth';
 import { AuthenticationException, ValidationException } from '../exceptions';
+import { Role, AdminRole, DevRole } from '../core/enums';
 
 export class AuthService implements IUserService {
-  private users: User[] = [];
+  private users: User[] = [
+    // Demo admin user
+    {
+      id: 'admin-001',
+      email: 'admin@azkagarden.com',
+      username: 'admin',
+      fullName: 'Admin Azka Garden',
+      role: Role.ADMIN,
+      status: 'ACTIVE' as any,
+      emailVerified: true,
+      phoneNumber: '+62812345678',
+      addresses: [],
+      preferences: {
+        language: 'id',
+        currency: 'IDR',
+        timezone: 'Asia/Jakarta',
+        notifications: {
+          email: true,
+          sms: false,
+          push: true,
+          marketing: false,
+          orderUpdates: true,
+          plantCareReminders: true
+        },
+        privacy: {
+          profileVisibility: 'private',
+          showOnlineStatus: false,
+          allowDataCollection: true,
+          allowPersonalization: true
+        }
+      },
+      wishlist: [],
+      loyaltyPoints: 1000,
+      membershipTier: 'GOLD' as any,
+      createdAt: new Date('2024-01-01'),
+      updatedAt: new Date(),
+      password: 'Admin123!'
+    },
+    // Demo developer user
+    {
+      id: 'dev-001',
+      email: 'dev@azkagarden.com',
+      username: 'developer',
+      fullName: 'Developer Azka Garden',
+      role: Role.DEVELOPER,
+      status: 'ACTIVE' as any,
+      emailVerified: true,
+      phoneNumber: '+62812345679',
+      addresses: [],
+      preferences: {
+        language: 'id',
+        currency: 'IDR',
+        timezone: 'Asia/Jakarta',
+        notifications: {
+          email: true,
+          sms: false,
+          push: true,
+          marketing: false,
+          orderUpdates: true,
+          plantCareReminders: true
+        },
+        privacy: {
+          profileVisibility: 'private',
+          showOnlineStatus: false,
+          allowDataCollection: true,
+          allowPersonalization: true
+        }
+      },
+      wishlist: [],
+      loyaltyPoints: 500,
+      membershipTier: 'SILVER' as any,
+      createdAt: new Date('2024-01-01'),
+      updatedAt: new Date(),
+      password: 'Dev123!'
+    },
+    // Demo customer user
+    {
+      id: 'customer-001',
+      email: 'customer@azkagarden.com',
+      username: 'customer',
+      fullName: 'Customer Azka Garden',
+      role: Role.CUSTOMER,
+      status: 'ACTIVE' as any,
+      emailVerified: true,
+      phoneNumber: '+62812345680',
+      addresses: [],
+      preferences: {
+        language: 'id',
+        currency: 'IDR',
+        timezone: 'Asia/Jakarta',
+        notifications: {
+          email: true,
+          sms: false,
+          push: true,
+          marketing: true,
+          orderUpdates: true,
+          plantCareReminders: true
+        },
+        privacy: {
+          profileVisibility: 'private',
+          showOnlineStatus: false,
+          allowDataCollection: true,
+          allowPersonalization: true
+        }
+      },
+      wishlist: [],
+      loyaltyPoints: 100,
+      membershipTier: 'BRONZE' as any,
+      createdAt: new Date('2024-01-01'),
+      updatedAt: new Date(),
+      password: 'customer123'
+    }
+  ];
   private tokens: Map<string, { userId: string; expiresAt: Date }> = new Map();
 
   async register(userData: RegisterRequest): Promise<User> {
@@ -69,14 +182,13 @@ export class AuthService implements IUserService {
   }
 
   async login(credentials: LoginRequest): Promise<AuthResponse> {
-    const user = await this.getUserByEmail(credentials.email);
+    const user = this.users.find(u => u.email === credentials.email);
     if (!user) {
       throw new AuthenticationException('Invalid email or password');
     }
 
-    // In a real implementation, you would verify the password hash
-    // For now, we'll just check if the password is not empty
-    if (!credentials.password) {
+    // Check password
+    if (user.password !== credentials.password) {
       throw new AuthenticationException('Invalid email or password');
     }
 
@@ -92,7 +204,8 @@ export class AuthService implements IUserService {
     });
 
     // Update last login
-    await this.updateLastLogin(user.id);
+    user.lastLoginAt = new Date();
+    user.updatedAt = new Date();
 
     return {
       user,

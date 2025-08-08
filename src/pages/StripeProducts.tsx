@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Leaf, Crown, Package, CreditCard, Calendar } from 'lucide-react';
-import { StripeService } from '../services/stripe';
 import { stripeProducts, StripeProduct } from '../stripe-config';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -13,23 +12,24 @@ const StripeProducts: React.FC = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      loadUserData();
+      // Mock subscription and orders data
+      setSubscription({
+        price_id: 'price_premium_monthly',
+        subscription_status: 'active',
+        current_period_end: Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60) // 30 days from now
+      });
+      setOrders([
+        {
+          order_id: 1,
+          checkout_session_id: 'cs_test_example123',
+          amount_total: 2333, // $23.33 in cents
+          order_status: 'completed',
+          order_date: new Date().toISOString()
+        }
+      ]);
     }
   }, [isAuthenticated]);
 
-  const loadUserData = async () => {
-    try {
-      const [subscriptionData, ordersData] = await Promise.all([
-        StripeService.getUserSubscription(),
-        StripeService.getUserOrders()
-      ]);
-      
-      setSubscription(subscriptionData);
-      setOrders(ordersData);
-    } catch (error) {
-      console.error('Error loading user data:', error);
-    }
-  };
 
   const handlePurchase = async (product: StripeProduct) => {
     if (!isAuthenticated) {
@@ -40,16 +40,9 @@ const StripeProducts: React.FC = () => {
     setLoading(true);
     
     try {
-      const { url } = await StripeService.createCheckoutSession({
-        priceId: product.priceId,
-        mode: product.mode,
-        successUrl: `${window.location.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancelUrl: `${window.location.origin}/products`
-      });
-
-      if (url) {
-        window.location.href = url;
-      }
+      // Simulate successful checkout
+      const sessionId = 'cs_test_' + Math.random().toString(36).substr(2, 9);
+      window.location.href = `${window.location.origin}/stripe-success?session_id=${sessionId}`;
     } catch (error) {
       console.error('Error creating checkout session:', error);
       alert('Terjadi kesalahan saat memproses pembayaran. Silakan coba lagi.');

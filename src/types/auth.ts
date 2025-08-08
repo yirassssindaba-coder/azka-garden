@@ -15,6 +15,7 @@ export interface User {
   addresses: Address[];
   preferences: UserPreferences;
   lastLoginAt?: Date;
+  password?: string; // For demo purposes only
   wishlist: string[];
   loyaltyPoints: number;
   membershipTier: MembershipTier;

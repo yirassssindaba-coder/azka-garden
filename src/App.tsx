@@ -15,6 +15,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import SearchResults from './pages/SearchResults';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import DeveloperLogin from './pages/developer/DeveloperLogin';
+import DeveloperPortal from './pages/developer/DeveloperPortal';
 import AdminLogin from './pages/admin/AdminLogin';
 import DeveloperDashboard from './pages/admin/DeveloperDashboard';
 import StripeProducts from './pages/StripeProducts';
@@ -116,6 +118,12 @@ function App() {
                       } />
                       
                       {/* Developer Routes */}
+                      <Route path="/developer/login" element={<DeveloperLogin />} />
+                      <Route path="/developer/portal" element={
+                        <ProtectedRoute requiredRole="DEVELOPER">
+                          <DeveloperPortal />
+                        </ProtectedRoute>
+                      } />
                       <Route path="/admin/developer" element={
                         <ProtectedRoute requiredRole="developer">
                           <DeveloperDashboard />
