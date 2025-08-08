@@ -30,7 +30,8 @@ import {
   Search,
   Play,
   Pause,
-  RotateCcw
+  RotateCcw,
+  Plus
 } from 'lucide-react';
 
 const DeveloperPortal: React.FC = () => {
