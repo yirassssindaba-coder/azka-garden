@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  requiredRole?: 'customer' | 'admin' | 'developer';
+  requiredRole?: 'CUSTOMER' | 'ADMIN' | 'DEVELOPER' | 'customer' | 'admin' | 'developer';
   redirectTo?: string;
 }
 
@@ -20,13 +20,13 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to={redirectTo} state={{ from: location }} replace />;
   }
 
-  if (requiredRole && user?.role !== requiredRole) {
+  if (requiredRole && user?.role !== requiredRole && user?.role !== requiredRole.toUpperCase()) {
     // Redirect based on user role
     switch (user?.role) {
-      case 'admin':
+      case 'ADMIN':
         return <Navigate to="/admin/dashboard" replace />;
-      case 'developer':
-        return <Navigate to="/admin/developer" replace />;
+      case 'DEVELOPER':
+        return <Navigate to="/developer/portal" replace />;
       default:
         return <Navigate to="/" replace />;
     }

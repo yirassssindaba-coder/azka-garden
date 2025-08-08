@@ -64,6 +64,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       try {
         const user = JSON.parse(savedUser);
         dispatch({ type: 'AUTH_SUCCESS', payload: user });
+        
+        // Track active session for developer dashboard
+        const activeSessions = JSON.parse(localStorage.getItem('active_sessions') || '[]');
+        const existingSession = activeSessions.find((s: any) => s.userId === user.id);
+        if (!existingSession) {
+          activeSessions.push({
+            userId: user.id,
+            userEmail: user.email,
+            loginTime: new Date().toISOString(),
+            lastActivity: new Date().toISOString()
+          });
+          localStorage.setItem('active_sessions', JSON.stringify(activeSessions));
+        }
       } catch (error) {
         localStorage.removeItem('azka_garden_user');
       }
@@ -78,6 +91,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       
       // Save user to localStorage
       localStorage.setItem('azka_garden_user', JSON.stringify(response.user));
+      
+      // Track login session
+      const activeSessions = JSON.parse(localStorage.getItem('active_sessions') || '[]');
+      activeSessions.push({
+        userId: response.user.id,
+        userEmail: response.user.email,
+        loginTime: new Date().toISOString(),
+        lastActivity: new Date().toISOString()
+      });
+      localStorage.setItem('active_sessions', JSON.stringify(activeSessions));
       
       dispatch({ type: 'AUTH_SUCCESS', payload: response.user });
     } catch (error) {
@@ -98,6 +121,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // Save user to localStorage
       localStorage.setItem('azka_garden_user', JSON.stringify(user));
       
+      // Track registration session
+      const activeSessions = JSON.parse(localStorage.getItem('active_sessions') || '[]');
+      activeSessions.push({
+        userId: user.id,
+        userEmail: user.email,
+        loginTime: new Date().toISOString(),
+        lastActivity: new Date().toISOString()
+      });
+      localStorage.setItem('active_sessions', JSON.stringify(activeSessions));
+      
       dispatch({ type: 'AUTH_SUCCESS', payload: user });
     } catch (error) {
       dispatch({ 
@@ -110,6 +143,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const logout = async () => {
     try {
+      // Remove from active sessions
+      if (state.user) {
+        const activeSessions = JSON.parse(localStorage.getItem('active_sessions') || '[]');
+        const updatedSessions = activeSessions.filter((s: any) => s.userId !== state.user?.id);
+        localStorage.setItem('active_sessions', JSON.stringify(updatedSessions));
+      }
+      
       localStorage.removeItem('azka_garden_user');
       dispatch({ type: 'LOGOUT' });
     } catch (error) {

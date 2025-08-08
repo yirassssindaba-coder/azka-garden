@@ -6,6 +6,7 @@ export interface User {
   username: string;
   fullName: string;
   role: Role;
+  role: 'CUSTOMER' | 'ADMIN' | 'DEVELOPER';
   status: UserStatus;
   emailVerified: boolean;
   phoneNumber?: string;

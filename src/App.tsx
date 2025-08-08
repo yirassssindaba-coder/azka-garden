@@ -120,7 +120,7 @@ function App() {
                       {/* Developer Routes */}
                       <Route path="/developer/login" element={<DeveloperLogin />} />
                       <Route path="/developer/portal" element={
-                        <ProtectedRoute requiredRole="DEVELOPER">
+                        <ProtectedRoute requiredRole="developer">
                           <DeveloperPortal />
                         </ProtectedRoute>
                       } />
