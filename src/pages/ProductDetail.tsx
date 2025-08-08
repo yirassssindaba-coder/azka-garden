@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, ShoppingCart, Heart, Star } from 'lucide-react';
+import ProductReviews from '../components/reviews/ProductReviews';
 import { Plant } from '../types';
 import { getPlantById } from '../services/database';
 import { useCart } from '../contexts/CartContext';
+import { useReviews } from '../contexts/ReviewContext';
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -11,6 +13,7 @@ const ProductDetail: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
+  const { getAverageRating, getReviewCount } = useReviews();
 
   useEffect(() => {
     const loadPlant = async () => {
@@ -75,6 +78,9 @@ const ProductDetail: React.FC = () => {
     );
   }
 
+  const averageRating = getAverageRating(plant.id);
+  const reviewCount = getReviewCount(plant.id);
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <Link
@@ -100,10 +106,14 @@ const ProductDetail: React.FC = () => {
           <div className="flex items-center mb-4">
             <div className="flex text-yellow-400">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="h-5 w-5 fill-current" />
+                <Star key={i} className={`h-5 w-5 ${
+                  i < Math.floor(averageRating) ? 'fill-current' : 'text-gray-300'
+                }`} />
               ))}
             </div>
-            <span className="ml-2 text-gray-600">(4.8) • 124 ulasan</span>
+            <span className="ml-2 text-gray-600 dark:text-gray-400">
+              ({averageRating}) • {reviewCount} ulasan
+            </span>
           </div>
 
           <div className="mb-6">
@@ -173,6 +183,9 @@ const ProductDetail: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Product Reviews */}
+      <ProductReviews productId={plant.id} />
     </div>
   );
 };

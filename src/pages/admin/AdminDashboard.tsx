@@ -16,25 +16,28 @@ import {
   Shield,
   Eye,
   Plus,
-  Edit
+  Edit,
+  MessageSquare,
+  User,
+  CheckCircle
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useOrder } from '../../contexts/OrderContext';
+import { useChat } from '../../contexts/ChatContext';
 import { getPlantStatistics } from '../../services/database';
 
 const AdminDashboard: React.FC = () => {
   const [dashboardStats, setDashboardStats] = useState<any>(null);
   const [plantStats, setPlantStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const { user, logout, isAdmin } = useAuth();
-  const { orders } = useOrder();
+  const { user, logout } = useAuth();
+  const { orders, updateOrderStatus } = useOrder();
+  const { sessions, getUnreadCount } = useChat();
   const navigate = useNavigate();
 
   useEffect(() => {
     // Check admin authentication
-    const token = localStorage.getItem('authToken');
-    const role = localStorage.getItem('adminRole');
-    if (!token || role !== 'admin') {
+    if (!user || user.role !== 'admin') {
       navigate('/admin/login');
       return;
     }
@@ -66,10 +69,11 @@ const AdminDashboard: React.FC = () => {
         total_revenue: totalRevenue,
         today_orders: todayOrders.length,
         today_revenue: todayOrders.reduce((sum, order) => sum + order.total, 0),
-        total_users: 1250, // This would come from user management system
+        total_users: 1250,
         total_products: stats.totalPlants,
         low_stock_products: stats.lowStockCount,
-        average_order_value: orders.length > 0 ? totalRevenue / orders.length : 0
+        average_order_value: orders.length > 0 ? totalRevenue / orders.length : 0,
+        unread_messages: getUnreadCount()
       };
 
       setDashboardStats(dashboardData);
@@ -80,10 +84,18 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('adminToken');
-    localStorage.removeItem('adminRole');
+  const handleLogout = async () => {
+    await logout();
     navigate('/admin/login');
+  };
+
+  const handleCompleteOrder = async (orderId: string) => {
+    try {
+      await updateOrderStatus(orderId, 'delivered');
+      loadDashboardData(); // Refresh stats
+    } catch (error) {
+      console.error('Error completing order:', error);
+    }
   };
 
   const formatCurrency = (amount: number) => {
@@ -104,16 +116,16 @@ const AdminDashboard: React.FC = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'delivered':
-        return 'text-green-600 bg-green-100';
+        return 'text-green-600 bg-green-100 dark:bg-green-900 dark:text-green-300';
       case 'processing':
       case 'shipped':
-        return 'text-blue-600 bg-blue-100';
+        return 'text-blue-600 bg-blue-100 dark:bg-blue-900 dark:text-blue-300';
       case 'pending':
-        return 'text-yellow-600 bg-yellow-100';
+        return 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-300';
       case 'cancelled':
-        return 'text-red-600 bg-red-100';
+        return 'text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300';
       default:
-        return 'text-gray-600 bg-gray-100';
+        return 'text-gray-600 bg-gray-100 dark:bg-gray-700 dark:text-gray-300';
     }
   };
 
@@ -139,8 +151,8 @@ const AdminDashboard: React.FC = () => {
                 <BarChart3 className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white">Admin Dashboard</h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Selamat datang, Administrator</p>
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white">Dashboard Administrator</h1>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Selamat datang, {user?.fullName}</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -155,20 +167,46 @@ const AdminDashboard: React.FC = () => {
                 <RefreshCw className="h-5 w-5" />
               </button>
               <button className="relative p-2 text-gray-400 hover:text-green-600 transition-colors">
-                <Bell className="h-5 w-5" />
-                {plantStats?.lowStockCount > 0 && (
+                <MessageSquare className="h-5 w-5" />
+                {dashboardStats?.unread_messages > 0 && (
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                    {plantStats.lowStockCount}
+                    {dashboardStats.unread_messages}
                   </span>
                 )}
               </button>
-              <button 
-                onClick={handleLogout}
-                className="flex items-center space-x-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
-              >
-                <LogOut className="h-4 w-4" />
-                <span className="text-sm font-medium">Logout</span>
-              </button>
+              <div className="relative group">
+                <button className="flex items-center space-x-2 p-2 text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">
+                  <User className="h-5 w-5" />
+                  <span className="text-sm font-medium">{user?.fullName}</span>
+                </button>
+                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border dark:border-gray-700">
+                  <div className="px-4 py-2 border-b dark:border-gray-700">
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">{user?.fullName}</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">{user?.email}</p>
+                    <p className="text-xs text-green-600 dark:text-green-400 font-medium">Administrator</p>
+                  </div>
+                  <button
+                    onClick={() => navigate('/admin/profile')}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    Profil Admin
+                  </button>
+                  <button
+                    onClick={() => navigate('/admin/settings')}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    Pengaturan
+                  </button>
+                  <hr className="my-1 dark:border-gray-700" />
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900 flex items-center"
+                  >
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Logout
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -213,12 +251,12 @@ const AdminDashboard: React.FC = () => {
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Total Pengguna</p>
-                  <p className="text-3xl font-bold text-gray-900 dark:text-white">{dashboardStats.total_users}</p>
-                  <p className="text-sm text-blue-600 dark:text-blue-400 font-medium">Pelanggan aktif</p>
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Pesan Belum Dibaca</p>
+                  <p className="text-3xl font-bold text-gray-900 dark:text-white">{dashboardStats.unread_messages}</p>
+                  <p className="text-sm text-blue-600 dark:text-blue-400 font-medium">Customer Service</p>
                 </div>
                 <div className="bg-purple-100 dark:bg-purple-900 p-3 rounded-full">
-                  <Users className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+                  <MessageSquare className="h-8 w-8 text-purple-600 dark:text-purple-400" />
                 </div>
               </div>
             </div>
@@ -240,7 +278,7 @@ const AdminDashboard: React.FC = () => {
           </div>
         )}
 
-        {/* Recent Orders */}
+        {/* Recent Orders with Admin Actions */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
             <div className="flex items-center justify-between mb-6">
@@ -262,9 +300,20 @@ const AdminDashboard: React.FC = () => {
                     <div className="font-semibold text-gray-900 dark:text-white">
                       {formatCurrency(order.total)}
                     </div>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
-                      {order.status}
-                    </span>
+                    <div className="flex items-center space-x-2 mt-1">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
+                        {order.status}
+                      </span>
+                      {order.status === 'shipped' && (
+                        <button
+                          onClick={() => handleCompleteOrder(order.id)}
+                          className="p-1 text-green-600 hover:text-green-700 transition-colors"
+                          title="Tandai Selesai"
+                        >
+                          <CheckCircle className="h-4 w-4" />
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -276,94 +325,82 @@ const AdminDashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* Product Statistics */}
+          {/* Customer Messages */}
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Statistik Produk</h2>
-              <button className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 text-sm font-medium">
-                Kelola Produk
-              </button>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Pesan Customer</h2>
+              <span className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 text-xs px-2 py-1 rounded-full">
+                {getUnreadCount()} belum dibaca
+              </span>
             </div>
-            {plantStats && (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900 rounded-lg">
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white">Total Tanaman</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Semua kategori</div>
+            <div className="space-y-4">
+              {sessions.slice(0, 5).map((session) => (
+                <div key={session.id} className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="font-medium text-gray-900 dark:text-white">{session.customerName}</div>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      session.status === 'active' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+                      session.status === 'resolved' ? 'bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-200' :
+                      'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                    }`}>
+                      {session.status}
+                    </span>
                   </div>
-                  <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                    {plantStats.totalPlants}
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    {session.messages[session.messages.length - 1]?.message.substring(0, 100)}...
                   </div>
-                </div>
-                
-                <div className="flex items-center justify-between p-4 bg-orange-50 dark:bg-orange-900 rounded-lg">
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white">Stok Rendah</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">≤ 5 item</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                    {session.updatedAt.toLocaleTimeString('id-ID')}
                   </div>
-                  <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
-                    {plantStats.lowStockCount}
-                  </div>
-                </div>
-                
-                <div className="flex items-center justify-between p-4 bg-blue-50 dark:bg-blue-900 rounded-lg">
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white">Rata-rata Harga</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Per tanaman</div>
-                  </div>
-                  <div className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                    {formatCurrency(plantStats.averagePrice)}
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Aksi Cepat</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <button className="p-6 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900 dark:to-green-800 hover:from-green-100 hover:to-green-200 dark:hover:from-green-800 dark:hover:to-green-700 rounded-xl transition-all duration-300 text-center group border border-green-200 dark:border-green-700">
-              <Plus className="h-8 w-8 text-green-600 dark:text-green-400 mx-auto mb-3 group-hover:scale-110 transition-transform" />
-              <div className="text-sm font-semibold text-green-800 dark:text-green-200">Tambah Produk</div>
-            </button>
-            
-            <button className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 hover:from-blue-100 hover:to-blue-200 dark:hover:from-blue-800 dark:hover:to-blue-700 rounded-xl transition-all duration-300 text-center group border border-blue-200 dark:border-blue-700">
-              <ShoppingCart className="h-8 w-8 text-blue-600 dark:text-blue-400 mx-auto mb-3 group-hover:scale-110 transition-transform" />
-              <div className="text-sm font-semibold text-blue-800 dark:text-blue-200">Kelola Pesanan</div>
-              <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">{dashboardStats?.pending_orders} pending</div>
-            </button>
-            
-            <button className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900 dark:to-purple-800 hover:from-purple-100 hover:to-purple-200 dark:hover:from-purple-800 dark:hover:to-purple-700 rounded-xl transition-all duration-300 text-center group border border-purple-200 dark:border-purple-700">
-              <Users className="h-8 w-8 text-purple-600 dark:text-purple-400 mx-auto mb-3 group-hover:scale-110 transition-transform" />
-              <div className="text-sm font-semibold text-purple-800 dark:text-purple-200">Kelola Pengguna</div>
-              <div className="text-xs text-purple-600 dark:text-purple-400 mt-1">{dashboardStats?.total_users} pengguna</div>
-            </button>
-            
-            <button className="p-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 hover:from-gray-100 hover:to-gray-200 dark:hover:from-gray-600 dark:hover:to-gray-500 rounded-xl transition-all duration-300 text-center group border border-gray-200 dark:border-gray-600">
-              <TrendingUp className="h-8 w-8 text-gray-600 dark:text-gray-400 mx-auto mb-3 group-hover:scale-110 transition-transform" />
-              <div className="text-sm font-semibold text-gray-800 dark:text-gray-200">Analytics</div>
-              <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">Laporan lengkap</div>
-            </button>
-          </div>
-        </div>
-
-        {/* Category Distribution */}
-        {plantStats && (
-          <div className="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Distribusi Kategori</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {plantStats.categoryDistribution.map((category: any, index: number) => (
-                <div key={index} className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="font-medium text-gray-900 dark:text-white">{category.name}</div>
-                  <div className="text-2xl font-bold text-green-600 dark:text-green-400">{category.count}</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">produk</div>
                 </div>
               ))}
+              {sessions.length === 0 && (
+                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  Belum ada pesan customer
+                </div>
+              )}
             </div>
           </div>
-        )}
+        </div>
+
+        {/* System Status */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Status Sistem</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-4 bg-green-50 dark:bg-green-900 rounded-lg">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-sm text-green-700 dark:text-green-300">Database</div>
+                  <div className="text-lg font-bold text-green-800 dark:text-green-200">Online</div>
+                </div>
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+              </div>
+            </div>
+            
+            <div className="p-4 bg-yellow-50 dark:bg-yellow-900 rounded-lg">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-sm text-yellow-700 dark:text-yellow-300">OrderService</div>
+                  <div className="text-lg font-bold text-yellow-800 dark:text-yellow-200">Warning</div>
+                </div>
+                <div className="w-3 h-3 bg-yellow-500 rounded-full animate-pulse"></div>
+              </div>
+              <div className="text-xs text-yellow-600 dark:text-yellow-400 mt-1">
+                Database connection timeout - Fixed
+              </div>
+            </div>
+            
+            <div className="p-4 bg-blue-50 dark:bg-blue-900 rounded-lg">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-sm text-blue-700 dark:text-blue-300">Payment</div>
+                  <div className="text-lg font-bold text-blue-800 dark:text-blue-200">Active</div>
+                </div>
+                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

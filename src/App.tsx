@@ -30,52 +30,92 @@ import Careers from './pages/Careers';
 import { CartProvider } from './contexts/CartContext';
 import { OrderProvider } from './contexts/OrderContext';
 import { AuthProvider } from './contexts/AuthContext';
+import { ChatProvider } from './contexts/ChatContext';
 import { ThemeProvider } from './contexts/ThemeContext';
+import ProtectedRoute from './components/ProtectedRoute';
 import './index.css';
 
 function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <OrderProvider>
-          <CartProvider>
-            <Router>
-              <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-                <Header />
-                <main>
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/products" element={<Products />} />
-                    <Route path="/products/:id" element={<ProductDetail />} />
-                    <Route path="/cart" element={<Cart />} />
-                    <Route path="/checkout" element={<Checkout />} />
-                    <Route path="/orders" element={<Orders />} />
-                    <Route path="/orders/:id" element={<OrderDetail />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/search" element={<SearchResults />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/faq" element={<FAQ />} />
-                    <Route path="/shipping" element={<Shipping />} />
-                    <Route path="/returns" element={<Returns />} />
-                    <Route path="/care-guide" element={<CareGuide />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/wishlist" element={<Wishlist />} />
-                    <Route path="/blog" element={<Blog />} />
-                    <Route path="/careers" element={<Careers />} />
-                    <Route path="/admin" element={<AdminDashboard />} />
-                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                    <Route path="/admin/login" element={<AdminLogin />} />
-                    <Route path="/admin/developer" element={<DeveloperDashboard />} />
-                  </Routes>
-                </main>
-                <Footer />
-                <ChatBot />
-              </div>
-            </Router>
-          </CartProvider>
-        </OrderProvider>
+        <ChatProvider>
+          <OrderProvider>
+            <CartProvider>
+              <Router>
+                <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+                  <Header />
+                  <main>
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/products" element={<Products />} />
+                      <Route path="/products/:id" element={<ProductDetail />} />
+                      <Route path="/cart" element={<Cart />} />
+                      <Route path="/checkout" element={
+                        <ProtectedRoute>
+                          <Checkout />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="/orders" element={
+                        <ProtectedRoute>
+                          <Orders />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="/orders/:id" element={
+                        <ProtectedRoute>
+                          <OrderDetail />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/register" element={<Register />} />
+                      <Route path="/search" element={<SearchResults />} />
+                      <Route path="/about" element={<About />} />
+                      <Route path="/contact" element={<Contact />} />
+                      <Route path="/faq" element={<FAQ />} />
+                      <Route path="/shipping" element={<Shipping />} />
+                      <Route path="/returns" element={<Returns />} />
+                      <Route path="/care-guide" element={<CareGuide />} />
+                      <Route path="/profile" element={
+                        <ProtectedRoute>
+                          <Profile />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="/wishlist" element={
+                        <ProtectedRoute>
+                          <Wishlist />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="/blog" element={<Blog />} />
+                      <Route path="/careers" element={<Careers />} />
+                      
+                      {/* Admin Routes */}
+                      <Route path="/admin/login" element={<AdminLogin />} />
+                      <Route path="/admin" element={
+                        <ProtectedRoute requiredRole="admin">
+                          <AdminDashboard />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="/admin/dashboard" element={
+                        <ProtectedRoute requiredRole="admin">
+                          <AdminDashboard />
+                        </ProtectedRoute>
+                      } />
+                      
+                      {/* Developer Routes */}
+                      <Route path="/admin/developer" element={
+                        <ProtectedRoute requiredRole="developer">
+                          <DeveloperDashboard />
+                        </ProtectedRoute>
+                      } />
+                    </Routes>
+                  </main>
+                  <Footer />
+                  <ChatBot />
+                </div>
+              </Router>
+            </CartProvider>
+          </OrderProvider>
+        </ChatProvider>
       </AuthProvider>
     </ThemeProvider>
   );

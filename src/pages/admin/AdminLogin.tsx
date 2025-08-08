@@ -1,66 +1,56 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Shield, Lock, User, Eye, EyeOff } from 'lucide-react';
+import { Shield, Lock, User, Eye, EyeOff, Leaf } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
 
 const AdminLogin: React.FC = () => {
   const [credentials, setCredentials] = useState({
     email: '',
-    password: '',
-    role: 'admin'
+    password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const { login, error, clearError } = useAuth();
   const navigate = useNavigate();
-
-  // Demo credentials
-  const demoCredentials = {
-    admin: {
-      email: 'admin@azkagarden.com',
-      password: 'admin123',
-      role: 'admin'
-    },
-    developer: {
-      email: 'dev@azkagarden.com',
-      password: 'dev123',
-      role: 'developer'
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
 
-    // Simulate authentication
-    setTimeout(() => {
-      const { email, password, role } = credentials;
+    try {
+      await login(credentials.email, credentials.password);
       
-      if (role === 'admin' && 
-          email === demoCredentials.admin.email && 
-          password === demoCredentials.admin.password) {
-        localStorage.setItem('adminToken', 'admin-token-123');
-        localStorage.setItem('adminRole', 'admin');
-        navigate('/admin/dashboard');
-      } else if (role === 'developer' && 
-                 email === demoCredentials.developer.email && 
-                 password === demoCredentials.developer.password) {
-        localStorage.setItem('adminToken', 'dev-token-123');
-        localStorage.setItem('adminRole', 'developer');
-        navigate('/admin/developer');
-      } else {
-        setError('Email atau password salah');
+      // Get user data to determine redirect
+      const userData = localStorage.getItem('userData');
+      if (userData) {
+        const user = JSON.parse(userData);
+        if (user.role === 'admin') {
+          navigate('/admin/dashboard');
+        } else if (user.role === 'developer') {
+          navigate('/admin/developer');
+        } else {
+          throw new Error('Akses ditolak. Hanya admin dan developer yang dapat mengakses portal ini.');
+        }
       }
+    } catch (error) {
+      console.error('Login error:', error);
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   const handleDemoLogin = (type: 'admin' | 'developer') => {
-    setCredentials({
-      email: demoCredentials[type].email,
-      password: demoCredentials[type].password,
-      role: type
-    });
+    if (type === 'admin') {
+      setCredentials({
+        email: 'admin@azkagarden.com',
+        password: 'admin123'
+      });
+    } else {
+      setCredentials({
+        email: 'dev@azkagarden.com',
+        password: 'dev123'
+      });
+    }
   };
 
   return (
@@ -71,7 +61,7 @@ const AdminLogin: React.FC = () => {
             <div className="bg-gradient-to-r from-green-600 to-green-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
               <Shield className="h-8 w-8 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Admin Portal</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Portal Admin</h1>
             <p className="text-gray-600 dark:text-gray-400">Azka Garden Management System</p>
           </div>
 
@@ -82,39 +72,6 @@ const AdminLogin: React.FC = () => {
               </div>
             )}
 
-            {/* Role Selection */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                Login Sebagai
-              </label>
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onClick={() => setCredentials(prev => ({ ...prev, role: 'admin' }))}
-                  className={`p-3 rounded-lg border-2 transition-all ${
-                    credentials.role === 'admin'
-                      ? 'border-green-600 bg-green-50 dark:bg-green-900 text-green-700 dark:text-green-300'
-                      : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
-                  }`}
-                >
-                  <Shield className="h-5 w-5 mx-auto mb-1" />
-                  <div className="text-sm font-medium">Administrator</div>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setCredentials(prev => ({ ...prev, role: 'developer' }))}
-                  className={`p-3 rounded-lg border-2 transition-all ${
-                    credentials.role === 'developer'
-                      ? 'border-green-600 bg-green-50 dark:bg-green-900 text-green-700 dark:text-green-300'
-                      : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
-                  }`}
-                >
-                  <User className="h-5 w-5 mx-auto mb-1" />
-                  <div className="text-sm font-medium">Developer</div>
-                </button>
-              </div>
-            </div>
-
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Email
@@ -123,9 +80,12 @@ const AdminLogin: React.FC = () => {
                 type="email"
                 required
                 value={credentials.email}
-                onChange={(e) => setCredentials(prev => ({ ...prev, email: e.target.value }))}
+                onChange={(e) => {
+                  setCredentials(prev => ({ ...prev, email: e.target.value }));
+                  if (error) clearError();
+                }}
                 className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                placeholder="Masukkan email admin"
+                placeholder="Masukkan email admin/developer"
               />
             </div>
 
@@ -138,7 +98,10 @@ const AdminLogin: React.FC = () => {
                   type={showPassword ? 'text' : 'password'}
                   required
                   value={credentials.password}
-                  onChange={(e) => setCredentials(prev => ({ ...prev, password: e.target.value }))}
+                  onChange={(e) => {
+                    setCredentials(prev => ({ ...prev, password: e.target.value }));
+                    if (error) clearError();
+                  }}
                   className="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   placeholder="Masukkan password"
                 />
@@ -180,6 +143,16 @@ const AdminLogin: React.FC = () => {
                 <div className="text-xs text-gray-600 dark:text-gray-400">dev@azkagarden.com / dev123</div>
               </button>
             </div>
+          </div>
+
+          <div className="mt-6 text-center">
+            <button
+              onClick={() => navigate('/')}
+              className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 text-sm"
+            >
+              <Leaf className="h-4 w-4 mr-1" />
+              Kembali ke Website
+            </button>
           </div>
         </div>
       </div>

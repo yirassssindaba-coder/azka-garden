@@ -1,6 +1,13 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { authService } from '../services/auth';
-import { User, LoginRequest, RegisterRequest } from '../types/auth';
+
+export interface User {
+  id: string;
+  email: string;
+  fullName: string;
+  role: 'customer' | 'admin' | 'developer';
+  phoneNumber?: string;
+  createdAt: string;
+}
 
 interface AuthState {
   user: User | null;
@@ -26,37 +33,15 @@ const initialState: AuthState = {
 function authReducer(state: AuthState, action: AuthAction): AuthState {
   switch (action.type) {
     case 'AUTH_START':
-      return {
-        ...state,
-        isLoading: true,
-        error: null
-      };
+      return { ...state, isLoading: true, error: null };
     case 'AUTH_SUCCESS':
-      return {
-        ...state,
-        user: action.payload,
-        isAuthenticated: true,
-        isLoading: false,
-        error: null
-      };
+      return { ...state, user: action.payload, isAuthenticated: true, isLoading: false, error: null };
     case 'AUTH_FAILURE':
-      return {
-        ...state,
-        user: null,
-        isAuthenticated: false,
-        isLoading: false,
-        error: action.payload
-      };
+      return { ...state, user: null, isAuthenticated: false, isLoading: false, error: action.payload };
     case 'LOGOUT':
-      return {
-        ...initialState,
-        isLoading: false
-      };
+      return { ...initialState, isLoading: false };
     case 'CLEAR_ERROR':
-      return {
-        ...state,
-        error: null
-      };
+      return { ...state, error: null };
     default:
       return state;
   }
@@ -67,16 +52,57 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
-  login: (credentials: LoginRequest) => Promise<void>;
-  register: (userData: RegisterRequest) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  register: (userData: any) => Promise<void>;
   logout: () => Promise<void>;
   clearError: () => void;
-  isAdmin: () => boolean;
-  isDeveloper: () => boolean;
   updateProfile: (data: any) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
+
+// Demo users with role separation
+const demoUsers = {
+  // Customer accounts
+  'customer@azkagarden.com': {
+    id: 'user-1',
+    email: 'customer@azkagarden.com',
+    fullName: 'Pelanggan Demo',
+    role: 'customer' as const,
+    password: 'customer123',
+    phoneNumber: '081234567890',
+    createdAt: new Date().toISOString()
+  },
+  'user@test.com': {
+    id: 'user-2',
+    email: 'user@test.com',
+    fullName: 'User Test',
+    role: 'customer' as const,
+    password: 'user123',
+    phoneNumber: '081234567891',
+    createdAt: new Date().toISOString()
+  },
+  // Admin account
+  'admin@azkagarden.com': {
+    id: 'admin-1',
+    email: 'admin@azkagarden.com',
+    fullName: 'Administrator Azka Garden',
+    role: 'admin' as const,
+    password: 'admin123',
+    phoneNumber: '081234567892',
+    createdAt: new Date().toISOString()
+  },
+  // Developer account
+  'dev@azkagarden.com': {
+    id: 'dev-1',
+    email: 'dev@azkagarden.com',
+    fullName: 'Developer Azka Garden',
+    role: 'developer' as const,
+    password: 'dev123',
+    phoneNumber: '081234567893',
+    createdAt: new Date().toISOString()
+  }
+};
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
@@ -97,46 +123,66 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   }, []);
 
-  const login = async (credentials: LoginRequest) => {
+  const login = async (email: string, password: string) => {
     try {
       dispatch({ type: 'AUTH_START' });
       
-      const response = await authService.login(credentials);
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const user = demoUsers[email as keyof typeof demoUsers];
+      
+      if (!user || user.password !== password) {
+        throw new Error('Email atau password salah');
+      }
+      
+      // Create user object without password
+      const { password: _, ...userWithoutPassword } = user;
       
       // Store auth data
-      localStorage.setItem('authToken', response.token);
-      localStorage.setItem('userData', JSON.stringify(response.user));
+      localStorage.setItem('authToken', 'token-' + Date.now());
+      localStorage.setItem('userData', JSON.stringify(userWithoutPassword));
       
-      dispatch({ type: 'AUTH_SUCCESS', payload: response.user });
+      dispatch({ type: 'AUTH_SUCCESS', payload: userWithoutPassword });
     } catch (error) {
       dispatch({ 
         type: 'AUTH_FAILURE', 
-        payload: error instanceof Error ? error.message : 'Login failed' 
+        payload: error instanceof Error ? error.message : 'Login gagal' 
       });
       throw error;
     }
   };
 
-  const register = async (userData: RegisterRequest) => {
+  const register = async (userData: any) => {
     try {
       dispatch({ type: 'AUTH_START' });
       
-      const user = await authService.register(userData);
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Auto login after registration
-      const loginResponse = await authService.login({
+      // Check if email already exists
+      if (demoUsers[userData.email as keyof typeof demoUsers]) {
+        throw new Error('Email sudah terdaftar');
+      }
+      
+      const newUser: User = {
+        id: 'user-' + Date.now(),
         email: userData.email,
-        password: userData.password
-      });
+        fullName: userData.fullName,
+        role: 'customer',
+        phoneNumber: userData.phoneNumber,
+        createdAt: new Date().toISOString()
+      };
       
-      localStorage.setItem('authToken', loginResponse.token);
-      localStorage.setItem('userData', JSON.stringify(loginResponse.user));
+      // Store auth data
+      localStorage.setItem('authToken', 'token-' + Date.now());
+      localStorage.setItem('userData', JSON.stringify(newUser));
       
-      dispatch({ type: 'AUTH_SUCCESS', payload: loginResponse.user });
+      dispatch({ type: 'AUTH_SUCCESS', payload: newUser });
     } catch (error) {
       dispatch({ 
         type: 'AUTH_FAILURE', 
-        payload: error instanceof Error ? error.message : 'Registration failed' 
+        payload: error instanceof Error ? error.message : 'Registrasi gagal' 
       });
       throw error;
     }
@@ -144,16 +190,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const logout = async () => {
     try {
-      const token = localStorage.getItem('authToken');
-      if (token) {
-        await authService.logout(token);
-      }
-    } catch (error) {
-      console.error('Logout error:', error);
-    } finally {
       localStorage.removeItem('authToken');
       localStorage.removeItem('userData');
+      localStorage.removeItem('adminRole'); // Clear admin role
       dispatch({ type: 'LOGOUT' });
+    } catch (error) {
+      console.error('Logout error:', error);
     }
   };
 
@@ -161,16 +203,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     dispatch({ type: 'CLEAR_ERROR' });
   };
 
-  const isAdmin = () => {
-    return state.user?.role === 'ADMIN';
-  };
-
-  const isDeveloper = () => {
-    return state.user?.role === 'DEVELOPER';
-  };
-
   const updateProfile = async (data: any) => {
-    // Mock implementation for profile update
     if (state.user) {
       const updatedUser = { ...state.user, ...data };
       localStorage.setItem('userData', JSON.stringify(updatedUser));
@@ -189,8 +222,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         register,
         logout,
         clearError,
-        isAdmin,
-        isDeveloper,
         updateProfile
       }}
     >

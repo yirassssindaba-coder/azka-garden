@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CreditCard, Truck, MapPin, Tag, ArrowLeft } from 'lucide-react';
+import stripePromise, { StripeService } from '../lib/stripe';
 import { useCart } from '../contexts/CartContext';
 import { useOrder } from '../contexts/OrderContext';
+import { useAuth } from '../contexts/AuthContext';
 
 interface ShippingInfo {
   fullName: string;
@@ -30,6 +32,7 @@ interface ShippingMethod {
 const Checkout: React.FC = () => {
   const { items, getTotalPrice, clearCart } = useCart();
   const { createOrder } = useOrder();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const [shippingInfo, setShippingInfo] = useState<ShippingInfo>({
@@ -46,8 +49,10 @@ const Checkout: React.FC = () => {
   const [discountCode, setDiscountCode] = useState<string>('');
   const [appliedDiscount, setAppliedDiscount] = useState<number>(0);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentProcessing, setPaymentProcessing] = useState(false);
 
   const paymentMethods: PaymentMethod[] = [
+    { id: 'stripe', name: 'Kartu Kredit/Debit (Stripe)', type: 'bank', fee: 0 },
     { id: 'bca', name: 'Transfer BCA', type: 'bank', fee: 0 },
     { id: 'mandiri', name: 'Transfer Mandiri', type: 'bank', fee: 0 },
     { id: 'bni', name: 'Transfer BNI', type: 'bank', fee: 0 },
@@ -95,6 +100,12 @@ const Checkout: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!user) {
+      alert('Silakan login terlebih dahulu');
+      navigate('/login');
+      return;
+    }
+    
     if (!selectedPayment || !selectedShipping) {
       alert('Pilih metode pembayaran dan pengiriman');
       return;
@@ -103,6 +114,35 @@ const Checkout: React.FC = () => {
     setIsProcessing(true);
 
     try {
+      // Handle Stripe payment
+      if (selectedPayment === 'stripe') {
+        setPaymentProcessing(true);
+        
+        const stripe = await stripePromise;
+        if (!stripe) throw new Error('Stripe failed to load');
+
+        const paymentIntent = await StripeService.createPaymentIntent({
+          orderId: 'temp-' + Date.now(),
+          amount: Math.round(total),
+          currency: 'idr',
+          customerInfo: {
+            name: shippingInfo.fullName,
+            email: user.email,
+            phone: shippingInfo.phone
+          },
+          shippingAddress: shippingInfo
+        });
+
+        // Simulate payment confirmation
+        const paymentResult = await StripeService.confirmPayment(paymentIntent.id);
+        
+        if (!paymentResult.success) {
+          throw new Error(paymentResult.error || 'Pembayaran gagal');
+        }
+        
+        setPaymentProcessing(false);
+      }
+
       const orderData = {
         items,
         shippingInfo,
@@ -122,9 +162,10 @@ const Checkout: React.FC = () => {
       navigate(`/orders/${orderId}`);
     } catch (error) {
       console.error('Error creating order:', error);
-      alert('Terjadi kesalahan saat memproses pesanan');
+      alert(error instanceof Error ? error.message : 'Terjadi kesalahan saat memproses pesanan');
     } finally {
       setIsProcessing(false);
+      setPaymentProcessing(false);
     }
   };
 
@@ -379,10 +420,11 @@ const Checkout: React.FC = () => {
 
               <button
                 type="submit"
-                disabled={isProcessing}
+                disabled={isProcessing || paymentProcessing}
                 className="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isProcessing ? 'Memproses...' : 'Buat Pesanan'}
+                {paymentProcessing ? 'Memproses Pembayaran...' : 
+                 isProcessing ? 'Membuat Pesanan...' : 'Buat Pesanan'}
               </button>
             </div>
           </div>
