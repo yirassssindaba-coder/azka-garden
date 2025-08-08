@@ -150,6 +150,7 @@ export class AuthService implements IUserService {
       status: 'ACTIVE' as any,
       emailVerified: false,
       phoneNumber: userData.phoneNumber,
+      password: userData.password, // Store password for demo
       addresses: [],
       preferences: {
         language: 'id',
@@ -182,11 +183,20 @@ export class AuthService implements IUserService {
     // Save all users to localStorage for admin dashboard
     localStorage.setItem('all_users', JSON.stringify(this.users));
     
+    // Save individual user for login persistence
+    const savedUsers = JSON.parse(localStorage.getItem('azka_registered_users') || '[]');
+    savedUsers.push(newUser);
+    localStorage.setItem('azka_registered_users', JSON.stringify(savedUsers));
+    
     return newUser;
   }
 
   async login(credentials: LoginRequest): Promise<AuthResponse> {
-    const user = this.users.find(u => u.email === credentials.email);
+    // Load registered users from localStorage
+    const savedUsers = JSON.parse(localStorage.getItem('azka_registered_users') || '[]');
+    const allUsers = [...this.users, ...savedUsers];
+    
+    const user = allUsers.find(u => u.email === credentials.email);
     if (!user) {
       throw new AuthenticationException('Invalid email or password');
     }
@@ -210,6 +220,12 @@ export class AuthService implements IUserService {
     // Update last login
     user.lastLoginAt = new Date();
     user.updatedAt = new Date();
+    
+    // Update user in saved users
+    const updatedSavedUsers = savedUsers.map((u: User) => 
+      u.id === user.id ? user : u
+    );
+    localStorage.setItem('azka_registered_users', JSON.stringify(updatedSavedUsers));
 
     return {
       user,
@@ -253,23 +269,70 @@ export class AuthService implements IUserService {
   }
 
   async resetPassword(email: string): Promise<void> {
-    // Implementation for password reset
+    const user = await this.getUserByEmail(email);
+    if (!user) {
+      throw new Error('Email tidak ditemukan');
+    }
+    
+    // Generate reset token
+    const resetToken = this.generateToken();
+    const resetTokens = JSON.parse(localStorage.getItem('password_reset_tokens') || '{}');
+    resetTokens[resetToken] = {
+      email: email,
+      expiresAt: Date.now() + (60 * 60 * 1000) // 1 hour
+    };
+    localStorage.setItem('password_reset_tokens', JSON.stringify(resetTokens));
+    
+    // In real app, send email with reset link
+    console.log(`Password reset token for ${email}: ${resetToken}`);
+    alert(`Link reset password telah dikirim ke ${email}. Token: ${resetToken}`);
   }
 
   async confirmResetPassword(token: string, newPassword: string): Promise<void> {
-    // Implementation for confirming password reset
+    const resetTokens = JSON.parse(localStorage.getItem('password_reset_tokens') || '{}');
+    const tokenData = resetTokens[token];
+    
+    if (!tokenData || tokenData.expiresAt < Date.now()) {
+      throw new Error('Token reset password tidak valid atau sudah kadaluarsa');
+    }
+    
+    const user = await this.getUserByEmail(tokenData.email);
+    if (!user) {
+      throw new Error('User tidak ditemukan');
+    }
+    
+    // Update password
+    user.password = newPassword;
+    user.updatedAt = new Date();
+    
+    // Update in saved users
+    const savedUsers = JSON.parse(localStorage.getItem('azka_registered_users') || '[]');
+    const updatedUsers = savedUsers.map((u: User) => 
+      u.email === user.email ? user : u
+    );
+    localStorage.setItem('azka_registered_users', JSON.stringify(updatedUsers));
+    
+    // Remove used token
+    delete resetTokens[token];
+    localStorage.setItem('password_reset_tokens', JSON.stringify(resetTokens));
   }
 
   async getUserById(id: string): Promise<User | null> {
-    return this.users.find(user => user.id === id) || null;
+    const savedUsers = JSON.parse(localStorage.getItem('azka_registered_users') || '[]');
+    const allUsers = [...this.users, ...savedUsers];
+    return allUsers.find(user => user.id === id) || null;
   }
 
   async getUserByEmail(email: string): Promise<User | null> {
-    return this.users.find(user => user.email === email) || null;
+    const savedUsers = JSON.parse(localStorage.getItem('azka_registered_users') || '[]');
+    const allUsers = [...this.users, ...savedUsers];
+    return allUsers.find(user => user.email === email) || null;
   }
 
   async getUserByUsername(username: string): Promise<User | null> {
-    return this.users.find(user => user.username === username) || null;
+    const savedUsers = JSON.parse(localStorage.getItem('azka_registered_users') || '[]');
+    const allUsers = [...this.users, ...savedUsers];
+    return allUsers.find(user => user.username === username) || null;
   }
 
   async updateLastLogin(userId: string): Promise<void> {

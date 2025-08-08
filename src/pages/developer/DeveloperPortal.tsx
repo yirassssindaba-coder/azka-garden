@@ -283,7 +283,7 @@ const DeveloperPortal: React.FC = () => {
               { id: 'monitoring', label: 'System Monitoring', icon: Monitor },
               { id: 'api', label: 'API Management', icon: Globe },
               { id: 'database', label: 'Database Console', icon: Database },
-              { id: 'reviews', label: 'Ulasan Teknis', icon: MessageSquare },
+              { id: 'customer-service', label: 'Customer Service', icon: MessageSquare },
               { id: 'testing', label: 'Testing & QA', icon: Bug },
               { id: 'deployment', label: 'Deployment', icon: GitBranch },
               { id: 'security', label: 'Security Audit', icon: Shield },

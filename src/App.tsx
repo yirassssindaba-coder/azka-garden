@@ -32,6 +32,9 @@ import Wishlist from './pages/Wishlist';
 import Blog from './pages/Blog';
 import Careers from './pages/Careers';
 import ReviewsAndComments from './components/reviews/ReviewsAndComments';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
+import CustomerService from './pages/CustomerService';
 import { CartProvider } from './contexts/CartContext';
 import { OrderProvider } from './contexts/OrderContext';
 import { AuthProvider } from './contexts/AuthContext';
@@ -73,6 +76,8 @@ function App() {
                       } />
                       <Route path="/login" element={<Login />} />
                       <Route path="/register" element={<Register />} />
+                      <Route path="/forgot-password" element={<ForgotPassword />} />
+                      <Route path="/reset-password" element={<ResetPassword />} />
                       <Route path="/search" element={<SearchResults />} />
                       <Route path="/about" element={<About />} />
                       <Route path="/contact" element={<Contact />} />
@@ -81,6 +86,11 @@ function App() {
                       <Route path="/returns" element={<Returns />} />
                       <Route path="/care-guide" element={<CareGuide />} />
                       <Route path="/reviews" element={<ReviewsAndComments />} />
+                      <Route path="/customer-service" element={
+                        <ProtectedRoute requiredRole="ADMIN">
+                          <CustomerService />
+                        </ProtectedRoute>
+                      } />
                       <Route path="/profile" element={
                         <ProtectedRoute>
                           <Profile />

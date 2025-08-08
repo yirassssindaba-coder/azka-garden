@@ -328,7 +328,7 @@ const AdminDashboard: React.FC = () => {
               { id: 'users', label: 'Manajemen Pengguna', icon: Users },
               { id: 'products', label: 'Manajemen Produk', icon: Package },
               { id: 'orders', label: 'Manajemen Pesanan', icon: ShoppingCart },
-              { id: 'reviews', label: 'Ulasan & Komentar', icon: MessageSquare },
+              { id: 'customer-service', label: 'Customer Service', icon: MessageSquare },
               { id: 'payments', label: 'Pembayaran', icon: CreditCard },
               { id: 'shipping', label: 'Pengiriman', icon: Truck },
               { id: 'analytics', label: 'Analisis & Laporan', icon: TrendingUp },

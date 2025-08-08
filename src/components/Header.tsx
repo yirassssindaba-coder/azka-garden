@@ -105,7 +105,7 @@ const Header: React.FC = () => {
               className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900 rounded-lg transition-colors"
             >
               <Shield className="h-4 w-4 mr-1" />
-              Portal Administrator
+              Administrator
             </Link>
             
             {/* Developer Portal Link */}
@@ -114,7 +114,7 @@ const Header: React.FC = () => {
               className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900 rounded-lg transition-colors"
             >
               <Code className="h-4 w-4 mr-1" />
-              Portal Pengembang
+              Pengembang
             </Link>
             
             {/* Orders Link for authenticated users */}

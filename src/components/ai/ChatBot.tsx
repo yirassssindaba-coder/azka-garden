@@ -1,15 +1,36 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, X, Send, Bot, User, Shield, Code } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { useChat } from '../../contexts/ChatContext';
+
+interface ChatMessage {
+  id: string;
+  senderId: string;
+  senderName: string;
+  senderRole: 'customer' | 'admin' | 'developer';
+  message: string;
+  timestamp: Date;
+  isRead: boolean;
+  replyTo?: string;
+}
+
+interface ChatSession {
+  id: string;
+  customerId: string;
+  customerName: string;
+  status: 'active' | 'resolved' | 'escalated';
+  messages: ChatMessage[];
+  assignedTo?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 const ChatBot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputMessage, setInputMessage] = useState('');
+  const [currentSession, setCurrentSession] = useState<ChatSession | null>(null);
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
-  const { currentSession, startNewSession, sendMessage } = useChat();
 
   useEffect(() => {
     if (isOpen && !currentSession && user) {
@@ -21,11 +42,53 @@ const ChatBot: React.FC = () => {
     scrollToBottom();
   }, [currentSession?.messages]);
 
+  useEffect(() => {
+    // Load existing session for user
+    if (user) {
+      const savedSessions = JSON.parse(localStorage.getItem('chat-sessions') || '[]');
+      const userSession = savedSessions.find((s: ChatSession) => s.customerId === user.id);
+      if (userSession) {
+        setCurrentSession({
+          ...userSession,
+          createdAt: new Date(userSession.createdAt),
+          updatedAt: new Date(userSession.updatedAt),
+          messages: userSession.messages.map((msg: any) => ({
+            ...msg,
+            timestamp: new Date(msg.timestamp)
+          }))
+        });
+      }
+    }
+  }, [user]);
+
   const initializeChat = async () => {
     if (!user) return;
     
     try {
-      await startNewSession();
+      const newSession: ChatSession = {
+        id: 'session-' + Date.now(),
+        customerId: user.id,
+        customerName: user.fullName || user.email,
+        status: 'active',
+        messages: [{
+          id: 'msg-welcome',
+          senderId: 'system',
+          senderName: 'Sistem',
+          senderRole: 'admin',
+          message: 'Halo! Selamat datang di customer service Azka Garden. Ada yang bisa kami bantu?',
+          timestamp: new Date(),
+          isRead: false
+        }],
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+
+      setCurrentSession(newSession);
+      
+      // Save to localStorage
+      const savedSessions = JSON.parse(localStorage.getItem('chat-sessions') || '[]');
+      const updatedSessions = [newSession, ...savedSessions.filter((s: ChatSession) => s.customerId !== user.id)];
+      localStorage.setItem('chat-sessions', JSON.stringify(updatedSessions));
     } catch (error) {
       console.error('Failed to initialize chat:', error);
     }
@@ -35,68 +98,92 @@ const ChatBot: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const detectMessageType = (message: string): 'admin' | 'developer' => {
+    const techKeywords = ['error', 'bug', 'api', 'database', 'sistem', 'teknis', 'code', 'development', 'server', 'website rusak', 'tidak bisa akses'];
+    const isTechnical = techKeywords.some(keyword => 
+      message.toLowerCase().includes(keyword)
+    );
+    return isTechnical ? 'developer' : 'admin';
+  };
+
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || !currentSession || !user) return;
 
+    const newMessage: ChatMessage = {
+      id: 'msg-' + Date.now(),
+      senderId: user.id,
+      senderName: user.fullName || user.email,
+      senderRole: 'customer',
+      message: inputMessage,
+      timestamp: new Date(),
+      isRead: false
+    };
+
+    const updatedSession = {
+      ...currentSession,
+      messages: [...currentSession.messages, newMessage],
+      updatedAt: new Date()
+    };
+
+    setCurrentSession(updatedSession);
     setInputMessage('');
     setIsTyping(true);
 
-    try {
-      await sendMessage(inputMessage);
-      
-      // Simulate admin/developer response based on message content
-      setTimeout(async () => {
-        let responseMessage = '';
-        let responderName = '';
-        let responderRole: 'admin' | 'developer' = 'admin';
-
-        // Determine if message should be handled by admin or developer
-        const techKeywords = ['error', 'bug', 'api', 'database', 'sistem', 'teknis', 'code', 'development'];
-        const isTechnical = techKeywords.some(keyword => 
-          inputMessage.toLowerCase().includes(keyword)
-        );
-
-        if (isTechnical) {
-          responderRole = 'developer';
-          responderName = 'Tim Pengembang Azka Garden';
-          responseMessage = `Terima kasih atas laporan teknis Anda. Tim pengembang akan segera menangani masalah ini. Kami akan memberikan update dalam 24 jam.`;
-        } else {
-          responderRole = 'admin';
-          responderName = 'Customer Service Azka Garden';
-          responseMessage = `Halo! Terima kasih telah menghubungi Azka Garden. Kami akan membantu Anda dengan pertanyaan tentang tanaman hias. Ada yang spesifik yang ingin Anda tanyakan?`;
-        }
-
-        // Add response message
-        const responseMsg = {
-          id: 'msg-' + Date.now(),
-          senderId: responderRole === 'admin' ? 'admin-1' : 'dev-1',
-          senderName: responderName,
-          senderRole: responderRole,
-          message: responseMessage,
-          timestamp: new Date(),
-          isRead: false
-        };
-
-        // Update chat session with response
-        const sessions = JSON.parse(localStorage.getItem('chat-sessions') || '[]');
-        const updatedSessions = sessions.map((session: any) => 
-          session.id === currentSession.id
-            ? {
-                ...session,
-                messages: [...session.messages, responseMsg],
-                updatedAt: new Date()
-              }
-            : session
-        );
-        localStorage.setItem('chat-sessions', JSON.stringify(updatedSessions));
-        
-        setIsTyping(false);
-        window.location.reload(); // Refresh to show new message
-      }, 2000);
-    } catch (error) {
-      console.error('Failed to send message:', error);
-      setIsTyping(false);
+    // Save to localStorage
+    const savedSessions = JSON.parse(localStorage.getItem('chat-sessions') || '[]');
+    const updatedSessions = savedSessions.map((s: ChatSession) => 
+      s.id === currentSession.id ? updatedSession : s
+    );
+    if (!savedSessions.find((s: ChatSession) => s.id === currentSession.id)) {
+      updatedSessions.unshift(updatedSession);
     }
+    localStorage.setItem('chat-sessions', JSON.stringify(updatedSessions));
+
+    // Determine response type and create auto-reply
+    const responseType = detectMessageType(inputMessage);
+    
+    setTimeout(() => {
+      let responseMessage = '';
+      let responderName = '';
+      let responderId = '';
+
+      if (responseType === 'developer') {
+        responderId = 'dev-001';
+        responderName = 'Tim Pengembang Azka Garden';
+        responseMessage = `Terima kasih atas laporan teknis Anda. Tim pengembang akan segera menangani masalah "${inputMessage.substring(0, 50)}...". Kami akan memberikan update dalam 24 jam.`;
+      } else {
+        responderId = 'admin-001';
+        responderName = 'Customer Service Azka Garden';
+        responseMessage = `Halo ${user.fullName || user.email}! Terima kasih telah menghubungi Azka Garden. Kami akan membantu Anda dengan pertanyaan tentang "${inputMessage.substring(0, 50)}...". Ada yang spesifik yang ingin Anda tanyakan?`;
+      }
+
+      const autoReply: ChatMessage = {
+        id: 'msg-' + Date.now(),
+        senderId: responderId,
+        senderName: responderName,
+        senderRole: responseType,
+        message: responseMessage,
+        timestamp: new Date(),
+        isRead: false,
+        replyTo: newMessage.id
+      };
+
+      const finalSession = {
+        ...updatedSession,
+        messages: [...updatedSession.messages, autoReply],
+        updatedAt: new Date()
+      };
+
+      setCurrentSession(finalSession);
+      setIsTyping(false);
+
+      // Update localStorage
+      const sessions = JSON.parse(localStorage.getItem('chat-sessions') || '[]');
+      const finalSessions = sessions.map((s: ChatSession) => 
+        s.id === currentSession.id ? finalSession : s
+      );
+      localStorage.setItem('chat-sessions', JSON.stringify(finalSessions));
+    }, 2000);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -164,7 +251,7 @@ const ChatBot: React.FC = () => {
         <div className="flex items-center space-x-2">
           <Bot className="h-5 w-5" />
           <div>
-            <h3 className="font-semibold">Asisten Azka Garden</h3>
+            <h3 className="font-semibold">Customer Service Azka Garden</h3>
             <p className="text-xs text-green-100">Online - Siap membantu</p>
           </div>
         </div>
