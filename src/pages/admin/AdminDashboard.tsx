@@ -19,7 +19,14 @@ import {
   Edit,
   MessageSquare,
   User,
-  CheckCircle
+  CheckCircle,
+  FileText,
+  CreditCard,
+  Truck,
+  Star,
+  Calendar,
+  Search,
+  Filter
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useOrder } from '../../contexts/OrderContext';
@@ -27,21 +34,24 @@ import { useChat } from '../../contexts/ChatContext';
 import { getPlantStatistics } from '../../services/database';
 
 const AdminDashboard: React.FC = () => {
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [dashboardStats, setDashboardStats] = useState<any>(null);
   const [plantStats, setPlantStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [allUsers, setAllUsers] = useState<any[]>([]);
+  const [allOrders, setAllOrders] = useState<any[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState('all');
   const { user, logout } = useAuth();
   const { orders, updateOrderStatus } = useOrder();
   const { sessions, getUnreadCount } = useChat();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check admin authentication
-    if (!user || user.role !== 'admin') {
+    if (!user || user.role !== 'ADMIN') {
       navigate('/admin/login');
       return;
     }
-
     loadDashboardData();
   }, [user, orders]);
 
@@ -50,35 +60,34 @@ const AdminDashboard: React.FC = () => {
       const stats = await getPlantStatistics();
       setPlantStats(stats);
 
-      // Get real-time data from all orders across all users
-      const allOrders = JSON.parse(localStorage.getItem('all_orders') || '[]');
+      const allOrdersData = JSON.parse(localStorage.getItem('all_orders') || '[]');
+      const allUsersData = JSON.parse(localStorage.getItem('all_users') || '[]');
       
-      // Calculate real dashboard stats
-      const totalRevenue = allOrders
+      setAllOrders(allOrdersData);
+      setAllUsers(allUsersData);
+
+      const totalRevenue = allOrdersData
         .filter((order: any) => order.status === 'delivered')
         .reduce((sum: number, order: any) => sum + order.total, 0);
 
-      const todayOrders = allOrders.filter((order: any) => {
+      const todayOrders = allOrdersData.filter((order: any) => {
         const orderDate = new Date(order.createdAt);
         const today = new Date();
         return orderDate.toDateString() === today.toDateString();
       });
 
-      // Get all users from localStorage
-      const allUsers = JSON.parse(localStorage.getItem('all_users') || '[]');
-      
       const dashboardData = {
-        total_orders: allOrders.length,
-        pending_orders: allOrders.filter((o: any) => o.status === 'pending').length,
-        processing_orders: allOrders.filter((o: any) => o.status === 'processing').length,
-        completed_orders: allOrders.filter((o: any) => o.status === 'delivered').length,
+        total_orders: allOrdersData.length,
+        pending_orders: allOrdersData.filter((o: any) => o.status === 'pending').length,
+        processing_orders: allOrdersData.filter((o: any) => o.status === 'processing').length,
+        completed_orders: allOrdersData.filter((o: any) => o.status === 'delivered').length,
         total_revenue: totalRevenue,
         today_orders: todayOrders.length,
         today_revenue: todayOrders.reduce((sum: number, order: any) => sum + order.total, 0),
-        total_users: allUsers.length,
+        total_users: allUsersData.length,
         total_products: stats.totalPlants,
         low_stock_products: stats.lowStockCount,
-        average_order_value: allOrders.length > 0 ? totalRevenue / allOrders.length : 0,
+        average_order_value: allOrdersData.length > 0 ? totalRevenue / allOrdersData.length : 0,
         unread_messages: getUnreadCount()
       };
 
@@ -95,12 +104,26 @@ const AdminDashboard: React.FC = () => {
     navigate('/admin/login');
   };
 
-  const handleCompleteOrder = async (orderId: string) => {
+  const handleUpdateOrderStatus = async (orderId: string, newStatus: string) => {
     try {
-      await updateOrderStatus(orderId, 'delivered');
-      loadDashboardData(); // Refresh stats
+      const allOrdersData = JSON.parse(localStorage.getItem('all_orders') || '[]');
+      const updatedOrders = allOrdersData.map((order: any) => 
+        order.id === orderId ? { ...order, status: newStatus, updatedAt: new Date().toISOString() } : order
+      );
+      localStorage.setItem('all_orders', JSON.stringify(updatedOrders));
+      setAllOrders(updatedOrders);
+      loadDashboardData();
     } catch (error) {
-      console.error('Error completing order:', error);
+      console.error('Error updating order status:', error);
+    }
+  };
+
+  const handleDeleteUser = (userId: string) => {
+    if (confirm('Apakah Anda yakin ingin menghapus pengguna ini?')) {
+      const updatedUsers = allUsers.filter(u => u.id !== userId);
+      setAllUsers(updatedUsers);
+      localStorage.setItem('all_users', JSON.stringify(updatedUsers));
+      loadDashboardData();
     }
   };
 
@@ -135,6 +158,18 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  const filteredOrders = allOrders.filter(order => {
+    const matchesSearch = order.orderNumber?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         order.shippingInfo?.fullName?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = selectedStatus === 'all' || order.status === selectedStatus;
+    return matchesSearch && matchesStatus;
+  });
+
+  const filteredUsers = allUsers.filter(user => 
+    user.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.email?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
@@ -148,17 +183,17 @@ const AdminDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Header */}
+      {/* Admin Header */}
       <div className="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <div className="bg-gradient-to-r from-green-600 to-green-700 p-2 rounded-lg mr-3">
-                <BarChart3 className="h-6 w-6 text-white" />
+                <Shield className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white">Dashboard Administrator</h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Selamat datang, {user?.fullName}</p>
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white">Admin Portal - Azka Garden</h1>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Management & Analytics Dashboard</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -173,7 +208,7 @@ const AdminDashboard: React.FC = () => {
                 <RefreshCw className="h-5 w-5" />
               </button>
               <button className="relative p-2 text-gray-400 hover:text-green-600 transition-colors">
-                <MessageSquare className="h-5 w-5" />
+                <Bell className="h-5 w-5" />
                 {dashboardStats?.unread_messages > 0 && (
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
                     {dashboardStats.unread_messages}
@@ -192,16 +227,10 @@ const AdminDashboard: React.FC = () => {
                     <p className="text-xs text-green-600 dark:text-green-400 font-medium">Administrator</p>
                   </div>
                   <button
-                    onClick={() => navigate('/admin/profile')}
+                    onClick={() => navigate('/')}
                     className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
-                    Profil Admin
-                  </button>
-                  <button
-                    onClick={() => navigate('/admin/settings')}
-                    className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  >
-                    Pengaturan
+                    Kembali ke Website
                   </button>
                   <hr className="my-1 dark:border-gray-700" />
                   <button
@@ -218,195 +247,493 @@ const AdminDashboard: React.FC = () => {
         </div>
       </div>
 
+      {/* Admin Navigation Tabs */}
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav className="flex space-x-8">
+            {[
+              { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
+              { id: 'users', label: 'Manajemen Pengguna', icon: Users },
+              { id: 'products', label: 'Manajemen Produk', icon: Package },
+              { id: 'orders', label: 'Manajemen Pesanan', icon: ShoppingCart },
+              { id: 'payments', label: 'Pembayaran', icon: CreditCard },
+              { id: 'shipping', label: 'Pengiriman', icon: Truck },
+              { id: 'analytics', label: 'Analisis & Laporan', icon: TrendingUp },
+              { id: 'content', label: 'Manajemen Konten', icon: FileText },
+              { id: 'security', label: 'Audit & Keamanan', icon: Shield }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                  activeTab === tab.id
+                    ? 'border-green-500 text-green-600 dark:text-green-400'
+                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300'
+                }`}
+              >
+                <tab.icon className="h-4 w-4" />
+                <span>{tab.label}</span>
+              </button>
+            ))}
+          </nav>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Real-time Metrics */}
-        {dashboardStats && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Total Pesanan</p>
-                  <p className="text-3xl font-bold text-gray-900 dark:text-white">{dashboardStats.total_orders}</p>
-                  <p className="text-sm text-green-600 dark:text-green-400 font-medium">
-                    {dashboardStats.today_orders} hari ini
-                  </p>
+        {/* Dashboard Tab */}
+        {activeTab === 'dashboard' && dashboardStats && (
+          <div className="space-y-8">
+            {/* Real-time Metrics */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Total Pesanan</p>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white">{dashboardStats.total_orders}</p>
+                    <p className="text-sm text-green-600 dark:text-green-400 font-medium">
+                      {dashboardStats.today_orders} hari ini
+                    </p>
+                  </div>
+                  <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full">
+                    <ShoppingCart className="h-8 w-8 text-green-600 dark:text-green-400" />
+                  </div>
                 </div>
-                <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full">
-                  <ShoppingCart className="h-8 w-8 text-green-600 dark:text-green-400" />
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Total Revenue</p>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                      {formatCurrency(dashboardStats.total_revenue)}
+                    </p>
+                    <p className="text-sm text-green-600 dark:text-green-400 font-medium">
+                      {formatCurrency(dashboardStats.today_revenue)} hari ini
+                    </p>
+                  </div>
+                  <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full">
+                    <DollarSign className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Total Pengguna</p>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white">{dashboardStats.total_users}</p>
+                    <p className="text-sm text-purple-600 dark:text-purple-400 font-medium">Terdaftar</p>
+                  </div>
+                  <div className="bg-purple-100 dark:bg-purple-900 p-3 rounded-full">
+                    <Users className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Produk Aktif</p>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white">{dashboardStats.total_products}</p>
+                    <p className="text-sm text-orange-600 dark:text-orange-400 font-medium">
+                      {dashboardStats.low_stock_products} stok rendah
+                    </p>
+                  </div>
+                  <div className="bg-orange-100 dark:bg-orange-900 p-3 rounded-full">
+                    <Package className="h-8 w-8 text-orange-600 dark:text-orange-400" />
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Total Revenue</p>
-                  <p className="text-3xl font-bold text-gray-900 dark:text-white">
-                    {formatCurrency(dashboardStats.total_revenue)}
-                  </p>
-                  <p className="text-sm text-green-600 dark:text-green-400 font-medium">
-                    {formatCurrency(dashboardStats.today_revenue)} hari ini
-                  </p>
-                </div>
-                <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full">
-                  <DollarSign className="h-8 w-8 text-blue-600 dark:text-blue-400" />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Pesan Belum Dibaca</p>
-                  <p className="text-3xl font-bold text-gray-900 dark:text-white">{dashboardStats.unread_messages}</p>
-                  <p className="text-sm text-blue-600 dark:text-blue-400 font-medium">Customer Service</p>
-                </div>
-                <div className="bg-purple-100 dark:bg-purple-900 p-3 rounded-full">
-                  <MessageSquare className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+            {/* Recent Activity */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Pesanan Terbaru</h3>
+                <div className="space-y-3">
+                  {allOrders.slice(0, 5).map((order) => (
+                    <div key={order.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                      <div>
+                        <div className="font-medium text-gray-900 dark:text-white">#{order.orderNumber}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                          {order.shippingInfo?.fullName} • {formatTime(order.createdAt)}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-semibold text-gray-900 dark:text-white">
+                          {formatCurrency(order.total)}
+                        </div>
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
+                          {order.status}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Produk Aktif</p>
-                  <p className="text-3xl font-bold text-gray-900 dark:text-white">{dashboardStats.total_products}</p>
-                  <p className="text-sm text-orange-600 dark:text-orange-400 font-medium">
-                    {dashboardStats.low_stock_products} stok rendah
-                  </p>
-                </div>
-                <div className="bg-orange-100 dark:bg-orange-900 p-3 rounded-full">
-                  <Package className="h-8 w-8 text-orange-600 dark:text-orange-400" />
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Pengguna Terbaru</h3>
+                <div className="space-y-3">
+                  {allUsers.slice(-5).reverse().map((userData) => (
+                    <div key={userData.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+                          <span className="text-green-600 dark:text-green-400 font-bold text-sm">
+                            {userData.fullName?.charAt(0) || userData.email?.charAt(0)}
+                          </span>
+                        </div>
+                        <div>
+                          <div className="font-medium text-gray-900 dark:text-white">{userData.fullName || userData.email}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-400">{userData.email}</div>
+                        </div>
+                      </div>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        {new Date(userData.createdAt).toLocaleDateString('id-ID')}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* Recent Orders with Admin Actions */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Pesanan Terbaru</h2>
-              <button className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 text-sm font-medium">
-                Lihat Semua
+        {/* User Management Tab */}
+        {activeTab === 'users' && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Manajemen Pengguna</h2>
+              <div className="flex items-center space-x-4">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <input
+                    type="text"
+                    placeholder="Cari pengguna..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+                <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                  <Plus className="h-4 w-4 mr-2 inline" />
+                  Tambah Pengguna
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50 dark:bg-gray-700">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Pengguna
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Role
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Bergabung
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Status
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Aksi
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
+                    {filteredUsers.map((userData) => (
+                      <tr key={userData.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <div className="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mr-3">
+                              <span className="text-green-600 dark:text-green-400 font-bold">
+                                {userData.fullName?.charAt(0) || userData.email?.charAt(0)}
+                              </span>
+                            </div>
+                            <div>
+                              <div className="text-sm font-medium text-gray-900 dark:text-white">
+                                {userData.fullName || userData.email}
+                              </div>
+                              <div className="text-sm text-gray-500 dark:text-gray-400">{userData.email}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            userData.role === 'ADMIN' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+                            userData.role === 'DEVELOPER' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
+                            'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+                          }`}>
+                            {userData.role}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                          {new Date(userData.createdAt).toLocaleDateString('id-ID')}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                            Aktif
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                          <div className="flex space-x-2">
+                            <button className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300">
+                              <Edit className="h-4 w-4" />
+                            </button>
+                            <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
+                              <Eye className="h-4 w-4" />
+                            </button>
+                            <button 
+                              onClick={() => handleDeleteUser(userData.id)}
+                              className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
+                            >
+                              <AlertTriangle className="h-4 w-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Orders Management Tab */}
+        {activeTab === 'orders' && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Manajemen Pesanan</h2>
+              <div className="flex items-center space-x-4">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <input
+                    type="text"
+                    placeholder="Cari pesanan..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+                <select
+                  value={selectedStatus}
+                  onChange={(e) => setSelectedStatus(e.target.value)}
+                  className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-500"
+                >
+                  <option value="all">Semua Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="processing">Processing</option>
+                  <option value="shipped">Shipped</option>
+                  <option value="delivered">Delivered</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50 dark:bg-gray-700">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Pesanan
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Pelanggan
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Total
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Status
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Tanggal
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Aksi
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
+                    {filteredOrders.map((order) => (
+                      <tr key={order.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-medium text-gray-900 dark:text-white">#{order.orderNumber}</div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400">{order.items?.length} item</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm text-gray-900 dark:text-white">{order.shippingInfo?.fullName}</div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400">{order.shippingInfo?.phone}</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                          {formatCurrency(order.total)}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <select
+                            value={order.status}
+                            onChange={(e) => handleUpdateOrderStatus(order.id, e.target.value)}
+                            className={`px-2 py-1 rounded-full text-xs font-medium border-0 focus:ring-2 focus:ring-green-500 ${getStatusColor(order.status)}`}
+                          >
+                            <option value="pending">Pending</option>
+                            <option value="processing">Processing</option>
+                            <option value="shipped">Shipped</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="cancelled">Cancelled</option>
+                          </select>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                          {new Date(order.createdAt).toLocaleDateString('id-ID')}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                          <button className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 mr-3">
+                            <Eye className="h-4 w-4" />
+                          </button>
+                          <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
+                            <Edit className="h-4 w-4" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Products Management Tab */}
+        {activeTab === 'products' && plantStats && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Manajemen Produk</h2>
+              <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                <Plus className="h-4 w-4 mr-2 inline" />
+                Tambah Produk
               </button>
             </div>
-            <div className="space-y-4">
-              {orders.slice(0, 5).map((order) => (
-                <div key={order.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white">#{order.orderNumber}</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
-                      {order.shippingInfo.fullName} • {formatTime(order.createdAt)}
-                    </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+              <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border border-gray-100 dark:border-gray-700">
+                <div className="text-2xl font-bold text-gray-900 dark:text-white">{plantStats.totalPlants}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Total Produk</div>
+              </div>
+              <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border border-gray-100 dark:border-gray-700">
+                <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{plantStats.lowStockCount}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Stok Rendah</div>
+              </div>
+              <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border border-gray-100 dark:border-gray-700">
+                <div className="text-2xl font-bold text-red-600 dark:text-red-400">{plantStats.outOfStockCount}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Stok Habis</div>
+              </div>
+              <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border border-gray-100 dark:border-gray-700">
+                <div className="text-2xl font-bold text-green-600 dark:text-green-400">{plantStats.totalCategories}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Kategori</div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Distribusi Kategori</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {plantStats.categoryDistribution.map((category: any) => (
+                  <div key={category.name} className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="font-medium text-gray-900 dark:text-white">{category.name}</div>
+                    <div className="text-2xl font-bold text-green-600 dark:text-green-400">{category.count}</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">produk</div>
                   </div>
-                  <div className="text-right">
-                    <div className="font-semibold text-gray-900 dark:text-white">
-                      {formatCurrency(order.total)}
-                    </div>
-                    <div className="flex items-center space-x-2 mt-1">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
-                        {order.status}
-                      </span>
-                      {order.status === 'shipped' && (
-                        <button
-                          onClick={() => handleCompleteOrder(order.id)}
-                          className="p-1 text-green-600 hover:text-green-700 transition-colors"
-                          title="Tandai Selesai"
-                        >
-                          <CheckCircle className="h-4 w-4" />
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-              {orders.length === 0 && (
-                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                  Belum ada pesanan
-                </div>
-              )}
+                ))}
+              </div>
             </div>
           </div>
+        )}
 
-          {/* Customer Messages */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Pesan Customer</h2>
-              <span className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 text-xs px-2 py-1 rounded-full">
-                {getUnreadCount()} belum dibaca
-              </span>
-            </div>
-            <div className="space-y-4">
-              {sessions.slice(0, 5).map((session) => (
-                <div key={session.id} className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="font-medium text-gray-900 dark:text-white">{session.customerName}</div>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      session.status === 'active' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-                      session.status === 'resolved' ? 'bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-200' :
-                      'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-                    }`}>
-                      {session.status}
+        {/* Analytics Tab */}
+        {activeTab === 'analytics' && dashboardStats && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Analisis & Laporan</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Performa Penjualan</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">Rata-rata Order</span>
+                    <span className="font-semibold text-gray-900 dark:text-white">
+                      {formatCurrency(dashboardStats.average_order_value)}
                     </span>
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
-                    {session.messages[session.messages.length - 1]?.message.substring(0, 100)}...
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">Conversion Rate</span>
+                    <span className="font-semibold text-green-600 dark:text-green-400">3.2%</span>
                   </div>
-                  <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">
-                    {session.updatedAt.toLocaleTimeString('id-ID')}
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">Customer Satisfaction</span>
+                    <span className="font-semibold text-green-600 dark:text-green-400">4.8/5</span>
                   </div>
                 </div>
-              ))}
-              {sessions.length === 0 && (
-                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                  Belum ada pesan customer
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+              </div>
 
-        {/* System Status */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Status Sistem</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-4 bg-green-50 dark:bg-green-900 rounded-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-sm text-green-700 dark:text-green-300">Database</div>
-                  <div className="text-lg font-bold text-green-800 dark:text-green-200">Online</div>
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Status Pesanan</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">Pending</span>
+                    <span className="font-semibold text-yellow-600 dark:text-yellow-400">{dashboardStats.pending_orders}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">Processing</span>
+                    <span className="font-semibold text-blue-600 dark:text-blue-400">{dashboardStats.processing_orders}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">Completed</span>
+                    <span className="font-semibold text-green-600 dark:text-green-400">{dashboardStats.completed_orders}</span>
+                  </div>
                 </div>
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
               </div>
-            </div>
-            
-            <div className="p-4 bg-yellow-50 dark:bg-yellow-900 rounded-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-sm text-yellow-700 dark:text-yellow-300">OrderService</div>
-                  <div className="text-lg font-bold text-yellow-800 dark:text-yellow-200">Warning</div>
+
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Inventory Status</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">Total Produk</span>
+                    <span className="font-semibold text-gray-900 dark:text-white">{dashboardStats.total_products}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">Stok Rendah</span>
+                    <span className="font-semibold text-orange-600 dark:text-orange-400">{dashboardStats.low_stock_products}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">Stok Habis</span>
+                    <span className="font-semibold text-red-600 dark:text-red-400">0</span>
+                  </div>
                 </div>
-                <div className="w-3 h-3 bg-yellow-500 rounded-full animate-pulse"></div>
-              </div>
-              <div className="text-xs text-yellow-600 dark:text-yellow-400 mt-1">
-                Database connection timeout - Fixed
-              </div>
-            </div>
-            
-            <div className="p-4 bg-blue-50 dark:bg-blue-900 rounded-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-sm text-blue-700 dark:text-blue-300">Payment</div>
-                  <div className="text-lg font-bold text-blue-800 dark:text-blue-200">Active</div>
-                </div>
-                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
               </div>
             </div>
           </div>
-        </div>
+        )}
+
+        {/* Other tabs placeholder */}
+        {['users', 'payments', 'shipping', 'content', 'security'].includes(activeTab) && activeTab !== 'users' && activeTab !== 'orders' && activeTab !== 'products' && activeTab !== 'analytics' && (
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center border border-gray-100 dark:border-gray-700">
+            <div className="text-gray-400 dark:text-gray-500 mb-4">
+              <Settings className="h-16 w-16 mx-auto" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+              {activeTab === 'payments' && 'Manajemen Pembayaran'}
+              {activeTab === 'shipping' && 'Manajemen Pengiriman'}
+              {activeTab === 'content' && 'Manajemen Konten'}
+              {activeTab === 'security' && 'Audit & Keamanan'}
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400">
+              Fitur ini sedang dalam pengembangan dan akan segera tersedia.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

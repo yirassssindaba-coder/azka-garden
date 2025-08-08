@@ -124,11 +124,6 @@ function App() {
                           <DeveloperPortal />
                         </ProtectedRoute>
                       } />
-                      <Route path="/admin/developer" element={
-                        <ProtectedRoute requiredRole="developer">
-                          <DeveloperDashboard />
-                        </ProtectedRoute>
-                      } />
                     </Routes>
                   </main>
                   <Footer />

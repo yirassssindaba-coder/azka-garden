@@ -24,12 +24,19 @@ import {
   User,
   RefreshCw,
   Terminal,
-  Settings
+  Settings,
+  FileText,
+  Shield,
+  Search,
+  Play,
+  Pause,
+  RotateCcw
 } from 'lucide-react';
 
 const DeveloperPortal: React.FC = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('monitoring');
   const [systemStats, setSystemStats] = useState({
     uptime: '99.9%',
     responseTime: '120ms',
@@ -38,7 +45,11 @@ const DeveloperPortal: React.FC = () => {
     revenue: 'Rp 0',
     errorRate: '0.0%',
     totalUsers: 0,
-    activeSessions: 0
+    activeSessions: 0,
+    cpuUsage: 23,
+    memoryUsage: 67,
+    diskUsage: 45,
+    networkLatency: 12
   });
 
   const [recentLogs, setRecentLogs] = useState([
@@ -49,15 +60,21 @@ const DeveloperPortal: React.FC = () => {
   ]);
 
   const [apiEndpoints] = useState([
-    { name: 'User Authentication', endpoint: '/api/auth', status: 'healthy', responseTime: '45ms' },
-    { name: 'Product Catalog', endpoint: '/api/products', status: 'healthy', responseTime: '67ms' },
-    { name: 'Order Management', endpoint: '/api/orders', status: 'healthy', responseTime: '89ms' },
-    { name: 'User Profile', endpoint: '/api/profile', status: 'healthy', responseTime: '123ms' },
-    { name: 'Cart Service', endpoint: '/api/cart', status: 'healthy', responseTime: '56ms' }
+    { name: 'User Authentication', endpoint: '/api/auth', status: 'healthy', responseTime: '45ms', uptime: '99.9%' },
+    { name: 'Product Catalog', endpoint: '/api/products', status: 'healthy', responseTime: '67ms', uptime: '99.8%' },
+    { name: 'Order Management', endpoint: '/api/orders', status: 'healthy', responseTime: '89ms', uptime: '99.7%' },
+    { name: 'User Profile', endpoint: '/api/profile', status: 'healthy', responseTime: '123ms', uptime: '99.9%' },
+    { name: 'Cart Service', endpoint: '/api/cart', status: 'healthy', responseTime: '56ms', uptime: '100%' },
+    { name: 'Payment Gateway', endpoint: '/api/payments', status: 'healthy', responseTime: '234ms', uptime: '99.5%' }
+  ]);
+
+  const [securityLogs] = useState([
+    { id: 1, type: 'LOGIN_SUCCESS', user: 'admin@azkagarden.com', ip: '192.168.1.100', timestamp: new Date(), severity: 'info' },
+    { id: 2, type: 'FAILED_LOGIN_ATTEMPT', user: 'unknown@test.com', ip: '192.168.1.200', timestamp: new Date(Date.now() - 600000), severity: 'warning' },
+    { id: 3, type: 'SESSION_CREATED', user: 'customer@azkagarden.com', ip: '192.168.1.150', timestamp: new Date(Date.now() - 1200000), severity: 'info' }
   ]);
 
   useEffect(() => {
-    // Check developer authentication
     if (!user || user.role !== 'DEVELOPER') {
       navigate('/developer/login');
       return;
@@ -65,20 +82,16 @@ const DeveloperPortal: React.FC = () => {
 
     loadDeveloperData();
     
-    // Auto-refresh every 5 seconds for real-time monitoring
     const interval = setInterval(loadDeveloperData, 5000);
-    
     return () => clearInterval(interval);
   }, [user, navigate]);
 
   const loadDeveloperData = () => {
     try {
-      // Get real data from localStorage
       const allOrders = JSON.parse(localStorage.getItem('all_orders') || '[]');
       const allUsers = JSON.parse(localStorage.getItem('all_users') || '[]');
       const activeSessions = JSON.parse(localStorage.getItem('active_sessions') || '[]');
       
-      // Calculate real revenue
       const totalRevenue = allOrders
         .filter((order: any) => order.status === 'delivered')
         .reduce((sum: number, order: any) => sum + order.total, 0);
@@ -91,7 +104,11 @@ const DeveloperPortal: React.FC = () => {
         revenue: `Rp ${totalRevenue.toLocaleString('id-ID')}`,
         errorRate: '0.0%',
         totalUsers: allUsers.length,
-        activeSessions: activeSessions.length
+        activeSessions: activeSessions.length,
+        cpuUsage: Math.floor(Math.random() * 20) + 20,
+        memoryUsage: Math.floor(Math.random() * 30) + 50,
+        diskUsage: Math.floor(Math.random() * 20) + 40,
+        networkLatency: Math.floor(Math.random() * 20) + 10
       };
 
       setSystemStats(stats);
@@ -131,9 +148,18 @@ const DeveloperPortal: React.FC = () => {
     }
   };
 
+  const getSeverityColor = (severity: string) => {
+    switch (severity) {
+      case 'critical': return 'text-red-800 bg-red-100 dark:bg-red-900 dark:text-red-200';
+      case 'warning': return 'text-yellow-800 bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-200';
+      case 'info': return 'text-green-800 bg-green-100 dark:bg-green-900 dark:text-green-200';
+      default: return 'text-gray-800 bg-gray-100 dark:bg-gray-700 dark:text-gray-200';
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Header */}
+      {/* Developer Header */}
       <div className="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
@@ -142,8 +168,8 @@ const DeveloperPortal: React.FC = () => {
                 <Code className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white">Developer Portal</h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Real-time System Monitoring</p>
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white">Developer Portal - Azka Garden</h1>
+                <p className="text-sm text-gray-600 dark:text-gray-400">System Development & Monitoring</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -168,6 +194,12 @@ const DeveloperPortal: React.FC = () => {
                     <p className="text-xs text-gray-600 dark:text-gray-400">{user?.email}</p>
                     <p className="text-xs text-blue-600 dark:text-blue-400 font-medium">Developer</p>
                   </div>
+                  <button
+                    onClick={() => navigate('/')}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    Kembali ke Website
+                  </button>
                   <hr className="my-1 dark:border-gray-700" />
                   <button
                     onClick={handleLogout}
@@ -183,246 +215,371 @@ const DeveloperPortal: React.FC = () => {
         </div>
       </div>
 
+      {/* Developer Navigation Tabs */}
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav className="flex space-x-8">
+            {[
+              { id: 'monitoring', label: 'System Monitoring', icon: Monitor },
+              { id: 'api', label: 'API Management', icon: Globe },
+              { id: 'database', label: 'Database Console', icon: Database },
+              { id: 'testing', label: 'Testing & QA', icon: Bug },
+              { id: 'deployment', label: 'Deployment', icon: GitBranch },
+              { id: 'security', label: 'Security Audit', icon: Shield },
+              { id: 'logs', label: 'System Logs', icon: Terminal },
+              { id: 'documentation', label: 'Documentation', icon: FileText }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                  activeTab === tab.id
+                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300'
+                }`}
+              >
+                <tab.icon className="h-4 w-4" />
+                <span>{tab.label}</span>
+              </button>
+            ))}
+          </nav>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Real-time System Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Uptime</p>
-                <p className="text-3xl font-bold text-green-600 dark:text-green-400">{systemStats.uptime}</p>
-              </div>
-              <Activity className="h-8 w-8 text-green-500" />
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Response Time</p>
-                <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{systemStats.responseTime}</p>
-              </div>
-              <Zap className="h-8 w-8 text-blue-500" />
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Active Users</p>
-                <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">{systemStats.activeUsers}</p>
-              </div>
-              <Users className="h-8 w-8 text-purple-500" />
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Total Orders</p>
-                <p className="text-3xl font-bold text-orange-600 dark:text-orange-400">{systemStats.totalOrders}</p>
-              </div>
-              <ShoppingCart className="h-8 w-8 text-orange-500" />
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Revenue</p>
-                <p className="text-3xl font-bold text-green-600 dark:text-green-400">{systemStats.revenue}</p>
-              </div>
-              <TrendingUp className="h-8 w-8 text-green-500" />
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Error Rate</p>
-                <p className="text-3xl font-bold text-red-600 dark:text-red-400">{systemStats.errorRate}</p>
-              </div>
-              <Bug className="h-8 w-8 text-red-500" />
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* API Endpoints Status */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">API Endpoints Status</h2>
-              <Server className="h-6 w-6 text-gray-400" />
-            </div>
-            <div className="space-y-4">
-              {apiEndpoints.map((endpoint, index) => (
-                <div key={index} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <div className={`w-3 h-3 rounded-full ${
-                      endpoint.status === 'healthy' ? 'bg-green-500' : 
-                      endpoint.status === 'warning' ? 'bg-yellow-500' : 'bg-red-500'
-                    }`}></div>
-                    <div>
-                      <div className="font-medium text-gray-900 dark:text-white">{endpoint.name}</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">{endpoint.endpoint}</div>
-                    </div>
+        {/* System Monitoring Tab */}
+        {activeTab === 'monitoring' && (
+          <div className="space-y-8">
+            {/* Real-time System Metrics */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Uptime</p>
+                    <p className="text-3xl font-bold text-green-600 dark:text-green-400">{systemStats.uptime}</p>
                   </div>
-                  <div className="text-right">
-                    <div className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(endpoint.status)}`}>
-                      {endpoint.status}
-                    </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">{endpoint.responseTime}</div>
+                  <Activity className="h-8 w-8 text-green-500" />
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Response Time</p>
+                    <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{systemStats.responseTime}</p>
+                  </div>
+                  <Zap className="h-8 w-8 text-blue-500" />
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Active Users</p>
+                    <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">{systemStats.activeUsers}</p>
+                  </div>
+                  <Users className="h-8 w-8 text-purple-500" />
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">CPU Usage</p>
+                    <p className="text-3xl font-bold text-orange-600 dark:text-orange-400">{systemStats.cpuUsage}%</p>
+                  </div>
+                  <Cpu className="h-8 w-8 text-orange-500" />
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Memory</p>
+                    <p className="text-3xl font-bold text-red-600 dark:text-red-400">{systemStats.memoryUsage}%</p>
+                  </div>
+                  <HardDrive className="h-8 w-8 text-red-500" />
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Error Rate</p>
+                    <p className="text-3xl font-bold text-green-600 dark:text-green-400">{systemStats.errorRate}</p>
+                  </div>
+                  <Bug className="h-8 w-8 text-green-500" />
+                </div>
+              </div>
+            </div>
+
+            {/* System Health Overview */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">System Health Overview</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="text-center">
+                  <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                    <Cpu className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{systemStats.cpuUsage}%</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">CPU Usage</div>
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
+                    <div 
+                      className="bg-blue-600 h-2 rounded-full transition-all duration-300" 
+                      style={{ width: `${systemStats.cpuUsage}%` }}
+                    ></div>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
 
-          {/* System Logs */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">System Logs</h2>
-              <Terminal className="h-6 w-6 text-gray-400" />
-            </div>
-            <div className="space-y-4 max-h-96 overflow-y-auto">
-              {recentLogs.map((log) => (
-                <div key={log.id} className="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  {getLogIcon(log.level)}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-900 dark:text-white">{log.service}</span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
-                        {formatTime(log.timestamp)}
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{log.message}</p>
+                <div className="text-center">
+                  <div className="bg-green-100 dark:bg-green-900 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                    <HardDrive className="h-8 w-8 text-green-600 dark:text-green-400" />
+                  </div>
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{systemStats.memoryUsage}%</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Memory Usage</div>
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
+                    <div 
+                      className="bg-green-600 h-2 rounded-full transition-all duration-300" 
+                      style={{ width: `${systemStats.memoryUsage}%` }}
+                    ></div>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
 
-        {/* System Resources */}
-        <div className="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">System Resources</h2>
-            <Monitor className="h-6 w-6 text-gray-400" />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
-                <Cpu className="h-8 w-8 text-blue-600 dark:text-blue-400" />
-              </div>
-              <div className="text-2xl font-bold text-gray-900 dark:text-white">23%</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">CPU Usage</div>
-            </div>
+                <div className="text-center">
+                  <div className="bg-purple-100 dark:bg-purple-900 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                    <Database className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{systemStats.diskUsage}%</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Disk Usage</div>
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
+                    <div 
+                      className="bg-purple-600 h-2 rounded-full transition-all duration-300" 
+                      style={{ width: `${systemStats.diskUsage}%` }}
+                    ></div>
+                  </div>
+                </div>
 
-            <div className="text-center">
-              <div className="bg-green-100 dark:bg-green-900 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
-                <HardDrive className="h-8 w-8 text-green-600 dark:text-green-400" />
-              </div>
-              <div className="text-2xl font-bold text-gray-900 dark:text-white">67%</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Memory Usage</div>
-            </div>
-
-            <div className="text-center">
-              <div className="bg-purple-100 dark:bg-purple-900 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
-                <Database className="h-8 w-8 text-purple-600 dark:text-purple-400" />
-              </div>
-              <div className="text-2xl font-bold text-gray-900 dark:text-white">45%</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Database Load</div>
-            </div>
-
-            <div className="text-center">
-              <div className="bg-orange-100 dark:bg-orange-900 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
-                <Wifi className="h-8 w-8 text-orange-600 dark:text-orange-400" />
-              </div>
-              <div className="text-2xl font-bold text-gray-900 dark:text-white">{systemStats.activeSessions}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Active Sessions</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Developer Tools */}
-        <div className="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">Developer Tools</h2>
-            <Settings className="h-6 w-6 text-gray-400" />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <button className="p-6 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg hover:border-green-500 dark:hover:border-green-400 transition-colors group">
-              <div className="text-center">
-                <Database className="h-8 w-8 text-gray-400 group-hover:text-green-500 mx-auto mb-2" />
-                <h3 className="font-medium text-gray-900 dark:text-white mb-2">Database Console</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Access database management tools</p>
-                <div className="text-xs text-green-600 dark:text-green-400 font-medium">
-                  {systemStats.totalUsers} users • {systemStats.totalOrders} orders
+                <div className="text-center">
+                  <div className="bg-orange-100 dark:bg-orange-900 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                    <Wifi className="h-8 w-8 text-orange-600 dark:text-orange-400" />
+                  </div>
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{systemStats.networkLatency}ms</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Network Latency</div>
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
+                    <div 
+                      className="bg-orange-600 h-2 rounded-full transition-all duration-300" 
+                      style={{ width: `${Math.min(systemStats.networkLatency * 2, 100)}%` }}
+                    ></div>
+                  </div>
                 </div>
               </div>
-            </button>
-
-            <button className="p-6 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 transition-colors group">
-              <div className="text-center">
-                <GitBranch className="h-8 w-8 text-gray-400 group-hover:text-blue-500 mx-auto mb-2" />
-                <h3 className="font-medium text-gray-900 dark:text-white mb-2">Deployment Tools</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Deploy and manage application versions</p>
-                <div className="text-xs text-blue-600 dark:text-blue-400 font-medium">
-                  Version 1.0.0 • Production
-                </div>
-              </div>
-            </button>
-
-            <button className="p-6 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg hover:border-purple-500 dark:hover:border-purple-400 transition-colors group">
-              <div className="text-center">
-                <Globe className="h-8 w-8 text-gray-400 group-hover:text-purple-500 mx-auto mb-2" />
-                <h3 className="font-medium text-gray-900 dark:text-white mb-2">API Documentation</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">View and test API endpoints</p>
-                <div className="text-xs text-purple-600 dark:text-purple-400 font-medium">
-                  {apiEndpoints.length} endpoints • All healthy
-                </div>
-              </div>
-            </button>
-          </div>
-        </div>
-
-        {/* Real-time Activity Feed */}
-        <div className="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">Real-time Activity</h2>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-sm text-green-600 dark:text-green-400 font-medium">Live</span>
             </div>
           </div>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900 rounded-lg">
-              <div className="flex items-center space-x-3">
-                <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
-                <div>
-                  <div className="text-sm font-medium text-gray-900 dark:text-white">System Status</div>
-                  <div className="text-xs text-gray-600 dark:text-gray-400">All services operational</div>
-                </div>
-              </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">
-                {formatTime(new Date())}
+        )}
+
+        {/* API Management Tab */}
+        {activeTab === 'api' && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">API Management</h2>
+              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                <Plus className="h-4 w-4 mr-2 inline" />
+                Add Endpoint
+              </button>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50 dark:bg-gray-700">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Endpoint
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Status
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Response Time
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Uptime
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
+                    {apiEndpoints.map((endpoint, index) => (
+                      <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-medium text-gray-900 dark:text-white">{endpoint.name}</div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400">{endpoint.endpoint}</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(endpoint.status)}`}>
+                            {endpoint.status}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                          {endpoint.responseTime}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                          {endpoint.uptime}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                          <div className="flex space-x-2">
+                            <button className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300">
+                              <Play className="h-4 w-4" />
+                            </button>
+                            <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
+                              <Settings className="h-4 w-4" />
+                            </button>
+                            <button className="text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300">
+                              <RotateCcw className="h-4 w-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Database Console Tab */}
+        {activeTab === 'database' && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Database Console</h2>
             
-            <div className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900 rounded-lg">
-              <div className="flex items-center space-x-3">
-                <Users className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                <div>
-                  <div className="text-sm font-medium text-gray-900 dark:text-white">Active Sessions</div>
-                  <div className="text-xs text-gray-600 dark:text-gray-400">{systemStats.activeSessions} users online</div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
+                <div className="text-center">
+                  <Database className="h-12 w-12 text-green-600 dark:text-green-400 mx-auto mb-4" />
+                  <h3 className="font-bold text-gray-900 dark:text-white mb-2">Query Console</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Execute database queries and view results</p>
+                  <button className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    Open Console
+                  </button>
                 </div>
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">
-                Live
+
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
+                <div className="text-center">
+                  <Shield className="h-12 w-12 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
+                  <h3 className="font-bold text-gray-900 dark:text-white mb-2">Backup Manager</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Create and restore database backups</p>
+                  <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    Manage Backups
+                  </button>
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
+                <div className="text-center">
+                  <TrendingUp className="h-12 w-12 text-purple-600 dark:text-purple-400 mx-auto mb-4" />
+                  <h3 className="font-bold text-gray-900 dark:text-white mb-2">Performance</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Monitor query performance and optimization</p>
+                  <button className="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                    View Metrics
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
+
+        {/* Security Audit Tab */}
+        {activeTab === 'security' && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Security Audit</h2>
+            
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Security Events</h3>
+              <div className="space-y-3">
+                {securityLogs.map((log) => (
+                  <div key={log.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-3 h-3 rounded-full ${
+                        log.severity === 'info' ? 'bg-green-500' :
+                        log.severity === 'warning' ? 'bg-yellow-500' : 'bg-red-500'
+                      }`}></div>
+                      <div>
+                        <div className="font-medium text-gray-900 dark:text-white">{log.type}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">{log.user} from {log.ip}</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getSeverityColor(log.severity)}`}>
+                        {log.severity}
+                      </span>
+                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        {formatTime(log.timestamp)}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* System Logs Tab */}
+        {activeTab === 'logs' && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">System Logs</h2>
+              <div className="flex space-x-2">
+                <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                  <RefreshCw className="h-4 w-4 mr-2 inline" />
+                  Refresh
+                </button>
+                <button className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">
+                  Clear Logs
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+              <div className="space-y-4 max-h-96 overflow-y-auto">
+                {recentLogs.map((log) => (
+                  <div key={log.id} className="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    {getLogIcon(log.level)}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-gray-900 dark:text-white">{log.service}</span>
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                          {formatTime(log.timestamp)}
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{log.message}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Other tabs placeholder */}
+        {['testing', 'deployment', 'documentation'].includes(activeTab) && (
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center border border-gray-100 dark:border-gray-700">
+            <div className="text-gray-400 dark:text-gray-500 mb-4">
+              <Code className="h-16 w-16 mx-auto" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+              {activeTab === 'testing' && 'Testing & QA Tools'}
+              {activeTab === 'deployment' && 'Deployment Management'}
+              {activeTab === 'documentation' && 'Technical Documentation'}
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400">
+              Advanced developer tools are being implemented and will be available soon.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
