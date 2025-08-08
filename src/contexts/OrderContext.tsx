@@ -1,162 +1,149 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { CartItem } from './CartContext';
-import { realTimeMonitor } from '../monitoring/RealTimeMonitor';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { ordersService, CreateOrderData } from '../services/supabase/orders.service';
+import { adminService } from '../services/supabase/admin.service';
+import { useAuth } from './AuthContext';
+import { Database } from '../types/database';
 
-export interface ShippingInfo {
-  fullName: string;
-  phone: string;
-  address: string;
-  city: string;
-  postalCode: string;
-  province: string;
-}
+type Order = Database['public']['Tables']['orders']['Row'];
+type OrderItem = Database['public']['Tables']['order_items']['Row'];
 
-export interface PaymentMethod {
-  id: string;
-  name: string;
-  type: 'bank' | 'ewallet' | 'cod';
-  fee: number;
-}
-
-export interface ShippingMethod {
-  id: string;
-  name: string;
-  price: number;
-  estimatedDays: string;
-}
-
-export interface Order {
-  id: string;
-  orderNumber: string;
-  items: CartItem[];
-  shippingInfo: ShippingInfo;
-  paymentMethod: PaymentMethod;
-  shippingMethod: ShippingMethod;
-  subtotal: number;
-  tax: number;
-  paymentFee: number;
-  shippingFee: number;
-  discountAmount: number;
-  discountCode: string;
-  total: number;
-  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
-  createdAt: string;
-  updatedAt: string;
+interface OrderWithItems extends Order {
+  items: OrderItem[];
 }
 
 interface OrderContextType {
-  orders: Order[];
-  createOrder: (orderData: Omit<Order, 'id' | 'orderNumber' | 'status' | 'createdAt' | 'updatedAt'>) => Promise<string>;
-  getOrderById: (id: string) => Order | undefined;
-  updateOrderStatus: (id: string, status: Order['status']) => void;
+  orders: OrderWithItems[];
+  loading: boolean;
+  createOrder: (orderData: CreateOrderData) => Promise<string>;
+  getOrderById: (id: string) => OrderWithItems | undefined;
+  updateOrderStatus: (id: string, status: Order['status']) => Promise<void>;
+  refreshOrders: () => Promise<void>;
 }
 
 const OrderContext = createContext<OrderContextType | null>(null);
 
 export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [orders, setOrders] = useState<Order[]>([
-    // Mock data for demonstration
-    {
-      id: '1',
-      orderNumber: 'ORD-2024-001',
-      items: [
-        {
-          id: '1',
-          name: 'Monstera Deliciosa',
-          price: 150000,
-          image: 'https://images.pexels.com/photos/1005058/pexels-photo-1005058.jpeg',
-          quantity: 1
-        },
-        {
-          id: '2',
-          name: 'Snake Plant',
-          price: 85000,
-          image: 'https://images.pexels.com/photos/2123482/pexels-photo-2123482.jpeg',
-          quantity: 2
-        }
-      ],
-      shippingInfo: {
-        fullName: 'John Doe',
-        phone: '08123456789',
-        address: 'Jl. Sudirman No. 123',
-        city: 'Jakarta',
-        postalCode: '12345',
-        province: 'DKI Jakarta'
-      },
-      paymentMethod: {
-        id: 'bca',
-        name: 'Transfer BCA',
-        type: 'bank',
-        fee: 0
-      },
-      shippingMethod: {
-        id: 'regular',
-        name: 'Pengiriman Regular',
-        price: 15000,
-        estimatedDays: '3-5 hari'
-      },
-      subtotal: 320000,
-      tax: 35200,
-      paymentFee: 0,
-      shippingFee: 15000,
-      discountAmount: 32000,
-      discountCode: 'WELCOME10',
-      total: 338200,
-      status: 'processing',
-      createdAt: '2024-01-15T10:30:00Z',
-      updatedAt: '2024-01-15T10:30:00Z'
+  const [orders, setOrders] = useState<OrderWithItems[]>([]);
+  const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
+
+  // Load user orders when user changes
+  useEffect(() => {
+    if (user) {
+      loadUserOrders();
+      
+      // Subscribe to real-time order updates
+      const subscription = ordersService.subscribeToUserOrders(user.id, (payload) => {
+        console.log('Order update received:', payload);
+        loadUserOrders(); // Refresh orders when changes occur
+      });
+
+      return () => {
+        subscription.unsubscribe();
+      };
+    } else {
+      setOrders([]);
     }
-  ]);
+  }, [user]);
 
-  const generateOrderNumber = (): string => {
-    const year = new Date().getFullYear();
-    const orderCount = orders.length + 1;
-    return `ORD-${year}-${orderCount.toString().padStart(3, '0')}`;
+  const loadUserOrders = async () => {
+    if (!user) return;
+
+    try {
+      setLoading(true);
+      const userOrders = await ordersService.getUserOrders(user.id);
+      
+      // Load items for each order
+      const ordersWithItems = await Promise.all(
+        userOrders.map(async (order) => {
+          const items = await ordersService.getOrderItems(order.id);
+          return { ...order, items };
+        })
+      );
+
+      setOrders(ordersWithItems);
+    } catch (error) {
+      console.error('Error loading user orders:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const createOrder = async (orderData: Omit<Order, 'id' | 'orderNumber' | 'status' | 'createdAt' | 'updatedAt'>): Promise<string> => {
-    const newOrder: Order = {
-      ...orderData,
-      id: Date.now().toString(),
-      orderNumber: generateOrderNumber(),
-      status: 'pending',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
+  const createOrder = async (orderData: CreateOrderData): Promise<string> => {
+    if (!user) {
+      throw new Error('User must be authenticated to create order');
+    }
 
-    setOrders(prev => [newOrder, ...prev]);
-    
-    // Track order creation
-    realTimeMonitor.trackOrder(newOrder.id, newOrder.status, newOrder.total);
-    realTimeMonitor.trackRevenue(newOrder.total, 'online_order');
-    
-    return newOrder.id;
+    try {
+      const { order, error } = await ordersService.createOrder(user.id, orderData);
+      
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      if (order) {
+        // Log order creation
+        await adminService.recordSystemMetric('order_created', 1, {
+          user_id: user.id,
+          order_id: order.id,
+          total: order.total,
+          items_count: orderData.items.length
+        });
+
+        // Refresh orders list
+        await loadUserOrders();
+        
+        return order.id;
+      }
+
+      throw new Error('Failed to create order');
+    } catch (error) {
+      console.error('Error creating order:', error);
+      throw error;
+    }
   };
 
-  const getOrderById = (id: string): Order | undefined => {
+  const getOrderById = (id: string): OrderWithItems | undefined => {
     return orders.find(order => order.id === id);
   };
 
-  const updateOrderStatus = (id: string, status: Order['status']): void => {
-    setOrders(prev => prev.map(order => 
-      order.id === id 
-        ? { ...order, status, updatedAt: new Date().toISOString() }
-        : order
-    ));
-    
-    // Track status update
-    const order = orders.find(o => o.id === id);
-    if (order) {
-      realTimeMonitor.trackOrder(id, status, order.total);
+  const updateOrderStatus = async (id: string, status: Order['status']): Promise<void> => {
+    try {
+      const { error } = await ordersService.updateOrderStatus(id, status);
+      
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      // Log status update
+      if (user) {
+        await adminService.recordSystemMetric('order_status_updated', 1, {
+          user_id: user.id,
+          order_id: id,
+          new_status: status
+        });
+      }
+
+      // Refresh orders
+      await loadUserOrders();
+    } catch (error) {
+      console.error('Error updating order status:', error);
+      throw error;
     }
+  };
+
+  const refreshOrders = async () => {
+    await loadUserOrders();
   };
 
   return (
     <OrderContext.Provider value={{
       orders,
+      loading,
       createOrder,
       getOrderById,
-      updateOrderStatus
+      updateOrderStatus,
+      refreshOrders
     }}>
       {children}
     </OrderContext.Provider>

@@ -1,12 +1,11 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { User, LoginRequest, RegisterRequest, AuthResponse } from '../types/auth';
-import { authService } from '../services/auth';
-import { securityManager } from '../security/SecurityManager';
-import { realTimeMonitor } from '../monitoring/RealTimeMonitor';
+import { User } from '@supabase/supabase-js';
+import { authService, AuthUser, LoginCredentials, RegisterData } from '../services/supabase/auth.service';
+import { adminService } from '../services/supabase/admin.service';
 
 interface AuthState {
   user: User | null;
-  token: string | null;
+  profile: AuthUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
@@ -14,17 +13,17 @@ interface AuthState {
 
 type AuthAction =
   | { type: 'AUTH_START' }
-  | { type: 'AUTH_SUCCESS'; payload: AuthResponse }
+  | { type: 'AUTH_SUCCESS'; payload: { user: User; profile: AuthUser } }
   | { type: 'AUTH_FAILURE'; payload: string }
   | { type: 'LOGOUT' }
   | { type: 'CLEAR_ERROR' }
-  | { type: 'UPDATE_USER'; payload: User };
+  | { type: 'UPDATE_PROFILE'; payload: AuthUser };
 
 const initialState: AuthState = {
   user: null,
-  token: null,
+  profile: null,
   isAuthenticated: false,
-  isLoading: false,
+  isLoading: true,
   error: null
 };
 
@@ -40,7 +39,7 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
       return {
         ...state,
         user: action.payload.user,
-        token: action.payload.token,
+        profile: action.payload.profile,
         isAuthenticated: true,
         isLoading: false,
         error: null
@@ -49,24 +48,25 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
       return {
         ...state,
         user: null,
-        token: null,
+        profile: null,
         isAuthenticated: false,
         isLoading: false,
         error: action.payload
       };
     case 'LOGOUT':
       return {
-        ...initialState
+        ...initialState,
+        isLoading: false
       };
     case 'CLEAR_ERROR':
       return {
         ...state,
         error: null
       };
-    case 'UPDATE_USER':
+    case 'UPDATE_PROFILE':
       return {
         ...state,
-        user: action.payload
+        profile: action.payload
       };
     default:
       return state;
@@ -75,15 +75,17 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
 
 interface AuthContextType {
   user: User | null;
-  token: string | null;
+  profile: AuthUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
-  login: (credentials: LoginRequest) => Promise<void>;
-  register: (userData: RegisterRequest) => Promise<void>;
+  login: (credentials: LoginCredentials) => Promise<void>;
+  register: (userData: RegisterData) => Promise<void>;
   logout: () => Promise<void>;
   clearError: () => void;
-  updateUser: (user: User) => void;
+  updateProfile: (updates: Partial<AuthUser>) => Promise<void>;
+  isAdmin: () => boolean;
+  isDeveloper: () => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -91,53 +93,80 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // Load user from localStorage on app start
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      // Validate token and load user
-      authService.validateToken(token).then(user => {
+    // Check for existing session
+    const initializeAuth = async () => {
+      try {
+        const user = await authService.getCurrentUser();
         if (user) {
+          const profile = await authService.getUserProfile(user.id);
+          if (profile) {
+            dispatch({
+              type: 'AUTH_SUCCESS',
+              payload: { user, profile }
+            });
+          } else {
+            dispatch({ type: 'LOGOUT' });
+          }
+        } else {
+          dispatch({ type: 'LOGOUT' });
+        }
+      } catch (error) {
+        console.error('Auth initialization error:', error);
+        dispatch({ type: 'LOGOUT' });
+      }
+    };
+
+    initializeAuth();
+
+    // Listen to auth changes
+    const { data: { subscription } } = authService.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) {
+        const profile = await authService.getUserProfile(session.user.id);
+        if (profile) {
           dispatch({
             type: 'AUTH_SUCCESS',
-            payload: { user, token, refreshToken: '', expiresIn: 0 }
+            payload: { user: session.user, profile }
           });
-        } else {
-          localStorage.removeItem('authToken');
         }
-      });
-    }
+      } else if (event === 'SIGNED_OUT') {
+        dispatch({ type: 'LOGOUT' });
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
-  const login = async (credentials: LoginRequest) => {
+  const login = async (credentials: LoginCredentials) => {
     try {
       dispatch({ type: 'AUTH_START' });
       
-      // Security validation
-      const securityCheck = securityManager.validateLogin(
-        credentials.email, 
-        credentials.password, 
-        '127.0.0.1'
-      );
+      const { user, error } = await authService.signIn(credentials);
       
-      if (!securityCheck.isValid) {
-        throw new Error(securityCheck.reason || 'Security validation failed');
+      if (error) {
+        throw new Error(error.message);
       }
-      
-      const response = await authService.login(credentials);
-      
-      // Store token in localStorage
-      localStorage.setItem('authToken', response.token);
-      
-      // Create secure session
-      const sessionId = securityManager.createSecureSession(response.user.id, response.user.role);
-      
-      // Track user login
-      realTimeMonitor.trackUser(response.user.id, 'login');
-      
-      dispatch({ type: 'AUTH_SUCCESS', payload: response });
+
+      if (user) {
+        const profile = await authService.getUserProfile(user.id);
+        if (profile) {
+          // Log user activity
+          await adminService.recordSystemMetric('user_login', 1, {
+            user_id: user.id,
+            email: user.email
+          });
+
+          dispatch({
+            type: 'AUTH_SUCCESS',
+            payload: { user, profile }
+          });
+        } else {
+          throw new Error('Profile not found');
+        }
+      }
     } catch (error) {
-      realTimeMonitor.trackSystemError(error as Error, 'AuthContext.login');
       dispatch({ 
         type: 'AUTH_FAILURE', 
         payload: error instanceof Error ? error.message : 'Login failed' 
@@ -146,19 +175,31 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  const register = async (userData: RegisterRequest) => {
+  const register = async (userData: RegisterData) => {
     try {
       dispatch({ type: 'AUTH_START' });
-      const user = await authService.register(userData);
       
-      // Auto-login after registration
-      const loginResponse = await authService.login({
-        email: userData.email,
-        password: userData.password
-      });
+      const { user, error } = await authService.signUp(userData);
       
-      localStorage.setItem('authToken', loginResponse.token);
-      dispatch({ type: 'AUTH_SUCCESS', payload: loginResponse });
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      if (user) {
+        const profile = await authService.getUserProfile(user.id);
+        if (profile) {
+          // Log user registration
+          await adminService.recordSystemMetric('user_registration', 1, {
+            user_id: user.id,
+            email: user.email
+          });
+
+          dispatch({
+            type: 'AUTH_SUCCESS',
+            payload: { user, profile }
+          });
+        }
+      }
     } catch (error) {
       dispatch({ 
         type: 'AUTH_FAILURE', 
@@ -171,19 +212,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const logout = async () => {
     try {
       if (state.user) {
-        realTimeMonitor.trackUser(state.user.id, 'logout');
+        await adminService.recordSystemMetric('user_logout', 1, {
+          user_id: state.user.id
+        });
       }
-      
-      if (state.token) {
-        await authService.logout(state.token);
-      }
-      localStorage.removeItem('authToken');
+
+      await authService.signOut();
       dispatch({ type: 'LOGOUT' });
     } catch (error) {
       console.error('Logout error:', error);
-      realTimeMonitor.trackSystemError(error as Error, 'AuthContext.logout');
-      // Still clear local state even if server logout fails
-      localStorage.removeItem('authToken');
       dispatch({ type: 'LOGOUT' });
     }
   };
@@ -192,15 +229,39 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     dispatch({ type: 'CLEAR_ERROR' });
   };
 
-  const updateUser = (user: User) => {
-    dispatch({ type: 'UPDATE_USER', payload: user });
+  const updateProfile = async (updates: Partial<AuthUser>) => {
+    if (!state.user) return;
+
+    try {
+      const { error } = await authService.updateProfile(state.user.id, updates);
+      
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      const updatedProfile = await authService.getUserProfile(state.user.id);
+      if (updatedProfile) {
+        dispatch({ type: 'UPDATE_PROFILE', payload: updatedProfile });
+      }
+    } catch (error) {
+      console.error('Profile update error:', error);
+      throw error;
+    }
+  };
+
+  const isAdmin = () => {
+    return state.profile?.role === 'admin';
+  };
+
+  const isDeveloper = () => {
+    return state.profile?.role === 'developer';
   };
 
   return (
     <AuthContext.Provider
       value={{
         user: state.user,
-        token: state.token,
+        profile: state.profile,
         isAuthenticated: state.isAuthenticated,
         isLoading: state.isLoading,
         error: state.error,
@@ -208,7 +269,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         register,
         logout,
         clearError,
-        updateUser
+        updateProfile,
+        isAdmin,
+        isDeveloper
       }}
     >
       {children}

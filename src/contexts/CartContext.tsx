@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useReducer, ReactNode } from 'react';
-import { realTimeMonitor } from '../monitoring/RealTimeMonitor';
+import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
+import { adminService } from '../services/supabase/admin.service';
+import { useAuth } from './AuthContext';
 
 export interface CartItem {
   id: string;
@@ -14,6 +15,7 @@ interface CartState {
 }
 
 type CartAction =
+  | { type: 'LOAD_CART'; payload: CartItem[] }
   | { type: 'ADD_TO_CART'; payload: CartItem }
   | { type: 'REMOVE_FROM_CART'; payload: string }
   | { type: 'UPDATE_QUANTITY'; payload: { id: string; quantity: number } }
@@ -26,10 +28,16 @@ const CartContext = createContext<{
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
   getTotalPrice: () => number;
+  getItemCount: () => number;
 } | null>(null);
 
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
+    case 'LOAD_CART':
+      return {
+        ...state,
+        items: action.payload
+      };
     case 'ADD_TO_CART': {
       const existingItem = state.items.find(item => item.id === action.payload.id);
       if (existingItem) {
@@ -79,29 +87,85 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, { items: [] });
+  const { user } = useAuth();
 
-  const addToCart = (item: CartItem) => {
+  // Load cart from localStorage on mount
+  useEffect(() => {
+    const savedCart = localStorage.getItem('azka-cart');
+    if (savedCart) {
+      try {
+        const cartItems = JSON.parse(savedCart);
+        dispatch({ type: 'LOAD_CART', payload: cartItems });
+      } catch (error) {
+        console.error('Error loading cart from localStorage:', error);
+      }
+    }
+  }, []);
+
+  // Save cart to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('azka-cart', JSON.stringify(state.items));
+  }, [state.items]);
+
+  const addToCart = async (item: CartItem) => {
     dispatch({ type: 'ADD_TO_CART', payload: item });
-    realTimeMonitor.trackUser('current-user', 'add_to_cart', { productId: item.id, quantity: item.quantity });
+    
+    // Track user activity
+    if (user) {
+      await adminService.recordSystemMetric('add_to_cart', 1, {
+        user_id: user.id,
+        product_id: item.id,
+        quantity: item.quantity,
+        price: item.price
+      });
+    }
   };
 
-  const removeFromCart = (id: string) => {
+  const removeFromCart = async (id: string) => {
+    const item = state.items.find(item => item.id === id);
     dispatch({ type: 'REMOVE_FROM_CART', payload: id });
-    realTimeMonitor.trackUser('current-user', 'remove_from_cart', { productId: id });
+    
+    // Track user activity
+    if (user && item) {
+      await adminService.recordSystemMetric('remove_from_cart', 1, {
+        user_id: user.id,
+        product_id: id,
+        quantity: item.quantity
+      });
+    }
   };
 
-  const updateQuantity = (id: string, quantity: number) => {
+  const updateQuantity = async (id: string, quantity: number) => {
     dispatch({ type: 'UPDATE_QUANTITY', payload: { id, quantity } });
-    realTimeMonitor.trackUser('current-user', 'update_cart_quantity', { productId: id, quantity });
+    
+    // Track user activity
+    if (user) {
+      await adminService.recordSystemMetric('update_cart_quantity', 1, {
+        user_id: user.id,
+        product_id: id,
+        new_quantity: quantity
+      });
+    }
   };
 
-  const clearCart = () => {
+  const clearCart = async () => {
     dispatch({ type: 'CLEAR_CART' });
-    realTimeMonitor.trackUser('current-user', 'clear_cart');
+    
+    // Track user activity
+    if (user) {
+      await adminService.recordSystemMetric('clear_cart', 1, {
+        user_id: user.id,
+        items_count: state.items.length
+      });
+    }
   };
 
   const getTotalPrice = () => {
     return state.items.reduce((total, item) => total + item.price * item.quantity, 0);
+  };
+
+  const getItemCount = () => {
+    return state.items.reduce((count, item) => count + item.quantity, 0);
   };
 
   return (
@@ -112,7 +176,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         removeFromCart,
         updateQuantity,
         clearCart,
-        getTotalPrice
+        getTotalPrice,
+        getItemCount
       }}
     >
       {children}
