@@ -3,6 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { ShoppingCart, Leaf, Search, Package, User, LogOut } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
+import SmartSearchBar from './advanced/SmartSearchBar';
+import LanguageSelector from './i18n/LanguageSelector';
 
 const Header: React.FC = () => {
   const location = useLocation();
@@ -20,13 +22,18 @@ const Header: React.FC = () => {
     }
   };
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50">
+    <header className="bg-white shadow-sm sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center space-x-2">
             <Leaf className="h-8 w-8 text-green-600" />
             <span className="text-xl font-bold text-gray-900">Azka Garden</span>
           </Link>
+
+          {/* Search Bar - Hidden on mobile, shown on larger screens */}
+          <div className="hidden lg:flex flex-1 max-w-2xl mx-8">
+            <SmartSearchBar />
+          </div>
 
           <nav className="hidden md:flex space-x-8">
             <Link
@@ -64,9 +71,16 @@ const Header: React.FC = () => {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <button className="p-2 text-gray-400 hover:text-green-600 transition-colors">
+            {/* Mobile Search Button */}
+            <Link 
+              to="/search"
+              className="lg:hidden p-2 text-gray-400 hover:text-green-600 transition-colors"
+            >
               <Search className="h-5 w-5" />
-            </button>
+            </Link>
+            
+            {/* Language Selector */}
+            <LanguageSelector />
             
             {isAuthenticated && (
               <Link
@@ -141,6 +155,11 @@ const Header: React.FC = () => {
               </div>
             )}
           </div>
+        </div>
+        
+        {/* Mobile Search Bar */}
+        <div className="lg:hidden pb-4">
+          <SmartSearchBar />
         </div>
       </div>
     </header>

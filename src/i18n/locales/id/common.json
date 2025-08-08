@@ -1,0 +1,286 @@
+{
+  "navigation": {
+    "home": "Beranda",
+    "products": "Produk",
+    "categories": "Kategori",
+    "about": "Tentang",
+    "contact": "Kontak",
+    "cart": "Keranjang",
+    "orders": "Pesanan",
+    "profile": "Profil",
+    "login": "Masuk",
+    "register": "Daftar",
+    "logout": "Keluar"
+  },
+  "common": {
+    "search": "Cari",
+    "filter": "Filter",
+    "sort": "Urutkan",
+    "loading": "Memuat...",
+    "error": "Terjadi kesalahan",
+    "success": "Berhasil",
+    "save": "Simpan",
+    "cancel": "Batal",
+    "delete": "Hapus",
+    "edit": "Edit",
+    "view": "Lihat",
+    "add": "Tambah",
+    "remove": "Hapus",
+    "update": "Perbarui",
+    "confirm": "Konfirmasi",
+    "back": "Kembali",
+    "next": "Selanjutnya",
+    "previous": "Sebelumnya",
+    "close": "Tutup",
+    "open": "Buka",
+    "yes": "Ya",
+    "no": "Tidak",
+    "ok": "OK",
+    "submit": "Kirim",
+    "reset": "Reset",
+    "clear": "Bersihkan",
+    "select": "Pilih",
+    "choose": "Pilih",
+    "upload": "Unggah",
+    "download": "Unduh",
+    "print": "Cetak",
+    "share": "Bagikan",
+    "copy": "Salin",
+    "paste": "Tempel",
+    "cut": "Potong",
+    "undo": "Urungkan",
+    "redo": "Ulangi"
+  },
+  "auth": {
+    "login": {
+      "title": "Masuk ke Akun Anda",
+      "subtitle": "Selamat datang kembali di Azka Garden",
+      "email": "Email",
+      "password": "Kata Sandi",
+      "remember_me": "Ingat saya",
+      "forgot_password": "Lupa kata sandi?",
+      "login_button": "Masuk",
+      "no_account": "Belum punya akun?",
+      "register_link": "Daftar sekarang",
+      "social_login": "Atau masuk dengan",
+      "google": "Google",
+      "facebook": "Facebook"
+    },
+    "register": {
+      "title": "Buat Akun Baru",
+      "subtitle": "Bergabunglah dengan komunitas pecinta tanaman",
+      "full_name": "Nama Lengkap",
+      "username": "Username",
+      "email": "Email",
+      "phone": "Nomor Telepon",
+      "password": "Kata Sandi",
+      "confirm_password": "Konfirmasi Kata Sandi",
+      "accept_terms": "Saya menyetujui Syarat & Ketentuan",
+      "subscribe_newsletter": "Saya ingin menerima newsletter",
+      "register_button": "Daftar Sekarang",
+      "have_account": "Sudah punya akun?",
+      "login_link": "Masuk di sini",
+      "benefits": {
+        "title": "Keuntungan bergabung:",
+        "access": "Akses ke koleksi tanaman terlengkap",
+        "guides": "Panduan perawatan tanaman gratis",
+        "offers": "Notifikasi penawaran khusus",
+        "loyalty": "Program loyalitas dengan poin reward"
+      }
+    },
+    "validation": {
+      "required": "Field ini wajib diisi",
+      "email_invalid": "Format email tidak valid",
+      "password_min": "Kata sandi minimal 8 karakter",
+      "password_mismatch": "Kata sandi tidak cocok",
+      "phone_invalid": "Format nomor telepon tidak valid",
+      "username_min": "Username minimal 3 karakter",
+      "terms_required": "Anda harus menyetujui syarat & ketentuan"
+    }
+  },
+  "products": {
+    "title": "Katalog Tanaman Hias",
+    "subtitle": "Jelajahi koleksi lengkap tanaman hias berkualitas tinggi",
+    "search_placeholder": "Cari tanaman...",
+    "no_results": "Tidak ada produk yang sesuai",
+    "showing_results": "Menampilkan {{count}} dari {{total}} produk",
+    "sort_by": {
+      "label": "Urutkan berdasarkan",
+      "newest": "Terbaru",
+      "price_low": "Harga Terendah",
+      "price_high": "Harga Tertinggi",
+      "name": "Nama A-Z",
+      "rating": "Rating Tertinggi"
+    },
+    "filters": {
+      "category": "Kategori",
+      "price_range": "Rentang Harga",
+      "care_level": "Tingkat Perawatan",
+      "in_stock": "Tersedia",
+      "clear_all": "Hapus Semua Filter"
+    },
+    "care_levels": {
+      "easy": "Mudah",
+      "medium": "Sedang",
+      "hard": "Sulit"
+    },
+    "stock_status": {
+      "in_stock": "Tersedia",
+      "low_stock": "Stok Terbatas",
+      "out_of_stock": "Stok Habis"
+    }
+  },
+  "product_detail": {
+    "add_to_cart": "Tambah ke Keranjang",
+    "add_to_wishlist": "Tambah ke Wishlist",
+    "quantity": "Jumlah",
+    "description": "Deskripsi",
+    "specifications": "Spesifikasi",
+    "care_instructions": "Panduan Perawatan",
+    "reviews": "Ulasan",
+    "related_products": "Produk Terkait",
+    "share": "Bagikan",
+    "category": "Kategori",
+    "height": "Tinggi",
+    "care_level": "Perawatan",
+    "watering": "Penyiraman",
+    "stock": "Stok",
+    "sku": "SKU"
+  },
+  "cart": {
+    "title": "Keranjang Belanja",
+    "empty_title": "Keranjang Kosong",
+    "empty_message": "Belum ada produk di keranjang Anda",
+    "start_shopping": "Mulai Belanja",
+    "continue_shopping": "Lanjut Belanja",
+    "item_count": "{{count}} item",
+    "subtotal": "Subtotal",
+    "shipping": "Ongkos Kirim",
+    "tax": "Pajak",
+    "total": "Total",
+    "checkout": "Lanjut ke Checkout",
+    "update_cart": "Perbarui Keranjang",
+    "remove_item": "Hapus Item",
+    "quantity": "Jumlah"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "shipping_info": "Informasi Pengiriman",
+    "payment_method": "Metode Pembayaran",
+    "shipping_method": "Metode Pengiriman",
+    "order_summary": "Ringkasan Pesanan",
+    "discount_code": "Kode Diskon",
+    "apply_discount": "Terapkan",
+    "place_order": "Buat Pesanan",
+    "processing": "Memproses...",
+    "required_fields": "Field yang wajib diisi",
+    "shipping_address": {
+      "full_name": "Nama Lengkap",
+      "phone": "Nomor Telepon",
+      "address": "Alamat Lengkap",
+      "city": "Kota",
+      "postal_code": "Kode Pos",
+      "province": "Provinsi"
+    }
+  },
+  "orders": {
+    "title": "Daftar Pesanan",
+    "empty_title": "Belum Ada Pesanan",
+    "empty_message": "Anda belum memiliki pesanan",
+    "order_number": "Pesanan #{{number}}",
+    "order_date": "Tanggal Pesanan",
+    "total_amount": "Total Pesanan",
+    "status": "Status",
+    "view_detail": "Lihat Detail",
+    "track_order": "Lacak Pesanan",
+    "statuses": {
+      "pending": "Menunggu Pembayaran",
+      "processing": "Diproses",
+      "shipped": "Dikirim",
+      "delivered": "Selesai",
+      "cancelled": "Dibatalkan"
+    }
+  },
+  "footer": {
+    "company": {
+      "title": "Azka Garden",
+      "description": "Toko tanaman hias online terpercaya dengan koleksi lengkap dan kualitas terbaik."
+    },
+    "quick_links": {
+      "title": "Tautan Cepat",
+      "about": "Tentang Kami",
+      "contact": "Kontak",
+      "faq": "FAQ",
+      "shipping": "Pengiriman",
+      "returns": "Pengembalian",
+      "privacy": "Kebijakan Privasi",
+      "terms": "Syarat & Ketentuan"
+    },
+    "categories": {
+      "title": "Kategori",
+      "indoor": "Tanaman Indoor",
+      "outdoor": "Tanaman Outdoor",
+      "succulents": "Sukulen",
+      "flowering": "Tanaman Berbunga",
+      "herbs": "Tanaman Herbal"
+    },
+    "contact": {
+      "title": "Kontak Kami",
+      "address": "Jl. Raya Tanaman Hias No. 123, Jakarta Selatan 12345",
+      "phone": "+62 812-3456-7890",
+      "email": "info@azkagarden.com",
+      "hours": "Senin - Sabtu: 08:00 - 17:00 WIB"
+    },
+    "social": {
+      "title": "Ikuti Kami",
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "twitter": "Twitter",
+      "youtube": "YouTube",
+      "whatsapp": "WhatsApp"
+    },
+    "newsletter": {
+      "title": "Newsletter",
+      "description": "Dapatkan tips perawatan tanaman dan penawaran khusus",
+      "placeholder": "Masukkan email Anda",
+      "subscribe": "Berlangganan"
+    },
+    "copyright": "© {{year}} Azka Garden. Semua hak dilindungi."
+  },
+  "notifications": {
+    "success": {
+      "login": "Berhasil masuk ke akun Anda",
+      "register": "Akun berhasil dibuat",
+      "logout": "Berhasil keluar dari akun",
+      "add_to_cart": "Produk berhasil ditambahkan ke keranjang",
+      "remove_from_cart": "Produk berhasil dihapus dari keranjang",
+      "order_placed": "Pesanan berhasil dibuat",
+      "profile_updated": "Profil berhasil diperbarui"
+    },
+    "error": {
+      "network": "Koneksi internet bermasalah",
+      "server": "Terjadi kesalahan pada server",
+      "validation": "Data yang dimasukkan tidak valid",
+      "unauthorized": "Anda tidak memiliki akses",
+      "not_found": "Data tidak ditemukan",
+      "unknown": "Terjadi kesalahan yang tidak diketahui"
+    }
+  },
+  "currency": {
+    "symbol": "Rp",
+    "format": "{{symbol}} {{amount}}"
+  },
+  "date": {
+    "formats": {
+      "short": "DD/MM/YYYY",
+      "long": "DD MMMM YYYY",
+      "with_time": "DD/MM/YYYY HH:mm"
+    },
+    "relative": {
+      "just_now": "Baru saja",
+      "minutes_ago": "{{count}} menit yang lalu",
+      "hours_ago": "{{count}} jam yang lalu",
+      "days_ago": "{{count}} hari yang lalu"
+    }
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "navigation": {
+    "home": "Home",
+    "products": "Products",
+    "categories": "Categories",
+    "about": "About",
+    "contact": "Contact",
+    "cart": "Cart",
+    "orders": "Orders",
+    "profile": "Profile",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout"
+  },
+  "common": {
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "add": "Add",
+    "remove": "Remove",
+    "update": "Update",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "open": "Open",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "submit": "Submit",
+    "reset": "Reset",
+    "clear": "Clear",
+    "select": "Select",
+    "choose": "Choose",
+    "upload": "Upload",
+    "download": "Download",
+    "print": "Print",
+    "share": "Share",
+    "copy": "Copy",
+    "paste": "Paste",
+    "cut": "Cut",
+    "undo": "Undo",
+    "redo": "Redo"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign In to Your Account",
+      "subtitle": "Welcome back to Azka Garden",
+      "email": "Email",
+      "password": "Password",
+      "remember_me": "Remember me",
+      "forgot_password": "Forgot password?",
+      "login_button": "Sign In",
+      "no_account": "Don't have an account?",
+      "register_link": "Register now",
+      "social_login": "Or sign in with",
+      "google": "Google",
+      "facebook": "Facebook"
+    },
+    "register": {
+      "title": "Create New Account",
+      "subtitle": "Join our plant lovers community",
+      "full_name": "Full Name",
+      "username": "Username",
+      "email": "Email",
+      "phone": "Phone Number",
+      "password": "Password",
+      "confirm_password": "Confirm Password",
+      "accept_terms": "I agree to Terms & Conditions",
+      "subscribe_newsletter": "I want to receive newsletter",
+      "register_button": "Register Now",
+      "have_account": "Already have an account?",
+      "login_link": "Sign in here",
+      "benefits": {
+        "title": "Benefits of joining:",
+        "access": "Access to complete plant collection",
+        "guides": "Free plant care guides",
+        "offers": "Special offers notifications",
+        "loyalty": "Loyalty program with reward points"
+      }
+    },
+    "validation": {
+      "required": "This field is required",
+      "email_invalid": "Invalid email format",
+      "password_min": "Password minimum 8 characters",
+      "password_mismatch": "Passwords don't match",
+      "phone_invalid": "Invalid phone number format",
+      "username_min": "Username minimum 3 characters",
+      "terms_required": "You must agree to terms & conditions"
+    }
+  },
+  "products": {
+    "title": "Plant Catalog",
+    "subtitle": "Explore our complete collection of high-quality ornamental plants",
+    "search_placeholder": "Search plants...",
+    "no_results": "No products match your criteria",
+    "showing_results": "Showing {{count}} of {{total}} products",
+    "sort_by": {
+      "label": "Sort by",
+      "newest": "Newest",
+      "price_low": "Price: Low to High",
+      "price_high": "Price: High to Low",
+      "name": "Name A-Z",
+      "rating": "Highest Rating"
+    },
+    "filters": {
+      "category": "Category",
+      "price_range": "Price Range",
+      "care_level": "Care Level",
+      "in_stock": "In Stock",
+      "clear_all": "Clear All Filters"
+    },
+    "care_levels": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
+    "stock_status": {
+      "in_stock": "In Stock",
+      "low_stock": "Low Stock",
+      "out_of_stock": "Out of Stock"
+    }
+  },
+  "currency": {
+    "symbol": "$",
+    "format": "{{symbol}}{{amount}}"
+  }
+}

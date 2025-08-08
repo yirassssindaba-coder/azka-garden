@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Leaf, Heart, Star } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
+import ProductRecommendations from '../components/advanced/ProductRecommendations';
 import { Plant } from '../types';
 import { getPlants } from '../services/database';
+import { useAuth } from '../contexts/AuthContext';
 
 const Home: React.FC = () => {
   const [featuredPlants, setFeaturedPlants] = useState<Plant[]>([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
 
   useEffect(() => {
     const loadFeaturedPlants = async () => {
@@ -137,6 +140,20 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* AI-Powered Recommendations */}
+      {user && (
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <ProductRecommendations
+              type="personalized"
+              userId={user.id}
+              title="Rekomendasi Khusus Untuk Anda"
+              limit={6}
+            />
+          </div>
+        </section>
+      )}
     </div>
   );
 };

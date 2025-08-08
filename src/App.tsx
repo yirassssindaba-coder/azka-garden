@@ -1,6 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
+import Footer from './components/layout/Footer';
+import ChatBot from './components/ai/ChatBot';
+import SmartSearchBar from './components/advanced/SmartSearchBar';
 import Home from './pages/Home';
 import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
@@ -10,6 +13,7 @@ import Orders from './pages/Orders';
 import OrderDetail from './pages/OrderDetail';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import SearchResults from './pages/SearchResults';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import { CartProvider } from './contexts/CartContext';
 import { OrderProvider } from './contexts/OrderContext';
@@ -35,10 +39,13 @@ function App() {
                   <Route path="/orders/:id" element={<OrderDetail />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
+                  <Route path="/search" element={<SearchResults />} />
                   <Route path="/admin" element={<AdminDashboard />} />
                   <Route path="/admin/dashboard" element={<AdminDashboard />} />
                 </Routes>
               </main>
+              <Footer />
+              <ChatBot />
             </div>
           </Router>
         </CartProvider>
