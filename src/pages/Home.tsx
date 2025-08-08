@@ -33,16 +33,16 @@ const Home: React.FC = () => {
     const createPetal = () => {
       const petal = document.createElement('div');
       petal.className = 'floating-petal';
-      petal.innerHTML = ['🌸', '🌺', '🌻', '🌷', '🌹', '🌼', '🌿', '🍃'][Math.floor(Math.random() * 8)];
+      petal.innerHTML = ['🌸', '🌺', '🌻', '🌷', '🌹', '🌼', '🌿', '🍃', '🌱', '🌾', '🍀', '🌳'][Math.floor(Math.random() * 12)];
       petal.style.cssText = `
         position: fixed;
         top: -50px;
         left: ${Math.random() * 100}vw;
-        font-size: ${Math.random() * 15 + 20}px;
+        font-size: ${Math.random() * 10 + 15}px;
         opacity: ${Math.random() * 0.7 + 0.3};
         pointer-events: none;
         z-index: 0;
-        animation: floatDown ${Math.random() * 8 + 12}s linear infinite;
+        animation: floatDown ${Math.random() * 6 + 8}s linear infinite;
         transform: rotate(${Math.random() * 360}deg);
       `;
       
@@ -52,7 +52,7 @@ const Home: React.FC = () => {
         if (petal.parentNode) {
           petal.parentNode.removeChild(petal);
         }
-      }, 25000);
+      }, 15000);
     };
 
     // Add CSS animation
@@ -60,31 +60,31 @@ const Home: React.FC = () => {
     style.textContent = `
       @keyframes floatDown {
         0% {
-          transform: translateY(-100px) rotate(0deg) scale(0.8);
+          transform: translateY(-50px) rotate(0deg) scale(0.8);
           opacity: 1;
         }
         50% {
-          transform: translateY(50vh) rotate(180deg) scale(1);
+          transform: translateY(40vh) rotate(180deg) scale(1);
           opacity: 0.8;
         }
         100% {
-          transform: translateY(110vh) rotate(360deg) scale(0.6);
+          transform: translateY(100vh) rotate(360deg) scale(0.6);
           opacity: 0;
         }
       }
       .floating-petal {
         animation: floatDown linear infinite;
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
       }
     `;
     document.head.appendChild(style);
 
     // Create petals periodically
-    const interval = setInterval(createPetal, 2000);
+    const interval = setInterval(createPetal, 1500);
     
     // Initial petals
-    for (let i = 0; i < 8; i++) {
-      setTimeout(createPetal, i * 500);
+    for (let i = 0; i < 5; i++) {
+      setTimeout(createPetal, i * 300);
     }
 
     return () => {

@@ -206,7 +206,7 @@ const Checkout: React.FC = () => {
                 <MapPin className="h-6 w-6 text-green-600 mr-2" />
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Informasi Pengiriman</h2>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Nama Lengkap *
@@ -216,7 +216,7 @@ const Checkout: React.FC = () => {
                     required
                     value={shippingInfo.fullName}
                     onChange={(e) => handleInputChange('fullName', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
                   />
                 </div>
                 <div>
@@ -228,10 +228,10 @@ const Checkout: React.FC = () => {
                     required
                     value={shippingInfo.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
                   />
                 </div>
-                <div className="md:col-span-2">
+                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Alamat Lengkap *
                   </label>
@@ -240,9 +240,10 @@ const Checkout: React.FC = () => {
                     rows={3}
                     value={shippingInfo.address}
                     onChange={(e) => handleInputChange('address', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
                   />
                 </div>
+                <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Kota *
@@ -252,7 +253,7 @@ const Checkout: React.FC = () => {
                     required
                     value={shippingInfo.city}
                     onChange={(e) => handleInputChange('city', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
                   />
                 </div>
                 <div>
@@ -264,10 +265,11 @@ const Checkout: React.FC = () => {
                     required
                     value={shippingInfo.postalCode}
                     onChange={(e) => handleInputChange('postalCode', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
                   />
                 </div>
-                <div className="md:col-span-2">
+                </div>
+                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Provinsi *
                   </label>
@@ -276,7 +278,7 @@ const Checkout: React.FC = () => {
                     required
                     value={shippingInfo.province}
                     onChange={(e) => handleInputChange('province', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
                   />
                 </div>
               </div>

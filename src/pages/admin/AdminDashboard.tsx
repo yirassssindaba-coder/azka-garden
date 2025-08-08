@@ -322,13 +322,14 @@ const AdminDashboard: React.FC = () => {
       {/* Admin Navigation Tabs */}
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
         <div className="max-w-full px-4 sm:px-6 lg:px-8">
-          <nav className="flex space-x-4 min-w-max">
+          <nav className="flex space-x-2 lg:space-x-4 min-w-max">
             {[
               { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
               { id: 'users', label: 'Manajemen Pengguna', icon: Users },
               { id: 'products', label: 'Manajemen Produk', icon: Package },
               { id: 'orders', label: 'Manajemen Pesanan', icon: ShoppingCart },
               { id: 'customer-service', label: 'Customer Service', icon: MessageSquare },
+              { id: 'reviews', label: 'Ulasan & Komentar', icon: Star },
               { id: 'payments', label: 'Pembayaran', icon: CreditCard },
               { id: 'shipping', label: 'Pengiriman', icon: Truck },
               { id: 'analytics', label: 'Analisis & Laporan', icon: TrendingUp },
@@ -338,14 +339,14 @@ const AdminDashboard: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 py-4 px-3 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
+                className={`flex items-center space-x-1 lg:space-x-2 py-4 px-2 lg:px-3 border-b-2 font-medium text-xs lg:text-sm transition-colors whitespace-nowrap ${
                   activeTab === tab.id
                     ? 'border-green-500 text-green-600 dark:text-green-400'
                     : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300'
                 }`}
               >
                 <tab.icon className="h-4 w-4" />
-                <span>{tab.label}</span>
+                <span className="hidden sm:inline">{tab.label}</span>
               </button>
             ))}
           </nav>

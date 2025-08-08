@@ -102,19 +102,19 @@ const Header: React.FC = () => {
             {/* Admin Portal Link */}
             <Link 
               to="/admin/login"
-              className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900 rounded-lg transition-colors"
+              className="flex items-center px-2 lg:px-3 py-2 text-xs lg:text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900 rounded-lg transition-colors"
             >
               <Shield className="h-4 w-4 mr-1" />
-              Administrator
+              <span className="hidden lg:inline">Portal </span>Administrator
             </Link>
             
             {/* Developer Portal Link */}
             <Link 
               to="/developer/login"
-              className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900 rounded-lg transition-colors"
+              className="flex items-center px-2 lg:px-3 py-2 text-xs lg:text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900 rounded-lg transition-colors"
             >
               <Code className="h-4 w-4 mr-1" />
-              Pengembang
+              <span className="hidden lg:inline">Portal </span>Pengembang
             </Link>
             
             {/* Orders Link for authenticated users */}
