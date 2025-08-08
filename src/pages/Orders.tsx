@@ -70,7 +70,7 @@ const Orders: React.FC = () => {
 
       <div className="space-y-6">
         {orders.map((order) => (
-          <div key={order.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div key={order.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-700">
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-4">
@@ -110,26 +110,26 @@ const Orders: React.FC = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div>
-                  <div className="text-sm text-gray-600">Total Pesanan</div>
-                  <div className="text-lg font-semibold text-gray-900">
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Total Pesanan</div>
+                  <div className="text-lg font-semibold text-gray-900 dark:text-white">
                     Rp {order.total.toLocaleString('id-ID')}
                   </div>
                 </div>
                 <div>
-                  <div className="text-sm text-gray-600">Metode Pembayaran</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Metode Pembayaran</div>
                   <div className="flex items-center">
-                    <CreditCard className="h-4 w-4 mr-1" />
-                    <span className="text-gray-900">{order.paymentMethod.name}</span>
+                    <CreditCard className="h-4 w-4 mr-1 text-gray-600 dark:text-gray-400" />
+                    <span className="text-gray-900 dark:text-white">{order.paymentMethod.name}</span>
                   </div>
                 </div>
                 <div>
-                  <div className="text-sm text-gray-600">Pengiriman</div>
-                  <div className="text-gray-900">{order.shippingMethod.name}</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Pengiriman</div>
+                  <div className="text-gray-900 dark:text-white">{order.shippingMethod.name}</div>
                 </div>
               </div>
 
               <div className="border-t pt-4">
-                <div className="text-sm text-gray-600 mb-2">
+                <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                   {order.items.length} item dalam pesanan ini
                 </div>
                 <div className="flex space-x-4 overflow-x-auto">
@@ -143,8 +143,8 @@ const Orders: React.FC = () => {
                     </div>
                   ))}
                   {order.items.length > 4 && (
-                    <div className="flex-shrink-0 w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
-                      <span className="text-sm text-gray-600">+{order.items.length - 4}</span>
+                    <div className="flex-shrink-0 w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-300">+{order.items.length - 4}</span>
                     </div>
                   )}
                 </div>

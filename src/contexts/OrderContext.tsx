@@ -52,6 +52,16 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   useEffect(() => {
     if (user && orders.length > 0) {
       localStorage.setItem(`orders_${user.id}`, JSON.stringify(orders));
+      
+      // Also save to global orders for admin dashboard
+      const allOrders = JSON.parse(localStorage.getItem('all_orders') || '[]');
+      const userOrders = orders.map(order => ({ ...order, userId: user.id }));
+      
+      // Remove existing orders for this user and add updated ones
+      const otherUserOrders = allOrders.filter((order: any) => order.userId !== user.id);
+      const updatedAllOrders = [...otherUserOrders, ...userOrders];
+      
+      localStorage.setItem('all_orders', JSON.stringify(updatedAllOrders));
     }
   }, [orders, user]);
 

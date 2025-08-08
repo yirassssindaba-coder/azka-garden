@@ -66,14 +66,14 @@ const OrderDetail: React.FC = () => {
         Kembali ke Daftar Pesanan
       </Link>
 
-      <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">
-        <div className="p-6 border-b">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-8 border border-gray-200 dark:border-gray-700">
+        <div className="p-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                 Pesanan #{order.orderNumber}
               </h1>
-              <div className="flex items-center text-gray-600 mt-2">
+              <div className="flex items-center text-gray-600 dark:text-gray-400 mt-2">
                 <Calendar className="h-4 w-4 mr-1" />
                 Dibuat pada {new Date(order.createdAt).toLocaleDateString('id-ID', {
                   year: 'numeric',
@@ -108,13 +108,13 @@ const OrderDetail: React.FC = () => {
                         className="w-16 h-16 object-cover rounded-lg"
                       />
                       <div className="flex-1">
-                        <h3 className="font-medium text-gray-900">{item.name}</h3>
-                        <p className="text-sm text-gray-600">
+                        <h3 className="font-medium text-gray-900 dark:text-white">{item.name}</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
                           Rp {item.price.toLocaleString('id-ID')} x {item.quantity}
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="font-semibold text-gray-900">
+                        <p className="font-semibold text-gray-900 dark:text-white">
                           Rp {(item.price * item.quantity).toLocaleString('id-ID')}
                         </p>
                       </div>

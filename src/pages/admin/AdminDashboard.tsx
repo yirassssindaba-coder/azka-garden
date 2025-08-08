@@ -50,29 +50,35 @@ const AdminDashboard: React.FC = () => {
       const stats = await getPlantStatistics();
       setPlantStats(stats);
 
-      // Calculate real dashboard stats from orders
-      const totalRevenue = orders
-        .filter(order => order.status === 'delivered')
-        .reduce((sum, order) => sum + order.total, 0);
+      // Get real-time data from all orders across all users
+      const allOrders = JSON.parse(localStorage.getItem('all_orders') || '[]');
+      
+      // Calculate real dashboard stats
+      const totalRevenue = allOrders
+        .filter((order: any) => order.status === 'delivered')
+        .reduce((sum: number, order: any) => sum + order.total, 0);
 
-      const todayOrders = orders.filter(order => {
+      const todayOrders = allOrders.filter((order: any) => {
         const orderDate = new Date(order.createdAt);
         const today = new Date();
         return orderDate.toDateString() === today.toDateString();
       });
 
+      // Get all users from localStorage
+      const allUsers = JSON.parse(localStorage.getItem('all_users') || '[]');
+      
       const dashboardData = {
-        total_orders: orders.length,
-        pending_orders: orders.filter(o => o.status === 'pending').length,
-        processing_orders: orders.filter(o => o.status === 'processing').length,
-        completed_orders: orders.filter(o => o.status === 'delivered').length,
+        total_orders: allOrders.length,
+        pending_orders: allOrders.filter((o: any) => o.status === 'pending').length,
+        processing_orders: allOrders.filter((o: any) => o.status === 'processing').length,
+        completed_orders: allOrders.filter((o: any) => o.status === 'delivered').length,
         total_revenue: totalRevenue,
         today_orders: todayOrders.length,
-        today_revenue: todayOrders.reduce((sum, order) => sum + order.total, 0),
-        total_users: 1250,
+        today_revenue: todayOrders.reduce((sum: number, order: any) => sum + order.total, 0),
+        total_users: allUsers.length,
         total_products: stats.totalPlants,
         low_stock_products: stats.lowStockCount,
-        average_order_value: orders.length > 0 ? totalRevenue / orders.length : 0,
+        average_order_value: allOrders.length > 0 ? totalRevenue / allOrders.length : 0,
         unread_messages: getUnreadCount()
       };
 

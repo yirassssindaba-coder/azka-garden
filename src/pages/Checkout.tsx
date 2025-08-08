@@ -201,7 +201,7 @@ const Checkout: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
             {/* Shipping Information */}
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
               <div className="flex items-center mb-4">
                 <MapPin className="h-6 w-6 text-green-600 mr-2" />
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Informasi Pengiriman</h2>
@@ -220,7 +220,7 @@ const Checkout: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Nomor Telepon *
                   </label>
                   <input
@@ -228,7 +228,7 @@ const Checkout: React.FC = () => {
                     required
                     value={shippingInfo.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   />
                 </div>
                 <div className="md:col-span-2">

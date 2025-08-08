@@ -178,6 +178,10 @@ export class AuthService implements IUserService {
     };
 
     this.users.push(newUser);
+    
+    // Save all users to localStorage for admin dashboard
+    localStorage.setItem('all_users', JSON.stringify(this.users));
+    
     return newUser;
   }
 
