@@ -118,9 +118,6 @@ const Checkout: React.FC = () => {
       if (selectedPayment === 'stripe') {
         setPaymentProcessing(true);
         
-        const stripe = await stripePromise;
-        if (!stripe) throw new Error('Stripe failed to load');
-
         const paymentIntent = await StripeService.createPaymentIntent({
           orderId: 'temp-' + Date.now(),
           amount: Math.round(total),
@@ -133,7 +130,7 @@ const Checkout: React.FC = () => {
           shippingAddress: shippingInfo
         });
 
-        // Simulate payment confirmation
+        // Confirm payment with Stripe
         const paymentResult = await StripeService.confirmPayment(paymentIntent.id);
         
         if (!paymentResult.success) {
@@ -321,7 +318,7 @@ const Checkout: React.FC = () => {
               </div>
               <div className="space-y-3">
                 {paymentMethods.map((method) => (
-                  <label key={method.id} className="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                  <label key={method.id} className="flex items-center p-3 border border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <input
                       type="radio"
                       name="payment"
@@ -331,10 +328,16 @@ const Checkout: React.FC = () => {
                       className="mr-3"
                     />
                     <div className="flex-1">
-                      <div className="font-medium">{method.name}</div>
+                      <div className="font-medium text-gray-900 dark:text-white">{method.name}</div>
                       {method.fee > 0 && (
-                        <div className="text-sm text-gray-600">
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
                           Biaya admin: Rp {method.fee.toLocaleString('id-ID')}
+                        </div>
+                      )}
+                      {method.id === 'stripe' && (
+                        <div className="text-xs text-green-600 dark:text-green-400 flex items-center space-x-1 mt-1">
+                          <Shield className="h-3 w-3" />
+                          <span>Pembayaran aman dengan Stripe</span>
                         </div>
                       )}
                     </div>

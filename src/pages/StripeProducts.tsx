@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Leaf, Crown, Package, CreditCard, Calendar } from 'lucide-react';
+import { ShoppingCart, Leaf, Crown, Package, CreditCard, Calendar, Star, Shield, Zap } from 'lucide-react';
 import { stripeProducts, StripeProduct } from '../stripe-config';
 import { useAuth } from '../contexts/AuthContext';
 import { StripeService } from '../services/stripe';
+import StripeCheckout from '../components/stripe/StripeCheckout';
+import SubscriptionManager from '../components/stripe/SubscriptionManager';
 
 const StripeProducts: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [subscription, setSubscription] = useState<any>(null);
   const [orders, setOrders] = useState<any[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<StripeProduct | null>(null);
+  const [showCheckout, setShowCheckout] = useState(false);
   const { user, isAuthenticated } = useAuth();
 
   useEffect(() => {
@@ -38,18 +42,8 @@ const StripeProducts: React.FC = () => {
       return;
     }
 
-    setLoading(true);
-    
-    try {
-      // Simulate successful checkout
-      const sessionId = 'cs_test_' + Math.random().toString(36).substr(2, 9);
-      window.location.href = `${window.location.origin}/stripe-success?session_id=${sessionId}`;
-    } catch (error) {
-      console.error('Error creating checkout session:', error);
-      alert('Terjadi kesalahan saat memproses pembayaran. Silakan coba lagi.');
-    } finally {
-      setLoading(false);
-    }
+    setSelectedProduct(product);
+    setShowCheckout(true);
   };
 
   const getCategoryIcon = (name: string) => {
@@ -90,56 +84,39 @@ const StripeProducts: React.FC = () => {
       <section className="bg-gradient-to-br from-green-600 to-green-800 dark:from-gray-800 dark:to-black text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <Leaf className="h-16 w-16 text-green-200 mx-auto mb-6" />
+            <div className="flex items-center justify-center space-x-4 mb-6">
+              <Leaf className="h-16 w-16 text-green-200" />
+              <Crown className="h-16 w-16 text-yellow-400" />
+            </div>
             <h1 className="text-5xl font-bold mb-4">Koleksi Premium Azka Garden</h1>
             <p className="text-xl text-green-100 max-w-2xl mx-auto">
-              Tanaman hias berkualitas tinggi dengan sistem berlangganan untuk perawatan berkelanjutan
+              Tanaman hias berkualitas tinggi dengan sistem pembayaran yang aman dan fleksibel
             </p>
+            
+            {/* Trust Indicators */}
+            <div className="flex items-center justify-center space-x-8 mt-8">
+              <div className="flex items-center space-x-2">
+                <Shield className="h-5 w-5 text-green-200" />
+                <span className="text-green-100 text-sm">Pembayaran Aman</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Star className="h-5 w-5 text-yellow-400" />
+                <span className="text-green-100 text-sm">Kualitas Terjamin</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Zap className="h-5 w-5 text-blue-400" />
+                <span className="text-green-100 text-sm">Pengiriman Cepat</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* User Subscription Status */}
+        {/* Subscription Manager */}
         {isAuthenticated && subscription && (
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-8 border border-gray-200 dark:border-gray-700">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full">
-                  <Crown className="h-6 w-6 text-green-600 dark:text-green-400" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">Status Berlangganan</h3>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    {subscription.price_id ? (
-                      <>
-                        <span className="font-medium">
-                          {StripeService.getProductByPriceId(subscription.price_id)?.name || 'Paket Berlangganan'}
-                        </span>
-                        {' - '}
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          subscription.subscription_status === 'active' 
-                            ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                            : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
-                        }`}>
-                          {StripeService.getSubscriptionStatusLabel(subscription.subscription_status)}
-                        </span>
-                      </>
-                    ) : (
-                      'Belum ada berlangganan aktif'
-                    )}
-                  </p>
-                </div>
-              </div>
-              {subscription.current_period_end && (
-                <div className="text-right">
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Berlaku hingga</div>
-                  <div className="font-medium text-gray-900 dark:text-white">
-                    {new Date(subscription.current_period_end * 1000).toLocaleDateString('id-ID')}
-                  </div>
-                </div>
-              )}
-            </div>
+          <div className="mb-8">
+            <SubscriptionManager />
           </div>
         )}
 
@@ -203,21 +180,14 @@ const StripeProducts: React.FC = () => {
 
                 <button
                   onClick={() => handlePurchase(product)}
-                  disabled={loading}
-                  className="w-full bg-green-600 dark:bg-green-700 text-white font-semibold py-3 rounded-lg hover:bg-green-700 dark:hover:bg-green-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                  className="w-full bg-green-600 dark:bg-green-700 text-white font-semibold py-3 rounded-lg hover:bg-green-700 dark:hover:bg-green-800 transition-colors flex items-center justify-center"
                 >
-                  {loading ? (
-                    'Memproses...'
+                  {product.mode === 'subscription' ? (
+                    <Calendar className="h-5 w-5 mr-2" />
                   ) : (
-                    <>
-                      {product.mode === 'subscription' ? (
-                        <Calendar className="h-5 w-5 mr-2" />
-                      ) : (
-                        <ShoppingCart className="h-5 w-5 mr-2" />
-                      )}
-                      {product.mode === 'subscription' ? 'Berlangganan Sekarang' : 'Beli Sekarang'}
-                    </>
+                    <ShoppingCart className="h-5 w-5 mr-2" />
                   )}
+                  {product.mode === 'subscription' ? 'Berlangganan Sekarang' : 'Beli Sekarang'}
                 </button>
               </div>
             </div>
@@ -289,6 +259,39 @@ const StripeProducts: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Stripe Checkout Modal */}
+      {showCheckout && selectedProduct && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white">Checkout</h3>
+              <button
+                onClick={() => setShowCheckout(false)}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+            <div className="p-4">
+              <StripeCheckout
+                priceId={selectedProduct.priceId}
+                productName={selectedProduct.name}
+                amount={selectedProduct.price}
+                mode={selectedProduct.mode}
+                onSuccess={() => {
+                  setShowCheckout(false);
+                  setSelectedProduct(null);
+                }}
+                onError={(error) => {
+                  alert(error);
+                  setShowCheckout(false);
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

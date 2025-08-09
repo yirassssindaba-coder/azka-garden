@@ -52,7 +52,7 @@ const StripeSuccess: React.FC = () => {
             Pembayaran Berhasil!
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-            Terima kasih atas pembelian Anda. Pesanan Anda sedang diproses dan akan segera dikirim.
+            Terima kasih atas kepercayaan Anda pada Azka Garden. Pesanan Anda sedang diproses dengan penuh perhatian.
           </p>
 
           {/* Order Details */}
@@ -100,7 +100,7 @@ const StripeSuccess: React.FC = () => {
           {/* Next Steps */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Langkah Selanjutnya</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
                 <Package className="h-6 w-6 text-green-600 dark:text-green-400 mx-auto mb-2" />
                 <h4 className="font-medium text-gray-900 dark:text-white mb-1">Persiapan Pengiriman</h4>
@@ -115,23 +115,30 @@ const StripeSuccess: React.FC = () => {
                   Anda akan menerima panduan perawatan lengkap via email
                 </p>
               </div>
+              <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400 mx-auto mb-2" />
+                <h4 className="font-medium text-gray-900 dark:text-white mb-1">Konfirmasi Email</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  Receipt dan detail pesanan telah dikirim ke email Anda
+                </p>
+              </div>
             </div>
           </div>
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 mt-8">
             <Link
-              to="/products"
+              to="/stripe-products"
               className="flex-1 bg-green-600 dark:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700 dark:hover:bg-green-800 transition-colors flex items-center justify-center"
             >
-              Lanjut Belanja
+              Jelajahi Koleksi Lainnya
               <ArrowRight className="h-5 w-5 ml-2" />
             </Link>
             <Link
               to="/profile"
               className="flex-1 border-2 border-green-600 dark:border-green-400 text-green-600 dark:text-green-400 font-semibold py-3 px-6 rounded-lg hover:bg-green-50 dark:hover:bg-green-900 transition-colors flex items-center justify-center"
             >
-              Lihat Profil
+              Kelola Berlangganan
             </Link>
           </div>
 

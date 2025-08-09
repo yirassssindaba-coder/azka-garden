@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { User, Mail, Phone, MapPin, Calendar, Edit, Save, X } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import SubscriptionManager from '../components/stripe/SubscriptionManager';
 
 const Profile: React.FC = () => {
   const { user, updateProfile } = useAuth();
@@ -83,9 +84,9 @@ const Profile: React.FC = () => {
           <div className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Personal Information */}
-              <div>
+              <div className="space-y-6">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Informasi Pribadi</h2>
-                <div className="space-y-4">
+                <div className="bg-white dark:bg-gray-700 p-4 rounded-lg space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Nama Lengkap
@@ -135,6 +136,12 @@ const Profile: React.FC = () => {
                       </div>
                     )}
                   </div>
+                </div>
+                
+                {/* Subscription Management */}
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Berlangganan</h2>
+                  <SubscriptionManager />
                 </div>
               </div>
 
