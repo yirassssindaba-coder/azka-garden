@@ -198,14 +198,14 @@ const Checkout: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
             {/* Shipping Information */}
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
               <div className="flex items-center mb-4">
                 <MapPin className="h-6 w-6 text-green-600 mr-2" />
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Informasi Pengiriman</h2>
+                <h2 className="text-xl font-semibold text-gray-900">Informasi Pengiriman</h2>
               </div>
               <div className="grid grid-cols-1 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Nama Lengkap *
                   </label>
                   <input
@@ -213,11 +213,11 @@ const Checkout: React.FC = () => {
                     required
                     value={shippingInfo.fullName}
                     onChange={(e) => handleInputChange('fullName', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 bg-white text-gray-900 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Nomor Telepon *
                   </label>
                   <input
@@ -225,7 +225,7 @@ const Checkout: React.FC = () => {
                     required
                     value={shippingInfo.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 bg-white text-gray-900 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
                   />
                 </div>
                 <div>
@@ -237,7 +237,7 @@ const Checkout: React.FC = () => {
                     rows={3}
                     value={shippingInfo.address}
                     onChange={(e) => handleInputChange('address', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 bg-white text-gray-900 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -250,7 +250,7 @@ const Checkout: React.FC = () => {
                     required
                     value={shippingInfo.city}
                     onChange={(e) => handleInputChange('city', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 bg-white text-gray-900 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
                   />
                 </div>
                 <div>
@@ -262,7 +262,7 @@ const Checkout: React.FC = () => {
                     required
                     value={shippingInfo.postalCode}
                     onChange={(e) => handleInputChange('postalCode', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 bg-white text-gray-900 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
                   />
                 </div>
                 </div>
@@ -275,21 +275,21 @@ const Checkout: React.FC = () => {
                     required
                     value={shippingInfo.province}
                     onChange={(e) => handleInputChange('province', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 bg-white text-gray-900 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
                   />
                 </div>
               </div>
             </div>
 
             {/* Shipping Method */}
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
               <div className="flex items-center mb-4">
                 <Truck className="h-6 w-6 text-green-600 mr-2" />
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Metode Pengiriman</h2>
+                <h2 className="text-xl font-semibold text-gray-900">Metode Pengiriman</h2>
               </div>
               <div className="space-y-3">
                 {shippingMethods.map((method) => (
-                  <label key={method.id} className="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                  <label key={method.id} className="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
                     <input
                       type="radio"
                       name="shipping"
@@ -299,10 +299,10 @@ const Checkout: React.FC = () => {
                       className="mr-3"
                     />
                     <div className="flex-1">
-                      <div className="font-medium">{method.name}</div>
+                      <div className="font-medium text-gray-900">{method.name}</div>
                       <div className="text-sm text-gray-600">{method.estimatedDays}</div>
                     </div>
-                    <div className="font-semibold">
+                    <div className="font-semibold text-gray-900">
                       Rp {method.price.toLocaleString('id-ID')}
                     </div>
                   </label>
@@ -311,14 +311,14 @@ const Checkout: React.FC = () => {
             </div>
 
             {/* Payment Method */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
               <div className="flex items-center mb-4">
                 <CreditCard className="h-6 w-6 text-green-600 mr-2" />
-                <h2 className="text-xl font-semibold">Metode Pembayaran</h2>
+                <h2 className="text-xl font-semibold text-gray-900">Metode Pembayaran</h2>
               </div>
               <div className="space-y-3">
                 {paymentMethods.map((method) => (
-                  <label key={method.id} className="flex items-center p-3 border border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                  <label key={method.id} className="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
                     <input
                       type="radio"
                       name="payment"
@@ -328,14 +328,14 @@ const Checkout: React.FC = () => {
                       className="mr-3"
                     />
                     <div className="flex-1">
-                      <div className="font-medium text-gray-900 dark:text-white">{method.name}</div>
+                      <div className="font-medium text-gray-900">{method.name}</div>
                       {method.fee > 0 && (
-                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                        <div className="text-sm text-gray-600">
                           Biaya admin: Rp {method.fee.toLocaleString('id-ID')}
                         </div>
                       )}
                       {method.id === 'stripe' && (
-                        <div className="text-xs text-green-600 dark:text-green-400 flex items-center space-x-1 mt-1">
+                        <div className="text-xs text-green-600 flex items-center space-x-1 mt-1">
                           <Shield className="h-3 w-3" />
                           <span>Pembayaran aman dengan Stripe</span>
                         </div>
@@ -349,49 +349,49 @@ const Checkout: React.FC = () => {
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white p-6 rounded-lg shadow-md sticky top-8">
-              <h2 className="text-xl font-semibold mb-4">Ringkasan Pesanan</h2>
+            <div className="bg-white p-6 rounded-lg shadow-md sticky top-8 border border-gray-200">
+              <h2 className="text-xl font-semibold mb-4 text-gray-900">Ringkasan Pesanan</h2>
               
               <div className="space-y-2 mb-4">
                 {items.map((item) => (
-                  <div key={item.id} className="flex justify-between text-sm">
-                    <span>{item.name} x{item.quantity}</span>
-                    <span>Rp {(item.price * item.quantity).toLocaleString('id-ID')}</span>
+                  <div key={item.id} className="flex justify-between text-sm text-gray-900">
+                    <span className="text-gray-700">{item.name} x{item.quantity}</span>
+                    <span className="text-gray-900">Rp {(item.price * item.quantity).toLocaleString('id-ID')}</span>
                   </div>
                 ))}
               </div>
 
               <div className="border-t pt-4 space-y-2 mb-4">
                 <div className="flex justify-between">
-                  <span>Subtotal</span>
-                  <span>Rp {subtotal.toLocaleString('id-ID')}</span>
+                  <span className="text-gray-700">Subtotal</span>
+                  <span className="text-gray-900">Rp {subtotal.toLocaleString('id-ID')}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Pajak (PPN 11%)</span>
-                  <span>Rp {tax.toLocaleString('id-ID')}</span>
+                  <span className="text-gray-700">Pajak (PPN 11%)</span>
+                  <span className="text-gray-900">Rp {tax.toLocaleString('id-ID')}</span>
                 </div>
                 {shippingFee > 0 && (
                   <div className="flex justify-between">
-                    <span>Ongkos Kirim</span>
-                    <span>Rp {shippingFee.toLocaleString('id-ID')}</span>
+                    <span className="text-gray-700">Ongkos Kirim</span>
+                    <span className="text-gray-900">Rp {shippingFee.toLocaleString('id-ID')}</span>
                   </div>
                 )}
                 {paymentFee > 0 && (
                   <div className="flex justify-between">
-                    <span>Biaya Admin</span>
-                    <span>Rp {paymentFee.toLocaleString('id-ID')}</span>
+                    <span className="text-gray-700">Biaya Admin</span>
+                    <span className="text-gray-900">Rp {paymentFee.toLocaleString('id-ID')}</span>
                   </div>
                 )}
                 {discountAmount > 0 && (
                   <div className="flex justify-between text-green-600">
-                    <span>Diskon ({discountCode})</span>
-                    <span>-Rp {discountAmount.toLocaleString('id-ID')}</span>
+                    <span className="text-green-600">Diskon ({discountCode})</span>
+                    <span className="text-green-600">-Rp {discountAmount.toLocaleString('id-ID')}</span>
                   </div>
                 )}
                 <div className="border-t pt-2">
                   <div className="flex justify-between font-semibold text-lg">
-                    <span>Total</span>
-                    <span>Rp {total.toLocaleString('id-ID')}</span>
+                    <span className="text-gray-900">Total</span>
+                    <span className="text-gray-900">Rp {total.toLocaleString('id-ID')}</span>
                   </div>
                 </div>
               </div>
@@ -400,7 +400,7 @@ const Checkout: React.FC = () => {
               <div className="mb-6">
                 <div className="flex items-center mb-2">
                   <Tag className="h-5 w-5 text-green-600 mr-2" />
-                  <span className="font-medium">Kode Diskon</span>
+                  <span className="font-medium text-gray-900">Kode Diskon</span>
                 </div>
                 <div className="flex space-x-2">
                   <input
@@ -408,7 +408,7 @@ const Checkout: React.FC = () => {
                     value={discountCode}
                     onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
                     placeholder="Masukkan kode"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="flex-1 px-3 py-2 border border-gray-300 bg-white text-gray-900 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   />
                   <button
                     type="button"

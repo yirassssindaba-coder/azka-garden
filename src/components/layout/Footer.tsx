@@ -14,9 +14,9 @@ const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-900 dark:bg-black text-white">
+    <footer className="bg-gray-900 text-white">
       {/* Newsletter Section */}
-      <div className="bg-green-600 dark:bg-green-700">
+      <div className="bg-green-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="mb-4 md:mb-0">
@@ -29,9 +29,9 @@ const Footer: React.FC = () => {
               <input
                 type="email"
                 placeholder="Masukkan email Anda"
-                className="flex-1 md:w-80 px-4 py-3 rounded-l-lg text-gray-900 dark:text-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-300"
+                className="flex-1 md:w-80 px-4 py-3 rounded-l-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-green-300"
               />
-              <button className="bg-green-800 dark:bg-green-900 hover:bg-green-900 dark:hover:bg-black px-6 py-3 rounded-r-lg font-semibold transition-colors">
+              <button className="bg-green-800 hover:bg-green-900 px-6 py-3 rounded-r-lg font-semibold transition-colors">
                 Berlangganan
               </button>
             </div>
@@ -40,7 +40,7 @@ const Footer: React.FC = () => {
       </div>
 
       {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 dark:bg-black">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="lg:col-span-1">

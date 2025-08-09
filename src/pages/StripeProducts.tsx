@@ -79,9 +79,9 @@ const StripeProducts: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-green-600 to-green-800 dark:from-gray-800 dark:to-black text-white py-20">
+      <section className="bg-gradient-to-br from-green-600 to-green-800 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="flex items-center justify-center space-x-4 mb-6">
@@ -123,22 +123,22 @@ const StripeProducts: React.FC = () => {
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {stripeProducts.map((product) => (
-            <div key={product.priceId} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700">
+            <div key={product.priceId} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-200">
               <div className="relative">
-                <div className="h-48 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900 dark:to-green-800 flex items-center justify-center">
+                <div className="h-48 bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
                   <div className="text-6xl">{getCategoryIcon(product.name)}</div>
                 </div>
                 
                 <div className="absolute top-4 left-4 flex space-x-2">
-                  <span className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-2 py-1 rounded-full text-xs font-medium">
+                  <span className="bg-white text-gray-800 px-2 py-1 rounded-full text-xs font-medium">
                     {getCategoryFromName(product.name)}
                   </span>
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                     getCareLevel(product.description) === 'Mudah' 
-                      ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                      ? 'bg-green-100 text-green-800'
                       : getCareLevel(product.description) === 'Sulit'
-                      ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-                      : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                      ? 'bg-red-100 text-red-800'
+                      : 'bg-yellow-100 text-yellow-800'
                   }`}>
                     {getCareLevel(product.description)}
                   </span>
@@ -156,31 +156,31 @@ const StripeProducts: React.FC = () => {
               </div>
               
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2">
+                <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
                   {product.name}
                 </h3>
                 
-                <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3 leading-relaxed">
+                <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
                   {product.description}
                 </p>
                 
                 <div className="flex items-center justify-between mb-6">
                   <div>
-                    <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                    <div className="text-2xl font-bold text-green-600">
                       {formatPrice(product.price)}
                     </div>
                     {product.mode === 'subscription' && (
-                      <div className="text-sm text-gray-500 dark:text-gray-400">per bulan</div>
+                      <div className="text-sm text-gray-500">per bulan</div>
                     )}
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                  <div className="text-sm text-gray-500">
                     USD ${product.price}
                   </div>
                 </div>
 
                 <button
                   onClick={() => handlePurchase(product)}
-                  className="w-full bg-green-600 dark:bg-green-700 text-white font-semibold py-3 rounded-lg hover:bg-green-700 dark:hover:bg-green-800 transition-colors flex items-center justify-center"
+                  className="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center"
                 >
                   {product.mode === 'subscription' ? (
                     <Calendar className="h-5 w-5 mr-2" />
@@ -196,32 +196,32 @@ const StripeProducts: React.FC = () => {
 
         {/* Recent Orders */}
         {isAuthenticated && orders.length > 0 && (
-          <div className="mt-16 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Riwayat Pembelian</h2>
+          <div className="mt-16 bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Riwayat Pembelian</h2>
             <div className="space-y-4">
               {orders.slice(0, 5).map((order) => (
-                <div key={order.order_id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div key={order.order_id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                   <div className="flex items-center space-x-4">
-                    <div className="bg-green-100 dark:bg-green-900 p-2 rounded-full">
-                      <Package className="h-5 w-5 text-green-600 dark:text-green-400" />
+                    <div className="bg-green-100 p-2 rounded-full">
+                      <Package className="h-5 w-5 text-green-600" />
                     </div>
                     <div>
-                      <div className="font-medium text-gray-900 dark:text-white">
+                      <div className="font-medium text-gray-900">
                         Order #{order.checkout_session_id.slice(-8)}
                       </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-sm text-gray-600">
                         {new Date(order.order_date).toLocaleDateString('id-ID')}
                       </div>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="font-semibold text-gray-900 dark:text-white">
+                    <div className="font-semibold text-gray-900">
                       ${(order.amount_total / 100).toFixed(2)}
                     </div>
                     <div className={`text-sm px-2 py-1 rounded-full ${
                       order.order_status === 'completed' 
-                        ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                        : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-yellow-100 text-yellow-800'
                     }`}>
                       {StripeService.getOrderStatusLabel(order.order_status)}
                     </div>
@@ -234,11 +234,11 @@ const StripeProducts: React.FC = () => {
 
         {/* Authentication CTA */}
         {!isAuthenticated && (
-          <div className="mt-16 bg-green-50 dark:bg-green-900 rounded-xl p-8 text-center">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="mt-16 bg-green-50 rounded-xl p-8 text-center">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">
               Mulai Berlangganan Tanaman Premium
             </h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-6">
+            <p className="text-gray-600 mb-6">
               Login untuk mengakses koleksi premium dan sistem berlangganan tanaman hias
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -251,7 +251,7 @@ const StripeProducts: React.FC = () => {
               </Link>
               <Link
                 to="/register"
-                className="inline-flex items-center px-8 py-3 border-2 border-green-600 text-green-600 dark:text-green-400 font-semibold rounded-lg hover:bg-green-50 dark:hover:bg-green-900 transition-colors"
+                className="inline-flex items-center px-8 py-3 border-2 border-green-600 text-green-600 font-semibold rounded-lg hover:bg-green-50 transition-colors"
               >
                 Daftar Akun Baru
               </Link>
@@ -263,12 +263,12 @@ const StripeProducts: React.FC = () => {
       {/* Stripe Checkout Modal */}
       {showCheckout && selectedProduct && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white">Checkout</h3>
+          <div className="bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+              <h3 className="text-lg font-bold text-gray-900">Checkout</h3>
               <button
                 onClick={() => setShowCheckout(false)}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                className="text-gray-400 hover:text-gray-600"
               >
                 <X className="h-6 w-6" />
               </button>

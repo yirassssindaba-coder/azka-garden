@@ -55,7 +55,7 @@ function App() {
               <OrderProvider>
                 <CartProvider>
                   <Router>
-                    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+                    <div className="min-h-screen bg-white transition-colors">
                       <Header />
                       <main>
                         <Routes>

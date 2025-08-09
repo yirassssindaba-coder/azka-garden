@@ -101,7 +101,7 @@ const Home: React.FC = () => {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-green-600 via-green-700 to-green-800 dark:from-gray-800 dark:via-gray-900 dark:to-black text-white overflow-hidden">
+      <section className="relative bg-gradient-to-br from-green-600 via-green-700 to-green-800 text-white overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -301,41 +301,41 @@ const Home: React.FC = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white dark:bg-gray-900">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Mengapa Memilih Azka Garden?</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Mengapa Memilih Azka Garden?</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Komitmen kami untuk memberikan yang terbaik bagi pecinta tanaman hias di Indonesia
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div className="text-center group">
-              <div className="bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900 dark:to-green-800 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                <Leaf className="h-8 w-8 text-green-600 dark:text-green-400" />
+              <div className="bg-gradient-to-br from-green-100 to-green-200 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Leaf className="h-8 w-8 text-green-600" />
               </div>
-              <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">59+ Varietas Premium</h3>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+              <h3 className="text-2xl font-bold mb-4 text-gray-900">59+ Varietas Premium</h3>
+              <p className="text-gray-600 leading-relaxed">
                 Dari Jamani Dolar hingga Bonsai eksklusif, semua tanaman dipilih dengan teliti untuk kualitas optimal 
                 dan disesuaikan dengan iklim Indonesia.
               </p>
             </div>
             <div className="text-center group">
-              <div className="bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900 dark:to-green-800 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                <Heart className="h-8 w-8 text-green-600 dark:text-green-400" />
+              <div className="bg-gradient-to-br from-green-100 to-green-200 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Heart className="h-8 w-8 text-green-600" />
               </div>
-              <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Panduan Perawatan Lengkap</h3>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+              <h3 className="text-2xl font-bold mb-4 text-gray-900">Panduan Perawatan Lengkap</h3>
+              <p className="text-gray-600 leading-relaxed">
                 Setiap tanaman dilengkapi panduan perawatan detail dari frekuensi penyiraman hingga tips khusus 
                 berdasarkan pengalaman bertahun-tahun.
               </p>
             </div>
             <div className="text-center group">
-              <div className="bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900 dark:to-green-800 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                <Star className="h-8 w-8 text-green-600 dark:text-green-400" />
+              <div className="bg-gradient-to-br from-green-100 to-green-200 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Star className="h-8 w-8 text-green-600" />
               </div>
-              <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Harga Terjangkau</h3>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+              <h3 className="text-2xl font-bold mb-4 text-gray-900">Harga Terjangkau</h3>
+              <p className="text-gray-600 leading-relaxed">
                 Mulai dari Rp10.000 hingga koleksi premium. Ada tanaman untuk setiap budget dan kebutuhan 
                 dengan kualitas terjamin.
               </p>
@@ -345,44 +345,44 @@ const Home: React.FC = () => {
       </section>
 
       {/* Services Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Layanan Azka Garden</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Layanan Azka Garden</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Lebih dari sekedar toko tanaman, kami menyediakan solusi lengkap untuk kebutuhan taman Anda
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300">
+            <div className="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300 border border-gray-200">
               <div className="text-4xl mb-4">🌱</div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Penjualan Tanaman</h3>
-              <p className="text-gray-600 dark:text-gray-300 text-sm">
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Penjualan Tanaman</h3>
+              <p className="text-gray-600 text-sm">
                 59+ varietas tanaman hias dari indoor hingga outdoor, bibit buah, dan koleksi bonsai premium
               </p>
             </div>
             
-            <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300">
+            <div className="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300 border border-gray-200">
               <div className="text-4xl mb-4">🏡</div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Jasa Taman</h3>
-              <p className="text-gray-600 dark:text-gray-300 text-sm">
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Jasa Taman</h3>
+              <p className="text-gray-600 text-sm">
                 Pembuatan dan renovasi taman, desain landscape, dan penataan area hijau untuk rumah atau kantor
               </p>
             </div>
             
-            <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300">
+            <div className="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300 border border-gray-200">
               <div className="text-4xl mb-4">🐠</div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Kolam Ikan</h3>
-              <p className="text-gray-600 dark:text-gray-300 text-sm">
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Kolam Ikan</h3>
+              <p className="text-gray-600 text-sm">
                 Pembuatan kolam ikan hias, kolam koi, dan water feature untuk mempercantik taman Anda
               </p>
             </div>
             
-            <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300">
+            <div className="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300 border border-gray-200">
               <div className="text-4xl mb-4">📚</div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Edukasi & Konsultasi</h3>
-              <p className="text-gray-600 dark:text-gray-300 text-sm">
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Edukasi & Konsultasi</h3>
+              <p className="text-gray-600 text-sm">
                 Tutorial perawatan tanaman melalui YouTube dan konsultasi gratis via WhatsApp untuk semua pelanggan
               </p>
             </div>
@@ -394,21 +394,21 @@ const Home: React.FC = () => {
       <PlantShowcase />
 
       {/* Price Range Showcase */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Tanaman untuk Setiap Budget</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Tanaman untuk Setiap Budget</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Dari yang terjangkau hingga koleksi eksklusif untuk semua kalangan
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white dark:bg-gray-900 p-8 rounded-2xl text-center shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:-translate-y-2">
+            <div className="bg-white p-8 rounded-2xl text-center shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:-translate-y-2">
               <div className="text-6xl mb-6">🌱</div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">Budget Friendly</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">Budget Friendly</h3>
               <p className="text-green-600 font-bold text-lg mb-4">Rp10.000 - Rp50.000</p>
-              <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+              <p className="text-gray-600 mb-6 leading-relaxed">
                 Tanaman berkualitas dengan harga terjangkau untuk pemula dan pecinta tanaman dengan budget terbatas
               </p>
               <Link
@@ -419,11 +419,11 @@ const Home: React.FC = () => {
               </Link>
             </div>
             
-            <div className="bg-white dark:bg-gray-900 p-8 rounded-2xl text-center shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:-translate-y-2">
+            <div className="bg-white p-8 rounded-2xl text-center shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:-translate-y-2">
               <div className="text-6xl mb-6">🌿</div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">Mid Range</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">Mid Range</h3>
               <p className="text-blue-600 font-bold text-lg mb-4">Rp50.000 - Rp500.000</p>
-              <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+              <p className="text-gray-600 mb-6 leading-relaxed">
                 Tanaman berkualitas tinggi untuk penggemar tanaman hias yang ingin koleksi lebih beragam
               </p>
               <Link
@@ -434,16 +434,16 @@ const Home: React.FC = () => {
               </Link>
             </div>
             
-            <div className="bg-white dark:bg-gray-900 p-8 rounded-2xl text-center shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:-translate-y-2">
+            <div className="bg-white p-8 rounded-2xl text-center shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:-translate-y-2">
               <div className="text-6xl mb-6">👑</div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">Premium Collection</h3>
-              <p className="text-gray-800 dark:text-gray-200 font-bold text-lg mb-4">Rp500.000+</p>
-              <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">Premium Collection</h3>
+              <p className="text-gray-800 font-bold text-lg mb-4">Rp500.000+</p>
+              <p className="text-gray-600 mb-6 leading-relaxed">
                 Bonsai eksklusif dan tanaman langka untuk kolektor sejati yang menghargai keunikan dan kualitas
               </p>
               <Link
                 to="/products?price=premium"
-                className="inline-flex items-center px-6 py-3 bg-gray-800 dark:bg-gray-700 text-white font-semibold rounded-xl hover:bg-black dark:hover:bg-gray-600 hover:scale-105 transition-all duration-300 shadow-lg"
+                className="inline-flex items-center px-6 py-3 bg-gray-800 text-white font-semibold rounded-xl hover:bg-black hover:scale-105 transition-all duration-300 shadow-lg"
               >
                 Koleksi Eksklusif
               </Link>
@@ -453,7 +453,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Trust & Credibility Section */}
-      <section className="py-20 bg-green-600 dark:bg-green-700 text-white">
+      <section className="py-20 bg-green-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4">Dipercaya Ribuan Pelanggan</h2>
@@ -510,7 +510,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* YouTube Channel Promotion */}
-      <section className="py-20 bg-white dark:bg-gray-900">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-r from-red-500 to-red-600 rounded-2xl p-8 text-white text-center">
             <div className="text-6xl mb-6">📺</div>

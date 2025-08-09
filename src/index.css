@@ -2,10 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Force white backgrounds and dark text */
+body {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+}
+
+.bg-gray-50 {
+  background-color: #ffffff !important;
+}
+
+.bg-gray-100 {
+  background-color: #ffffff !important;
+}
+
+.bg-gray-900 {
+  background-color: #ffffff !important;
+}
+
+.dark\:bg-gray-900 {
+  background-color: #ffffff !important;
+}
+
+.dark\:bg-gray-800 {
+  background-color: #ffffff !important;
+}
+
+.dark\:bg-gray-700 {
+  background-color: #ffffff !important;
+}
+
+/* Force dark text colors */
+.text-white {
+  color: #1f2937 !important;
+}
+
+.dark\:text-white {
+  color: #1f2937 !important;
+}
+
+.text-gray-300 {
+  color: #374151 !important;
+}
+
+.dark\:text-gray-300 {
+  color: #374151 !important;
+}
+
+.text-gray-400 {
+  color: #4b5563 !important;
+}
+
+.dark\:text-gray-400 {
+  color: #4b5563 !important;
+}
+
 /* Prevent horizontal scroll on mobile */
 html, body {
   overflow-x: hidden;
   max-width: 100vw;
+  background-color: #ffffff !important;
 }
 
 * {
@@ -55,40 +111,36 @@ html, body {
   }
 }
 
-/* Dark mode base styles */
+/* Light mode base styles */
 @layer base {
   html {
     @apply transition-colors duration-300;
+    background-color: #ffffff !important;
   }
   
-  .dark {
-    color-scheme: dark;
+  body {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
   }
   
-  /* Improve text contrast in dark mode */
-  .dark body {
-    background-color: #1f2937;
-    color: #f9fafb;
+  .bg-gray-900 {
+    background-color: #ffffff !important;
   }
   
-  .dark .bg-gray-900 {
-    background-color: #1f2937 !important;
+  .bg-gray-800 {
+    background-color: #ffffff !important;
   }
   
-  .dark .bg-gray-800 {
-    background-color: #374151 !important;
+  .text-white {
+    color: #1f2937 !important;
   }
   
-  .dark .text-white {
-    color: #f9fafb !important;
+  .text-gray-300 {
+    color: #374151 !important;
   }
   
-  .dark .text-gray-300 {
-    color: #d1d5db !important;
-  }
-  
-  .dark .text-gray-400 {
-    color: #9ca3af !important;
+  .text-gray-400 {
+    color: #4b5563 !important;
   }
 }
 
