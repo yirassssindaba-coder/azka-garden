@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CreditCard, Truck, MapPin, Tag, ArrowLeft } from 'lucide-react';
+import { CreditCard, Truck, MapPin, Tag, ArrowLeft, Shield } from 'lucide-react';
 import stripePromise, { StripeService } from '../lib/stripe';
 import { useCart } from '../contexts/CartContext';
 import { useOrder } from '../contexts/OrderContext';
