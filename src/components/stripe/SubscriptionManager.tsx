@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, CreditCard, AlertTriangle, CheckCircle, X, Settings } from 'lucide-react';
+import { Calendar, CreditCard, AlertTriangle, CheckCircle, X, Settings, RefreshCw } from 'lucide-react';
 import { StripeService } from '../../services/stripe';
 
 interface Subscription {
-  id: string;
-  status: string;
-  priceId: string;
-  currentPeriodStart: number;
-  currentPeriodEnd: number;
-  cancelAtPeriodEnd: boolean;
-  paymentMethodBrand?: string;
-  paymentMethodLast4?: string;
+  customer_id: string;
+  subscription_id: string | null;
+  subscription_status: string;
+  price_id: string | null;
+  current_period_start: number | null;
+  current_period_end: number | null;
+  cancel_at_period_end: boolean;
+  payment_method_brand: string | null;
+  payment_method_last4: string | null;
 }
 
 const SubscriptionManager: React.FC = () => {
@@ -26,18 +27,7 @@ const SubscriptionManager: React.FC = () => {
   const loadSubscription = async () => {
     try {
       const subData = await StripeService.getUserSubscription();
-      if (subData) {
-        setSubscription({
-          id: subData.subscription_id || '',
-          status: subData.subscription_status,
-          priceId: subData.price_id || '',
-          currentPeriodStart: subData.current_period_start || 0,
-          currentPeriodEnd: subData.current_period_end || 0,
-          cancelAtPeriodEnd: subData.cancel_at_period_end,
-          paymentMethodBrand: subData.payment_method_brand || undefined,
-          paymentMethodLast4: subData.payment_method_last4 || undefined,
-        });
-      }
+      setSubscription(subData);
     } catch (error) {
       console.error('Error loading subscription:', error);
     } finally {
@@ -54,7 +44,7 @@ const SubscriptionManager: React.FC = () => {
       if (subscription) {
         setSubscription({
           ...subscription,
-          cancelAtPeriodEnd: true
+          cancel_at_period_end: true
         });
       }
       
@@ -75,7 +65,7 @@ const SubscriptionManager: React.FC = () => {
       if (subscription) {
         setSubscription({
           ...subscription,
-          cancelAtPeriodEnd: false
+          cancel_at_period_end: false
         });
       }
       
@@ -145,7 +135,7 @@ const SubscriptionManager: React.FC = () => {
     );
   }
 
-  const product = StripeService.getProductByPriceId(subscription.priceId);
+  const product = StripeService.getProductByPriceId(subscription.price_id || '');
 
   return (
     <div className="space-y-6">
@@ -154,9 +144,15 @@ const SubscriptionManager: React.FC = () => {
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">Status Berlangganan</h2>
           <div className="flex items-center space-x-2">
-            {getStatusIcon(subscription.status)}
-            <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(subscription.status)}`}>
-              {StripeService.getSubscriptionStatusLabel(subscription.status)}
+            <button
+              onClick={loadSubscription}
+              className="p-2 text-gray-400 hover:text-green-600 transition-colors"
+            >
+              <RefreshCw className="h-4 w-4" />
+            </button>
+            {getStatusIcon(subscription.subscription_status)}
+            <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(subscription.subscription_status)}`}>
+              {StripeService.getSubscriptionStatusLabel(subscription.subscription_status)}
             </span>
           </div>
         </div>
@@ -180,7 +176,7 @@ const SubscriptionManager: React.FC = () => {
               <div className="flex justify-between">
                 <span className="text-gray-600 dark:text-gray-400">Status:</span>
                 <span className="font-medium text-gray-900 dark:text-white">
-                  {subscription.cancelAtPeriodEnd ? 'Akan dibatalkan' : 'Aktif'}
+                  {subscription.cancel_at_period_end ? 'Akan dibatalkan' : 'Aktif'}
                 </span>
               </div>
             </div>
@@ -192,20 +188,26 @@ const SubscriptionManager: React.FC = () => {
               <div className="flex justify-between">
                 <span className="text-gray-600 dark:text-gray-400">Mulai:</span>
                 <span className="font-medium text-gray-900 dark:text-white">
-                  {new Date(subscription.currentPeriodStart * 1000).toLocaleDateString('id-ID')}
+                  {subscription.current_period_start 
+                    ? new Date(subscription.current_period_start * 1000).toLocaleDateString('id-ID')
+                    : 'N/A'
+                  }
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600 dark:text-gray-400">Berakhir:</span>
                 <span className="font-medium text-gray-900 dark:text-white">
-                  {new Date(subscription.currentPeriodEnd * 1000).toLocaleDateString('id-ID')}
+                  {subscription.current_period_end
+                    ? new Date(subscription.current_period_end * 1000).toLocaleDateString('id-ID')
+                    : 'N/A'
+                  }
                 </span>
               </div>
-              {subscription.paymentMethodBrand && (
+              {subscription.payment_method_brand && (
                 <div className="flex justify-between">
                   <span className="text-gray-600 dark:text-gray-400">Kartu:</span>
                   <span className="font-medium text-gray-900 dark:text-white">
-                    {subscription.paymentMethodBrand} ****{subscription.paymentMethodLast4}
+                    {subscription.payment_method_brand} ****{subscription.payment_method_last4}
                   </span>
                 </div>
               )}
@@ -215,7 +217,7 @@ const SubscriptionManager: React.FC = () => {
 
         {/* Action Buttons */}
         <div className="mt-6 flex flex-col sm:flex-row gap-4">
-          {subscription.cancelAtPeriodEnd ? (
+          {subscription.cancel_at_period_end ? (
             <button
               onClick={handleReactivateSubscription}
               className="flex-1 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors"
@@ -246,7 +248,9 @@ const SubscriptionManager: React.FC = () => {
             </h3>
             <p className="text-gray-600 dark:text-gray-300 mb-6">
               Berlangganan Anda akan tetap aktif hingga akhir periode billing saat ini 
-              ({new Date(subscription.currentPeriodEnd * 1000).toLocaleDateString('id-ID')}).
+              {subscription.current_period_end && (
+                ` (${new Date(subscription.current_period_end * 1000).toLocaleDateString('id-ID')})`
+              )}.
             </p>
             <div className="flex space-x-4">
               <button

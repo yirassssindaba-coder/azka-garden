@@ -40,6 +40,8 @@ import { OrderProvider } from './contexts/OrderContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { ChatProvider } from './contexts/ChatContext';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { ReviewProvider } from './contexts/ReviewContext';
+import StripeProvider from './components/stripe/StripeProvider';
 import ProtectedRoute from './components/ProtectedRoute';
 import './index.css';
 
@@ -47,14 +49,16 @@ function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <ChatProvider>
-          <OrderProvider>
-            <CartProvider>
-              <Router>
-                <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-                  <Header />
-                  <main>
-                    <Routes>
+        <StripeProvider>
+          <ReviewProvider>
+            <ChatProvider>
+              <OrderProvider>
+                <CartProvider>
+                  <Router>
+                    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+                      <Header />
+                      <main>
+                        <Routes>
                       <Route path="/" element={<Home />} />
                       <Route path="/products" element={<Products />} />
                       <Route path="/products/:id" element={<ProductDetail />} />
@@ -131,15 +135,17 @@ function App() {
                           <DeveloperPortal />
                         </ProtectedRoute>
                       } />
-                    </Routes>
-                  </main>
-                  <Footer />
-                  <ChatBot />
-                </div>
-              </Router>
-            </CartProvider>
-          </OrderProvider>
-        </ChatProvider>
+                        </Routes>
+                      </main>
+                      <Footer />
+                      <ChatBot />
+                    </div>
+                  </Router>
+                </CartProvider>
+              </OrderProvider>
+            </ChatProvider>
+          </ReviewProvider>
+        </StripeProvider>
       </AuthProvider>
     </ThemeProvider>
   );

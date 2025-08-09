@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { loadStripe } from '@stripe/stripe-js';
-import { CreditCard, Lock, Shield, CheckCircle } from 'lucide-react';
+import { CreditCard, Lock, Shield, CheckCircle, AlertCircle, X } from 'lucide-react';
+import { StripeService } from '../../services/stripe';
 
 interface StripeCheckoutProps {
   priceId: string;
@@ -20,67 +20,31 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({
   onError
 }) => {
   const [loading, setLoading] = useState(false);
-  const [stripe, setStripe] = useState<any>(null);
-
-  useEffect(() => {
-    const initializeStripe = async () => {
-      const stripeInstance = await loadStripe(
-        import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_demo'
-      );
-      setStripe(stripeInstance);
-    };
-
-    initializeStripe();
-  }, []);
+  const [error, setError] = useState<string | null>(null);
 
   const handleCheckout = async () => {
-    if (!stripe) {
-      onError?.('Stripe belum siap. Silakan coba lagi.');
-      return;
-    }
-
     setLoading(true);
+    setError(null);
 
     try {
-      // Create checkout session
-      const response = await fetch('/api/create-checkout-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          priceId,
-          mode,
-          successUrl: `${window.location.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
-          cancelUrl: window.location.href,
-        }),
+      const response = await StripeService.createCheckoutSession({
+        priceId,
+        mode,
+        successUrl: `${window.location.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancelUrl: window.location.href,
       });
 
-      if (!response.ok) {
-        throw new Error('Gagal membuat sesi checkout');
-      }
-
-      const { sessionId } = await response.json();
-
-      // Redirect to Stripe Checkout
-      const { error } = await stripe.redirectToCheckout({
-        sessionId,
-      });
-
-      if (error) {
-        throw new Error(error.message);
+      if (response.url) {
+        window.location.href = response.url;
+      } else {
+        throw new Error('No checkout URL received');
       }
 
       onSuccess?.();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Terjadi kesalahan';
+      setError(errorMessage);
       onError?.(errorMessage);
-      
-      // For demo purposes, simulate successful checkout
-      setTimeout(() => {
-        const sessionId = 'cs_test_' + Math.random().toString(36).substr(2, 9);
-        window.location.href = `/success?session_id=${sessionId}`;
-      }, 1000);
     } finally {
       setLoading(false);
     }
@@ -109,6 +73,15 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({
         )}
       </div>
 
+      {error && (
+        <div className="bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-lg p-4 mb-6">
+          <div className="flex items-center space-x-2">
+            <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
+            <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+          </div>
+        </div>
+      )}
+
       <div className="space-y-4 mb-6">
         <div className="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-400">
           <Shield className="h-4 w-4 text-green-600" />
@@ -126,7 +99,7 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({
 
       <button
         onClick={handleCheckout}
-        disabled={loading || !stripe}
+        disabled={loading}
         className="w-full bg-green-600 dark:bg-green-700 text-white font-semibold py-4 rounded-lg hover:bg-green-700 dark:hover:bg-green-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
       >
         {loading ? (

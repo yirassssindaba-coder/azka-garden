@@ -28,13 +28,19 @@ export interface StripePaymentData {
 export class StripeService {
   static async createPaymentIntent(paymentData: StripePaymentData): Promise<PaymentIntent> {
     try {
-      // In production, this would call your backend API
-      const response = await fetch('/api/create-payment-intent', {
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stripe-checkout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
         },
-        body: JSON.stringify(paymentData),
+        body: JSON.stringify({
+          amount: paymentData.amount,
+          currency: paymentData.currency,
+          customer_info: paymentData.customerInfo,
+          shipping_address: paymentData.shippingAddress,
+          order_id: paymentData.orderId
+        }),
       });
 
       if (!response.ok) {
@@ -43,6 +49,8 @@ export class StripeService {
 
       return await response.json();
     } catch (error) {
+      console.error('Payment intent creation failed:', error);
+      
       // Fallback to mock for demo
       const mockPaymentIntent: PaymentIntent = {
         id: 'pi_' + Date.now(),
@@ -63,10 +71,10 @@ export class StripeService {
         throw new Error('Stripe failed to load');
       }
 
-      // Simulate payment confirmation
+      // Simulate payment confirmation for demo
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      const success = Math.random() > 0.1; // 90% success rate
+      const success = Math.random() > 0.1; // 90% success rate for demo
       
       if (success) {
         return { success: true };
@@ -86,16 +94,17 @@ export class StripeService {
 
   static async createCheckoutSession(priceId: string, mode: 'payment' | 'subscription' = 'payment') {
     try {
-      const response = await fetch('/api/create-checkout-session', {
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stripe-checkout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
         },
         body: JSON.stringify({
-          priceId,
+          price_id: priceId,
           mode,
-          successUrl: `${window.location.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
-          cancelUrl: `${window.location.origin}/stripe-products`,
+          success_url: `${window.location.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+          cancel_url: `${window.location.origin}/stripe-products`,
         }),
       });
 
@@ -106,9 +115,27 @@ export class StripeService {
       const { url } = await response.json();
       window.location.href = url;
     } catch (error) {
+      console.error('Checkout session creation failed:', error);
+      
       // Fallback to mock success for demo
       const sessionId = 'cs_test_' + Math.random().toString(36).substr(2, 9);
       window.location.href = `/success?session_id=${sessionId}`;
     }
+  }
+
+  static formatPrice(price: number): string {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2
+    }).format(price);
+  }
+
+  static formatPriceIDR(price: number): string {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0
+    }).format(price * 15000); // Convert USD to IDR
   }
 }
