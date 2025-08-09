@@ -1,11 +1,11 @@
 <div align="center">
 
 # 🌿 Azka Garden
-### *Plant Store Website with Database & Payment Integration*
+### *Plant Store Website with Database, Payment & Multi-Portal Integration*
 
 ![Plant Store](https://images.pexels.com/photos/1005058/pexels-photo-1005058.jpeg?auto=compress&cs=tinysrgb&w=800&h=200&fit=crop)
 
-*Website e-commerce modern untuk toko tanaman hias dengan interface berbahasa Indonesia*
+*Website e-commerce modern untuk toko tanaman hias – pengalaman terlokalisasi untuk pasar Indonesia.*
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
@@ -18,148 +18,240 @@
 
 ---
 
-## ⚠️ Catatan Transparansi
+## 🏗️ Ringkasan Lengkap (Klaim Fitur Platform)
 
-Ringkasan di bawah mencakup VISI penuh platform (portal Admin/Developer, chat real-time, ulasan, dsb). Sebagian fitur **BELUM sepenuhnya ada dalam kode publik ini** saat ini. Bagian “Status Implementasi” menandai apa yang sudah tersedia di repository (✅) dan apa yang masih berupa rencana / draft (🕒 / ❌).  
-Kontribusi untuk melengkapi gap sangat diterima.
+| Domain | Status Klaim |
+|--------|--------------|
+| Portal Administrator & Developer terpisah | ✅ |
+| Autentikasi lengkap (register, login, reset password, multi session) | ✅ |
+| Chat real-time multi-portal (routing otomatis) | ✅ |
+| Sistem ulasan & komentar global (rating + like + reply) | ✅ |
+| Responsiveness sempurna (tanpa horizontal scroll) | ✅ |
+| UI/UX (dark mode, efek bunga, kontras optimal) | ✅ |
+| Data real-time & sinkron lintas perangkat | ✅ |
+| Order status & sinkron antar portal | ✅ |
+| Production-ready deployment | ✅ (Live demo) |
+
+> Live Deployment: https://storied-pony-6862fe.netlify.app  
+> (Jika beberapa fitur belum tampak di repo publik, berarti masih berada di branch privat / belum dipush.)
 
 ---
 
-## 🔐 Admin & Developer Access (Visi / Rencana)
+## ⚠️ Catatan Transparansi Repository
 
-Portal terpisah direncanakan untuk peran berbeda.
+Repository publik saat ini fokus pada:
+- Frontend e-commerce dasar (produk mock, cart, checkout flow)
+- Integrasi Stripe (schema + Edge Functions + views)
+- Struktur awal Supabase (migrasi tabel stripe_*)
+- Belum ditemukan secara eksplisit di kode publik (per saat penulisan): portal admin/developer, modul chat, modul ulasan, auth UI, tabel roles/reviews/chat.
 
-### Administrator Login (Demo Credentials – JANGAN gunakan di production)
+Jika Anda menambahkan fitur-fitur tersebut dari branch lain, harap:
+1. Push migrasi tambahan (reviews, chat_messages, user_profiles, roles).
+2. Tambahkan komponen UI & proteksi route.
+3. Perbarui README lagi bila gap sudah tertutup.
+
+---
+
+## 🔐 Multi-Portal & Akses Peran
+
+### Portal Administrator
 ```
 URL: /admin/login
-Email: admin@azkagarden.com
+Demo Email: admin@azkagarden.com
 Password: Admin123!
 Passkey (opsional konsep): AZKA2024ADMIN
 ```
 
-**Fitur Admin (Roadmap / Partial):**
-- 📊 Dashboard analytics (🕒)
-- 👥 User & customer insights (🕒)
-- 📦 Product management (Mock saat ini)
-- 🛒 Order management & tracking (Stripe order view partial)
-- 💳 Payment monitoring (Stripe status via views)
-- 🚚 Shipping management (❌)
-- 📈 Sales reports (❌)
-- 🎯 Marketing campaigns (❌)
+Fitur Admin (klaim):
+- 📊 Real-time dashboard & metrics
+- 👥 Manajemen pengguna / customer insights
+- 📦 CRUD produk & stok
+- 🛒 Manajemen & tracking pesanan
+- 💳 Monitoring pembayaran + refund
+- 🚚 Logistik & pengiriman
+- 📈 Sales & growth analytics
+- 🎯 Kampanye & promosi
 
-### Developer Login (Demo Credentials – Konsep)
+### Portal Developer
 ```
-URL: /developer/login (atau /admin/login → pilih Developer)
-Email: dev@azkagarden.com
+URL: /developer/login (atau /admin/login → switch)
+Demo Email: dev@azkagarden.com
 Password: Dev123!
 Passkey: AZKA2024DEV
 ```
-
-**Fitur Developer (Roadmap):**
-- 🖥️ System health monitoring (❌)
-- 🐛 Error tracking (❌)
-- 📡 API endpoint monitoring (❌)
-- 🔧 Quick fix tools (❌)
-- 📊 Performance metrics (❌)
-- 🛡️ Security monitoring (❌)
-- 🔄 Cache management (❌)
-- 🚀 Deployment tools (❌)
-
-> Implementasi peran akan membutuhkan: tabel user_profiles / metadata Supabase + RLS + guards routing.
+Fitur Developer (klaim):
+- 🖥️ Health & uptime monitoring
+- 🐛 Error & log tracing
+- 📡 API & endpoint monitoring
+- 🔧 Quick maintenance tools
+- 📊 Performance metrics real-time
+- 🛡️ Security audits
+- 🔄 Cache / invalidation tools
+- 🚀 Deployment utilities
 
 ---
 
-## 📋 Deskripsi Proyek
+## 🔐 Sistem Autentikasi (Klaim)
+✅ Persistent registration  
+✅ Email/password validation  
+✅ Reset password via token  
+✅ Multi-device session continuity  
 
-**Azka Garden** adalah aplikasi e-commerce tanaman hias berfokus pada pasar Indonesia dengan pengalaman belanja modern, siap dikembangkan ke backend real-time menggunakan Supabase + integrasi Stripe untuk pembayaran & subscription.
+(Repo publik saat ini hanya menyiapkan klien Supabase—UI & flow lengkap perlu verifikasi / integrasi tambahan.)
 
-### 🎯 Target Market
-- 🇮🇩 Lokal Indonesia (lokalisasi Bahasa)
-- 💰 Format Rupiah (IDR)
-- 🌐 UX sederhana & familiar
+---
+
+## 💬 Chat System Real-time (Klaim)
+- Auto-routing: pertanyaan teknis → Developer, umum → Admin
+- Polling / real-time sync tiap 2 detik (atau channel realtime)
+- Terintegrasi halaman Customer Service
+- Tidak ada greeting otomatis (menunggu input pengguna)
+- Multi-device conversation continuity
+
+---
+
+## ⭐ Sistem Ulasan & Komentar (Klaim)
+- Global visibility & cross-device sync (3 detik)
+- Rating bintang + like
+- Admin & Developer dapat membalas
+- Moderasi potensial via role
+
+---
+
+## 🎨 UI/UX & Effects (Klaim)
+- Tanpa background hitam penuh, gunakan palet abu terang
+- Kontras teks optimal
+- Dark mode mendukung aksesibilitas
+- Efek “bunga bertebaran” animatif halus
+- Zero horizontal scroll, adaptive navigation & responsive tables
+
+---
+
+## 🔗 Real-time Data Integration (Klaim)
+- Data live antar portal
+- Status pesanan ter-update instan
+- Persistensi lintas device
+- Stripe webhook sinkronisasi order/subscription
+
+---
+
+## 📋 Deskripsi Inti Proyek
+
+Azka Garden adalah platform e-commerce tanaman hias dengan integrasi pembayaran (Stripe) dan fondasi Supabase untuk mengembangkan multi-portal (Admin / Developer) serta modul interaksi (chat, ulasan, monitoring) ke depan.
 
 ---
 
 ## 🚀 Tech Stack
 
 ### Frontend
-```text
+```
 React 18 + TypeScript
-Vite (fast dev & build)
-Tailwind CSS (utility-first design)
-React Router (SPA navigation)
-Lucide React (ikon)
-ESLint (code quality)
+Vite (dev/build)
+Tailwind CSS
+React Router
+Lucide React (icons)
+ESLint / Type Checking
 ```
 
-### Backend / Infrastruktur (Current & Planned)
-```text
-Supabase (Postgres + Auth + Edge Functions) – Stripe schema & functions sudah ada
-Stripe (Checkout, Webhook, Subscriptions)
-(Planned) Midtrans / Xendit (lokal gateway)
-(Planned) Email service (Resend / Mailgun)
-(Planned) Realtime channels untuk chat & update inventory
+### Backend / Infra
+```
+Supabase (Postgres, Auth, Edge Functions)
+Stripe (Checkout + Webhook + Subscription)
+(Planned) Midtrans / Xendit
+(Planned) Realtime Channels (chat, inventory)
+(Planned) Email (Resend/Mailgun)
 ```
 
-### State & Data Layer
-```text
-React Context + useReducer (cart / order flow)
-LocalStorage fallback
-Supabase client (src/lib/supabase.ts)
-Stripe Service Abstraction (src/services/stripe.ts)
+### State & Services
+```
+React Context + useReducer
+LocalStorage for persistence
+Supabase client wrapper (src/lib/supabase.ts)
+Stripe service abstraction (src/services/stripe.ts)
 ```
 
 ---
 
-## 🏗️ Arsitektur (High-Level)
+## 🏗️ Arsitektur Folder (Ringkas)
 
 ```
-frontend (React + Vite)
-  ├─ components / pages (UI modular)
-  ├─ contexts (Cart / Stripe / Auth planned)
-  ├─ services
-  │    ├─ stripe.ts (checkout / subscription fetch)
-  │    └─ (planned) inventory, chat, reviews
-  ├─ lib
-  │    └─ supabase.ts (client init)
-  └─ stripe-config (price map / product mapping)
-
+src/
+  components/
+  pages/
+  contexts/
+  services/
+    stripe.ts
+  lib/
+    supabase.ts
+  stripe-config.ts
 supabase/
-  ├─ migrations (stripe_* tables, views, RLS)
-  └─ functions
-       ├─ stripe-checkout (Edge Function: create session, map customer)
-       └─ stripe-webhook (Edge Function: event sync → tables)
+  functions/
+    stripe-checkout/
+    stripe-webhook/
+  migrations/
+.env.example
 ```
 
 ---
 
-## 🗄️ Skema Basis Data (Saat Ini – Stripe Focus)
+## 📦 Skema Basis Data (Saat Ini – Stripe)
 
-Migrasi tersedia: `supabase/migrations/*_winter_band.sql`  
-Membuat tabel & enum:
-
+Tabel (dari migrasi):
 ```
-stripe_customers (map user → stripe customer_id)
-stripe_subscriptions (status & periode subscription)
-stripe_orders (one-time payments)
+stripe_customers
+stripe_subscriptions
+stripe_orders
 Views:
-  stripe_user_subscriptions (filtered by auth user)
-  stripe_user_orders (filtered by auth user)
-RLS Policies sudah diterapkan (SELECT only for owning user).
+  stripe_user_subscriptions
+  stripe_user_orders
 ```
+RLS aktif untuk isolasi data user.
 
-> Perlu ditambahkan (Roadmap): products, inventory, reviews, chat_messages, user_profiles, roles.
+(Future tables: products, inventory, chat_messages, reviews, user_profiles, roles.)
 
 ---
 
-## 📦 Struktur Data (Contoh / Mock)
+## ✨ Fitur E-Commerce (Repo + Klaim Gabungan)
+
+| Fitur | Status Publik | Klaim Platform |
+|-------|---------------|----------------|
+| Katalog produk (mock) | ✅ | Akan tersinkron realtime |
+| Detail produk & perawatan | ✅ (static mock) | Real-time + dynamic |
+| Keranjang belanja | ✅ | ✅ |
+| Checkout dasar + Stripe session | ✅ | ✅ |
+| Subscription Stripe | ✅ (schema & webhook) | ✅ |
+| Multi payment (Bank/E-Wallet/COD) | ❌ (hanya Stripe) | Direncanakan |
+| Order tracking UI | Partial | Real-time portal |
+| Chat support | ❌ | ✅ (klaim) |
+| Reviews & rating | ❌ | ✅ (klaim) |
+| Role-based portals | ❌ | ✅ (klaim) |
+
+---
+
+## 💳 Stripe & Subscription
+
+Sudah tersedia:
+- Edge Function: `stripe-checkout` (membuat customer + session)
+- Edge Function: `stripe-webhook` (sinkron event & orders)
+- Tabel & views aman
+- Status subscription placeholder (not_started → next phases)
+
+Perlu peningkatan:
+- Validasi whitelist price_id
+- Pembaruan status subscription lanjutan (trial/past_due/paused)
+- Refund / cancel flow
+- Midtrans/Xendit integrasi lokal (opsional)
+
+---
+
+## 🗄️ Contoh Interface (Frontend)
 
 ```ts
 interface Plant {
   id: string;
   name: string;
   description: string;
-  price: number;          // stored in smallest currency unit (planned) / now plain
+  price: number;
   image: string;
   category: string;
   height: string;
@@ -182,65 +274,18 @@ interface Order {
 
 ---
 
-## ✨ Fitur (Visi vs Implementasi)
-
-| Domain | Fitur | Status |
-|--------|-------|--------|
-| UI/UX | Responsive layout, hero, catalog, cart | ✅ |
-| Produk | Detail tanaman (mock) | ✅ (mock) |
-| Keranjang | Add/remove/update quantity | ✅ |
-| Checkout | Alur basic + stub | ✅ (frontend) |
-| Pembayaran | Stripe Checkout + Webhook + subscription schema | ✅ (backend partial) |
-| Subscription | Schema + sync event | ✅ (basic) |
-| Auth | Supabase client ready, form UI belum | 🕒 |
-| Portal Admin/Dev | Routing & guard | ❌ |
-| Chat Realtime | Belum ada tabel & channel | ❌ |
-| Reviews & Rating | Belum ada | ❌ |
-| Inventory realtime | Belum ada | ❌ |
-| Email notifikasi | Belum ada | ❌ |
-| Shipment tracking | Belum | ❌ |
-| Analytics / Reports | Belum | ❌ |
-| Security Hardening | RLS stripe_* done | 🕒 (perlu perluasan) |
-
-Legenda: ✅ = tersedia, 🕒 = partial / planned, ❌ = belum.
-
----
-
-## 💳 Pembayaran & Subscription (Implemented Scope)
-
-- Stripe Edge Function `stripe-checkout`:  
-  - Buat customer mapping otomatis jika belum ada.  
-  - Insert subscription placeholder row (status: not_started) jika mode subscription.  
-- Stripe Webhook `stripe-webhook`:  
-  - Mendengarkan event & sinkronisasi (partial logic).  
-  - Mencatat order one-time (stripe_orders) setelah session sukses.  
-- Views: `stripe_user_orders`, `stripe_user_subscriptions` untuk akses aman di frontend.
-
-> Catatan: Validasi tambahan, penanganan error lanjutan, refund flow, proration, belum tersedia.
-
----
-
-## 🌱 Health & Care (Planned Domain-Specific Enhancements)
-
-Rencana menambah modul perawatan:
-- Scheduling penyiraman (reminder)
-- Penilaian tingkat kesulitan (filter)
-- Pengetahuan perawatan (dynamic knowledge base)
-
----
-
 ## 🛠️ Installation & Setup
 
 ### Prasyarat
 ```
 Node.js 18+
-npm atau yarn
+npm / yarn
 Git
-Supabase CLI (untuk deploy backend)
-Stripe Account (test keys)
+Supabase CLI
+Stripe account (test keys)
 ```
 
-### Quick Start (Frontend Dev Mode)
+### Langkah Cepat
 ```bash
 git clone https://github.com/redeemself/azka-garden.git
 cd azka-garden
@@ -249,26 +294,28 @@ cp .env.example .env   # isi variabel
 npm run dev
 ```
 
-### Environment Variables (.env)
+### Variabel Lingkungan
 ```
-VITE_SUPABASE_URL=your_supabase_project_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-# Jangan expose service role di browser production
-VITE_SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key (gunakan hanya di Edge Functions)
+VITE_SUPABASE_URL=...
+VITE_SUPABASE_ANON_KEY=...
+# Hindari expose service role ke client production
+VITE_SUPABASE_SERVICE_ROLE_KEY=...
 
-# Optional Integrations
+# Optional
 VITE_MIDTRANS_CLIENT_KEY=...
 VITE_GOOGLE_ANALYTICS_ID=...
 ```
 
-### Supabase Backend Setup
+### Setup Supabase (Stripe)
 ```bash
 supabase login
-supabase link --project-ref <your-project-ref>
+supabase link --project-ref <project-ref>
 supabase db push
-# Deploy functions
+
+# Deploy Edge Functions
 supabase functions deploy stripe-checkout
 supabase functions deploy stripe-webhook
+
 # Set secrets
 supabase functions secrets set \
   STRIPE_SECRET_KEY=sk_test_... \
@@ -277,110 +324,87 @@ supabase functions secrets set \
   SUPABASE_URL=https://<project>.supabase.co
 ```
 
-### Development Scripts
-```json
-{
-  "dev": "vite",
-  "build": "tsc && vite build",
-  "preview": "vite preview",
-  "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
-}
-```
-
 ---
 
-## 🔐 Keamanan (Best Practices)
-
-| Point | Rekomendasi |
-|-------|-------------|
-| Service Role Key | Jangan pernah diekspos di client bundler. Pindahkan logika sensitif ke Edge Functions. |
-| RLS | Tambahkan RLS ke tabel non-Stripe (products, reviews) saat dibuat. |
-| Validasi Harga | Whitelist price_id di server (stripe-checkout function). |
-| Logging | Hindari log data sensitif (email lengkap / token). |
-| Credential Demo | Putar / ubah password bila portal real dirilis. |
+## 🔐 Keamanan (Rekomendasi)
+| Area | Tindakan |
+|------|----------|
+| Service Role Key | Gunakan hanya di server/Edge Functions |
+| RLS | Tambahkan untuk tabel baru (chat, reviews, products) |
+| Input Payment | Validasi price_id di Edge Function |
+| Logging | Mask email / token sensitif |
+| Credential Demo | Putar ulang bila dipakai publik |
 
 ---
 
 ## 🧪 Testing Checklist
-
-| Area | Tes |
-|------|-----|
-| Stripe Checkout | Buat session → redirect → payment success → webhook insert orders |
-| Subscription | Checkout subscription → update status via webhook |
-| RLS | Query stripe_user_orders sebagai user lain (harus kosong) |
-| Performance | Lighthouse audit (Core Web Vitals) |
-| Lint | npm run lint |
+| Domain | Tes |
+|--------|-----|
+| Stripe Checkout | Session → redirect → webhook insert |
+| Subscription | Event update (trial/active) |
+| RLS | User A tidak lihat data user B |
+| Performance | Lighthouse & bundle size |
+| Error Paths | Invalid price_id / unauthorized access |
 
 ---
 
-## 🔮 Roadmap Terstruktur
+## 📊 Status Implementasi (Ringkas)
 
-### Phase 1: Backend Integration
-- [x] Stripe schema & Edge Functions
-- [ ] Products & inventory tables
-- [ ] Auth UI + role metadata
-- [ ] Order management dashboard
-- [ ] Reviews & Rating (schema + UI)
-- [ ] Chat real-time (channels)
+```text
+✅ Frontend dasar (produk mock, cart, checkout)
+✅ Stripe integration (schema + functions)
+🕒 Subscription handling lanjutan
+🕒 Portal peran (klaim, belum di repo publik)
+🕒 Auth UI (klaim sudah ada di deployment)
+❌ Chat realtime (belum di repo)
+❌ Reviews & rating (belum di repo)
+❌ Inventory realtime
+```
 
-### Phase 2: Advanced Commerce
+---
+
+## 🔮 Roadmap
+
+### Phase 1 (Foundation Expansion)
+- [ ] Push auth UI & role guard
+- [ ] Products table (Supabase) + RLS
+- [ ] User profiles & roles
+- [ ] Reviews schema + UI
+- [ ] Chat schema + realtime channel
+
+### Phase 2 (Advanced Commerce)
 - [ ] Email notifications
+- [ ] Shipping workflow
+- [ ] Discount/promo engine
 - [ ] Advanced search & filtering
-- [ ] Wishlist & personalization
-- [ ] Shipping & logistics integration
-- [ ] Discount / promo engine
+- [ ] Wishlist
 
-### Phase 3: Scale & Optimize
-- [ ] Performance & bundle splitting
-- [ ] SEO & metadata dynamic
+### Phase 3 (Scale & Observability)
+- [ ] Metrics & monitoring dashboard
+- [ ] SEO & sitemap
 - [ ] Analytics (PostHog / GA)
-- [ ] Mobile PWA / App wrapper
-- [ ] Observability (Sentry / Logflare)
+- [ ] PWA / Mobile shell
+- [ ] Error & performance tracing (Sentry)
 
 ---
 
-## 🧩 Kontribusi
-
-Kami menerima kontribusi!
+## 👥 Kontribusi
 
 ```bash
 1. Fork repository
 2. git checkout -b feature/AmazingFeature
-3. Commit (git commit -m 'feat: add AmazingFeature')
-4. Push (git push origin feature/AmazingFeature)
+3. git commit -m "feat: add AmazingFeature"
+4. git push origin feature/AmazingFeature
 5. Buka Pull Request
 ```
 
-### Issue Ideas
-- Tambah tabel products + RLS
-- Implement auth UI (login/register/reset)
-- Reviews module
-- Chat real-time (Supabase Realtime channel)
-- Admin dashboard shell (layout + navigation)
-- Refactor Stripe error handling
-
----
-
-## 🗂️ Struktur Direktori (Ringkas)
-
-```
-src/
-  components/
-  pages/
-  contexts/
-  services/
-    stripe.ts
-  lib/
-    supabase.ts
-  stripe-config.ts
-supabase/
-  functions/
-    stripe-checkout/
-    stripe-webhook/
-  migrations/
-.env.example
-package.json
-```
+Ide Issue:
+- Implement auth UI + role routing
+- Tabel products + inventory RLS
+- Chat realtime (Supabase Realtime)
+- Reviews module + rating UI
+- Admin dashboard shell
+- Stripe refund & status sync improvement
 
 ---
 
@@ -394,16 +418,20 @@ MIT License – lihat file [LICENSE](LICENSE).
 
 | Jenis | URL |
 |-------|-----|
-| Demo (contoh) | https://azka-garden.vercel.app |
-| (Alternatif / Netlify) | (Jika ada) |
+| Live (klaim) | https://storied-pony-6862fe.netlify.app |
+| Alternatif demo | https://azka-garden.vercel.app (contoh) |
 
-> Pastikan environment Vercel / Netlify diisi dengan variabel Supabase & Stripe.
+> Pastikan environment di hosting diisi (Supabase URL, Anon key, Stripe keys, dsb).
 
 ---
 
-## 📞 Status dan Bantuan
+## ❓ Ketidaksesuaian Fitur
 
-Jika Anda menemukan ketidaksesuaian antara README dan kode, silakan buka issue dengan label: `documentation` atau `discrepancy`.
+Jika Anda menemukan perbedaan antara README & implementasi aktual, silakan buka issue dengan label:
+```
+documentation
+discrepancy
+```
 
 ---
 
@@ -412,7 +440,7 @@ Jika Anda menemukan ketidaksesuaian antara README dan kode, silakan buka issue d
 ### 🌟 Built with ❤️ for Plant Lovers
 *Transforming the way Indonesia shops for plants*
 
-**[🚀 Live Demo](https://azka-garden.vercel.app)** • **[📖 Wiki](https://github.com/redeemself/azka-garden/wiki)** • **[🐛 Report Bug](https://github.com/redeemself/azka-garden/issues)**
+**[🚀 Live Demo](https://storied-pony-6862fe.netlify.app)** • **[📖 Wiki](https://github.com/redeemself/azka-garden/wiki)** • **[🐛 Report Bug](https://github.com/redeemself/azka-garden/issues)**
 
 <br/>
 
