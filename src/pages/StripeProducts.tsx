@@ -39,7 +39,13 @@ const StripeProducts: React.FC = () => {
 
 
   const handlePurchase = async (product: StripeProduct) => {
-    // Langsung ke checkout tanpa requirement login atau newsletter
+    if (!isAuthenticated) {
+      // Redirect to login if not authenticated
+      navigate('/login');
+      return;
+    }
+    
+    // Direct checkout for authenticated users
     setSelectedProduct(product);
     setShowCheckout(true);
   };

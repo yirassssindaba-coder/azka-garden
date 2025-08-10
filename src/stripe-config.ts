@@ -15,7 +15,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman pucuk merah tinggi 250 cm yang sering digunakan sebagai pagar hidup atau dekorasi taman dengan warna cerah menarik.',
     mode: 'subscription',
     price: 23.33,
-    image: 'https://images.pexels.com/photos/1974928/pexels-photo-1974928.jpeg'
+    image: 'https://images.pexels.com/photos/1084199/pexels-photo-1084199.jpeg'
   },
   {
     id: 'prod_SqFxmSl9RiTOyi',
@@ -24,7 +24,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias dengan daun menarik yang mudah dirawat dan sesuai untuk taman tropis atau pagar hidup.',
     mode: 'subscription',
     price: 2.33,
-    image: 'https://images.pexels.com/photos/6208087/pexels-photo-6208087.jpeg'
+    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
   },
   {
     id: 'prod_SqFwZqlDUt4Y8N',
@@ -51,7 +51,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman buah jeruk lemon kecil yang memberikan aroma segar dan cocok untuk taman maupun kebun rumah.',
     mode: 'subscription',
     price: 4.00,
-    image: 'https://images.pexels.com/photos/1084199/pexels-photo-1084199.jpeg'
+    image: 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg'
   },
   {
     id: 'prod_SqFtV0MUpHxezx',
@@ -60,7 +60,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman buah jambu kanci kecil tinggi 50 cm yang dapat dijadikan tanaman hias untuk taman dan kebun.',
     mode: 'subscription',
     price: 4.00,
-    image: 'https://images.pexels.com/photos/1084199/pexels-photo-1084199.jpeg'
+    image: 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg'
   },
   {
     id: 'prod_SqFr35dtXtt6Di',
@@ -123,7 +123,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Varian kecil Bringin Korea yang cocok untuk koleksi bonsai dengan bentuk daun menarik dan perawatan mudah.',
     mode: 'subscription',
     price: 100.00,
-    image: 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg'
+    image: 'https://images.pexels.com/photos/1005058/pexels-photo-1005058.jpeg'
   },
   {
     id: 'prod_SqFiiCzdAVBAjB',
@@ -204,7 +204,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias yang menambah warna dan tekstur pada taman tropis atau sebagai pagar hidup.',
     mode: 'subscription',
     price: 1.00,
-    image: 'https://images.pexels.com/photos/1974928/pexels-photo-1974928.jpeg'
+    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
   },
   {
     id: 'prod_SqFKiXtez68puq',
@@ -348,7 +348,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias outdoor dengan daun panjang hijau bergaris putih yang memberikan tampilan segar.',
     mode: 'subscription',
     price: 0.67,
-    image: 'https://images.pexels.com/photos/1974928/pexels-photo-1974928.jpeg'
+    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
   },
   {
     id: 'prod_SqF1haKTJry64j',
@@ -375,7 +375,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Perdu tropis dengan daun hijau cerah di atas dan merah gelap di bawah, namun getahnya beracun.',
     mode: 'subscription',
     price: 1.07,
-    image: 'https://images.pexels.com/photos/1974928/pexels-photo-1974928.jpeg'
+    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
   },
   {
     id: 'prod_SqEyjB1hfIBLEs',
@@ -447,7 +447,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hijau abadi dari Afrika Selatan dengan daun menyerupai ekor tupai yang cocok untuk interior.',
     mode: 'subscription',
     price: 2.67,
-    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
+    image: 'https://images.pexels.com/photos/6208087/pexels-photo-6208087.jpeg'
   },
   {
     id: 'prod_SqEphx8a3caOkq',
