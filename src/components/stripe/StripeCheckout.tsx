@@ -27,18 +27,43 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({
     setError(null);
 
     try {
-      const response = await StripeService.createCheckoutSession({
-        priceId,
-        mode,
-        successUrl: `${window.location.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancelUrl: window.location.href,
-      });
+      // Create order in localStorage for admin tracking
+      const newOrder = {
+        id: 'order-' + Date.now(),
+        orderNumber: 'ORD-' + new Date().getFullYear() + '-' + Math.floor(Math.random() * 1000).toString().padStart(3, '0'),
+        productName: productName,
+        priceId: priceId,
+        amount: amount,
+        currency: currency,
+        mode: mode,
+        status: 'pending',
+        paymentStatus: 'pending',
+        customerInfo: {
+          name: 'Guest Customer',
+          email: 'guest@example.com'
+        },
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
 
-      if (response.url) {
-        window.location.href = response.url;
-      } else {
-        throw new Error('No checkout URL received');
-      }
+      // Save to localStorage for admin monitoring
+      const allOrders = JSON.parse(localStorage.getItem('all_orders') || '[]');
+      allOrders.unshift(newOrder);
+      localStorage.setItem('all_orders', JSON.stringify(allOrders));
+
+      // Simulate successful payment
+      setTimeout(() => {
+        // Update order status to completed
+        const updatedOrders = allOrders.map((order: any) => 
+          order.id === newOrder.id 
+            ? { ...order, status: 'completed', paymentStatus: 'paid', updatedAt: new Date().toISOString() }
+            : order
+        );
+        localStorage.setItem('all_orders', JSON.stringify(updatedOrders));
+        
+        // Redirect to success page
+        window.location.href = `${window.location.origin}/success?session_id=cs_demo_${Date.now()}`;
+      }, 2000);
 
       onSuccess?.();
     } catch (error) {
