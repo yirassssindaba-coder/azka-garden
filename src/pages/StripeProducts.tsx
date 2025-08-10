@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Leaf, Crown, Package, CreditCard, Calendar, Star, Shield, Zap, X } from 'lucide-react';
+import { ShoppingCart, Leaf, Crown, Package, CreditCard, Calendar, Star, Shield, Zap, X, CheckCircle } from 'lucide-react';
 import { stripeProducts, StripeProduct } from '../stripe-config';
 import { useAuth } from '../contexts/AuthContext';
 import { StripeService } from '../services/stripe';
