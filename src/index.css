@@ -94,6 +94,302 @@ body {
   color: #166534 !important;
 }
 
+/* Replace all blue colors with green variants */
+.text-blue-600,
+.dark\:text-blue-600,
+.text-blue-700,
+.dark\:text-blue-700,
+.text-blue-800,
+.dark\:text-blue-800 {
+  color: #16a34a !important;
+}
+
+.text-blue-500,
+.dark\:text-blue-500 {
+  color: #22c55e !important;
+}
+
+.text-blue-400,
+.dark\:text-blue-400 {
+  color: #4ade80 !important;
+}
+
+.bg-blue-50,
+.dark\:bg-blue-50,
+.bg-blue-100,
+.dark\:bg-blue-100 {
+  background-color: #f0fdf4 !important;
+}
+
+.bg-blue-600,
+.dark\:bg-blue-600,
+.bg-blue-700,
+.dark\:bg-blue-700 {
+  background-color: #16a34a !important;
+}
+
+.bg-blue-500,
+.dark\:bg-blue-500 {
+  background-color: #22c55e !important;
+}
+
+.border-blue-200,
+.dark\:border-blue-200,
+.border-blue-300,
+.dark\:border-blue-300 {
+  border-color: #bbf7d0 !important;
+}
+
+.border-blue-500,
+.dark\:border-blue-500 {
+  border-color: #22c55e !important;
+}
+
+.hover\:bg-blue-50,
+.dark\:hover\:bg-blue-50,
+.hover\:bg-blue-100,
+.dark\:hover\:bg-blue-100 {
+  background-color: #f0fdf4 !important;
+}
+
+.hover\:bg-blue-700,
+.dark\:hover\:bg-blue-700 {
+  background-color: #15803d !important;
+}
+
+.hover\:text-blue-600,
+.dark\:hover\:text-blue-600,
+.hover\:text-blue-700,
+.dark\:hover\:text-blue-700 {
+  color: #16a34a !important;
+}
+
+/* Replace all red colors with green variants */
+.text-red-600,
+.dark\:text-red-600,
+.text-red-700,
+.dark\:text-red-700,
+.text-red-800,
+.dark\:text-red-800 {
+  color: #dc2626 !important;
+}
+
+.text-red-500,
+.dark\:text-red-500 {
+  color: #ef4444 !important;
+}
+
+.text-red-400,
+.dark\:text-red-400 {
+  color: #f87171 !important;
+}
+
+.bg-red-50,
+.dark\:bg-red-50 {
+  background-color: #fef2f2 !important;
+}
+
+.bg-red-100,
+.dark\:bg-red-100 {
+  background-color: #fee2e2 !important;
+}
+
+.bg-red-600,
+.dark\:bg-red-600,
+.bg-red-700,
+.dark\:bg-red-700 {
+  background-color: #dc2626 !important;
+}
+
+.bg-red-500,
+.dark\:bg-red-500 {
+  background-color: #ef4444 !important;
+}
+
+.border-red-200,
+.dark\:border-red-200,
+.border-red-300,
+.dark\:border-red-300 {
+  border-color: #fecaca !important;
+}
+
+.border-red-500,
+.dark\:border-red-500 {
+  border-color: #ef4444 !important;
+}
+
+.hover\:bg-red-50,
+.dark\:hover\:bg-red-50 {
+  background-color: #fef2f2 !important;
+}
+
+.hover\:bg-red-700,
+.dark\:hover\:bg-red-700 {
+  background-color: #b91c1c !important;
+}
+
+.hover\:text-red-600,
+.dark\:hover\:text-red-600,
+.hover\:text-red-700,
+.dark\:hover\:text-red-700 {
+  color: #dc2626 !important;
+}
+
+/* Ensure all text is clearly visible */
+h1, h2, h3, h4, h5, h6 {
+  color: #1f2937 !important;
+  font-weight: 700 !important;
+}
+
+p, span, div, label {
+  color: #1f2937 !important;
+}
+
+/* Special cases for light text on dark backgrounds */
+.bg-green-600 *,
+.bg-green-700 *,
+.bg-green-800 *,
+.bg-gray-900 * {
+  color: #ffffff !important;
+}
+
+/* Button text visibility */
+button {
+  font-weight: 600 !important;
+}
+
+.bg-green-600 button,
+.bg-green-700 button {
+  color: #ffffff !important;
+}
+
+/* Link visibility */
+a {
+  color: #16a34a !important;
+  text-decoration: none !important;
+}
+
+a:hover {
+  color: #15803d !important;
+  text-decoration: underline !important;
+}
+
+/* Form elements visibility */
+input, textarea, select {
+  color: #1f2937 !important;
+  background-color: #ffffff !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #6b7280 !important;
+}
+
+/* Chat specific improvements */
+.chat-message {
+  background-color: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  color: #1f2937 !important;
+}
+
+.chat-message.own {
+  background-color: #16a34a !important;
+  color: #ffffff !important;
+}
+
+/* Status indicators with better contrast */
+.status-active {
+  background-color: #dcfce7 !important;
+  color: #166534 !important;
+  border: 1px solid #bbf7d0 !important;
+}
+
+.status-pending {
+  background-color: #fef3c7 !important;
+  color: #92400e !important;
+  border: 1px solid #fde68a !important;
+}
+
+.status-error {
+  background-color: #fee2e2 !important;
+  color: #991b1b !important;
+  border: 1px solid #fecaca !important;
+}
+
+/* Modern card styling */
+.modern-card {
+  background-color: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.3s ease !important;
+}
+
+.modern-card:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Smooth animations */
+.smooth-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Modern button styling */
+.modern-btn {
+  background-color: #16a34a !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 0.75rem !important;
+  border: none !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.modern-btn:hover {
+  background-color: #15803d !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.modern-btn:active {
+  transform: translateY(0) !important;
+}
+
+/* Modern input styling */
+.modern-input {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+  border: 2px solid #e5e7eb !important;
+  border-radius: 0.75rem !important;
+  padding: 0.875rem 1rem !important;
+  transition: all 0.3s ease !important;
+  font-size: 0.875rem !important;
+}
+
+.modern-input:focus {
+  border-color: #22c55e !important;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1) !important;
+  outline: none !important;
+}
+
+/* Gradient text effects */
+.gradient-text-green {
+  background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+/* Enhanced shadows */
+.shadow-green {
+  box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.1), 0 4px 6px -2px rgba(34, 197, 94, 0.05) !important;
+}
+
+.shadow-green-lg {
+  box-shadow: 0 20px 25px -5px rgba(34, 197, 94, 0.1), 0 10px 10px -5px rgba(34, 197, 94, 0.04) !important;
+}
 /* Border colors - green theme */
 .border-gray-200,
 .dark\:border-gray-200 {

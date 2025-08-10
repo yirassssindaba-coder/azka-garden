@@ -118,16 +118,16 @@ const Home: React.FC = () => {
               </div>
               <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6 animate-fade-in">
                 Hijaukan Rumah Anda dengan
-                <span className="text-gradient bg-gradient-to-r from-green-200 to-green-100 bg-clip-text text-transparent"> Tanaman Hias Terbaik</span>
+                <span className="block text-green-400 mt-2"> Tanaman Hias Terbaik</span>
               </h1>
-              <p className="text-xl mb-8 text-green-100 leading-relaxed animate-slide-up">
+              <p className="text-xl mb-8 text-white leading-relaxed animate-slide-up">
                 Koleksi lengkap 59+ tanaman hias berkualitas premium dari Jamani Dolar hingga Bonsai eksklusif. 
                 Dari tanaman indoor mudah perawatan hingga koleksi premium untuk kolektor sejati.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 animate-slide-up">
                 <Link
                   to="/stripe-products"
-                  className="inline-flex items-center px-8 py-4 bg-white dark:bg-gray-800 text-green-600 dark:text-green-400 font-bold rounded-xl hover:bg-green-50 dark:hover:bg-gray-700 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center px-8 py-4 bg-white text-green-600 font-bold rounded-xl hover:bg-green-50 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
                   Jelajahi Koleksi Premium
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -136,7 +136,7 @@ const Home: React.FC = () => {
                   href="https://wa.me/6289635086182"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-8 py-4 border-2 border-white text-white font-bold rounded-xl hover:bg-white dark:hover:bg-gray-800 hover:text-green-600 dark:hover:text-green-400 hover:scale-105 transition-all duration-300"
+                  className="inline-flex items-center px-8 py-4 border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-green-600 hover:scale-105 transition-all duration-300"
                 >
                   <MessageCircle className="mr-2 h-5 w-5" />
                   Konsultasi Gratis
@@ -146,16 +146,16 @@ const Home: React.FC = () => {
               {/* Stats */}
               <div className="mt-12 grid grid-cols-3 gap-6 animate-fade-in">
                 <div className="text-center p-4 bg-white bg-opacity-10 rounded-xl backdrop-blur-sm">
-                  <div className="text-4xl font-bold text-white mb-1">59+</div>
-                  <div className="text-green-200 text-sm font-medium">Jenis Tanaman</div>
+                  <div className="text-4xl font-bold text-white mb-1 drop-shadow-lg">59+</div>
+                  <div className="text-green-100 text-sm font-medium">Jenis Tanaman</div>
                 </div>
                 <div className="text-center p-4 bg-white bg-opacity-10 rounded-xl backdrop-blur-sm">
-                  <div className="text-4xl font-bold text-white mb-1">24/7</div>
-                  <div className="text-green-200 text-sm font-medium">Buka Setiap Hari</div>
+                  <div className="text-4xl font-bold text-white mb-1 drop-shadow-lg">24/7</div>
+                  <div className="text-green-100 text-sm font-medium">Buka Setiap Hari</div>
                 </div>
                 <div className="text-center p-4 bg-white bg-opacity-10 rounded-xl backdrop-blur-sm">
-                  <div className="text-4xl font-bold text-white mb-1">10k+</div>
-                  <div className="text-green-200 text-sm font-medium">Pelanggan Puas</div>
+                  <div className="text-4xl font-bold text-white mb-1 drop-shadow-lg">10k+</div>
+                  <div className="text-green-100 text-sm font-medium">Pelanggan Puas</div>
                 </div>
               </div>
             </div>
