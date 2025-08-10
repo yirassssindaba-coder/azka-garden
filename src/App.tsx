@@ -60,7 +60,10 @@ function App() {
       }
       
       try {
-        const healthCheck = await supabaseHealthCheck();
+        const healthCheck = await supabaseHealthCheck().catch(() => {
+          console.log('Running in demo mode - Supabase not configured or unavailable');
+          return { ok: false, demo: true };
+        });
         if (!healthCheck.ok) {
           if (healthCheck.demo) {
             console.log('Running in demo mode - Supabase not configured or unavailable');
@@ -74,7 +77,8 @@ function App() {
           console.log('Supabase connection healthy');
         }
       } catch (error) {
-        console.log('Health check failed - continuing in demo mode:', error);
+        // This catch should not be reached due to explicit .catch() above
+        console.log('Health check failed - continuing in demo mode');
       }
     };
     

@@ -28,10 +28,10 @@ export async function supabaseHealthCheck(): Promise<HealthCheckResult> {
   } catch (e: any) {
     if (e.message?.includes('Failed to fetch')) {
       console.log('Network connection failed - using demo mode');
-      return { ok: false, type: 'network', error: e, demo: true };
+      return Promise.reject(e);
     }
     console.log('Unexpected error - using demo mode');
-    return { ok: false, type: 'unexpected', error: e, demo: true };
+    return Promise.reject(e);
   }
 }
 
