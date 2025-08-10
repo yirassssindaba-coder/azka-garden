@@ -258,12 +258,22 @@ const ChatBot: React.FC = () => {
             <p className="text-xs mt-2 mobile-text-xs">Tim customer service siap membantu</p>
           </div>
         ) : (
-          <button
-            onClick={() => setIsOpen(false)}
-            className="text-white hover:text-green-200 transition-colors"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          currentSession?.messages.map((message) => (
+            <div
+              key={message.id}
+              className={`flex ${
+                message.senderId === user.id ? 'justify-end' : 'justify-start'
+              }`}
+            >
+              <div className="flex items-start space-x-2 max-w-xs">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                  message.senderId === user.id
+                    ? 'bg-green-600 text-white'
+                    : getRoleColor(message.senderRole)
+                }`}>
+                  {message.senderId === user.id ? (
+                    <User className="h-4 w-4" />
+                  ) : (
                     getRoleIcon(message.senderRole)
                   )}
                 </div>
@@ -325,6 +335,6 @@ const ChatBot: React.FC = () => {
       </div>
     </div>
   );
-      <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-green-50 mobile-p-3">
+};
 
 export default ChatBot;
