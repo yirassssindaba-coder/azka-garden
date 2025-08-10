@@ -240,7 +240,7 @@ const StripeProducts: React.FC = () => {
         )}
 
         {/* Authentication CTA */}
-        {!isSubscribed && (
+        {!isAuthenticated && !isSubscribed && (
           <div className="mt-16 bg-red-50 rounded-xl p-8 text-center mobile-card mobile-padding">
             <h3 className="text-2xl font-bold text-gray-900 mb-4 mobile-text-sm">
               Berlangganan Newsletter untuk Akses Premium
@@ -259,7 +259,7 @@ const StripeProducts: React.FC = () => {
           </div>
         )}
         
-        {isSubscribed && !isAuthenticated && (
+        {!isAuthenticated && isSubscribed && (
           <div className="mt-16 bg-green-50 rounded-xl p-8 text-center">
             <h3 className="text-2xl font-bold text-gray-900 mb-4 mobile-text-sm">
               Mulai Berlangganan Tanaman Premium
@@ -288,6 +288,43 @@ const StripeProducts: React.FC = () => {
                 Daftar Akun Baru
               </Link>
             </div>
+          </div>
+        )}
+        
+        {/* Subscribed User - Show Products Available for Purchase */}
+        {isAuthenticated && isSubscribed && (
+          <div className="mt-16 bg-gradient-to-br from-green-50 via-green-100 to-emerald-50 rounded-2xl p-8 text-center border-2 border-green-200 shadow-xl">
+            <div className="bg-white bg-opacity-80 backdrop-blur-sm rounded-xl p-6 mb-6">
+              <div className="flex items-center justify-center space-x-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center shadow-lg">
+                  <CheckCircle className="h-6 w-6 text-white" />
+                </div>
+                <div className="text-left">
+                  <h3 className="text-xl font-bold text-gray-900">Akses Premium Aktif</h3>
+                  <p className="text-green-700 font-medium">Newsletter: {subscriberEmail}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+                <div className="bg-green-50 p-3 rounded-lg border border-green-200">
+                  <Shield className="h-5 w-5 text-green-600 mx-auto mb-2" />
+                  <div className="font-medium text-gray-900">Pembayaran Aman</div>
+                  <div className="text-gray-600">SSL & Enkripsi</div>
+                </div>
+                <div className="bg-green-50 p-3 rounded-lg border border-green-200">
+                  <Star className="h-5 w-5 text-green-600 mx-auto mb-2" />
+                  <div className="font-medium text-gray-900">Kualitas Terjamin</div>
+                  <div className="text-gray-600">Garansi Hidup</div>
+                </div>
+                <div className="bg-green-50 p-3 rounded-lg border border-green-200">
+                  <Zap className="h-5 w-5 text-green-600 mx-auto mb-2" />
+                  <div className="font-medium text-gray-900">Pengiriman Cepat</div>
+                  <div className="text-gray-600">1-3 Hari</div>
+                </div>
+              </div>
+            </div>
+            <p className="text-lg text-gray-700 font-medium">
+              🎉 Selamat! Anda dapat membeli semua produk premium di bawah ini
+            </p>
           </div>
         )}
       </div>
