@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, X, Send, Bot, User, Shield, Code } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
 interface ChatMessage {
@@ -261,7 +262,6 @@ const ChatBot: React.FC = () => {
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50 mobile-p-3">
         {currentSession?.messages.length === 0 ? (
-          <div className="text-center text-gray-500 dark:text-gray-400 py-8">
           <div className="text-center text-gray-500 py-8">
             <Bot className="h-12 w-12 mx-auto mb-4 text-gray-300" />
             <p className="text-sm mobile-text-xs">Menunggu pesan Anda...</p>
@@ -292,7 +292,6 @@ const ChatBot: React.FC = () => {
                 }`}>
                   <p className="text-sm whitespace-pre-wrap break-words mobile-text-xs">{message.message}</p>
                   <p className={`text-xs mt-1 mobile-text-xs ${
-                    message.senderId === user.id ? 'text-blue-100' : 'text-gray-500 dark:text-gray-400'
                     message.senderId === user.id ? 'text-blue-100' : 'text-gray-500'
                   }`}>
                     {formatTime(message.timestamp)} • {message.senderName}
@@ -309,7 +308,6 @@ const ChatBot: React.FC = () => {
               <div className="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center">
                 <Bot className="h-4 w-4" />
               </div>
-              <div className="bg-white dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
               <div className="bg-white rounded-lg p-3 border border-gray-200">
                 <div className="flex space-x-1">
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
