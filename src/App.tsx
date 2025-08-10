@@ -1,5 +1,7 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { supabaseHealthCheck } from './services/health';
 import Header from './components/Header';
 import Footer from './components/layout/Footer';
 import ChatBot from './components/ai/ChatBot';
@@ -48,6 +50,27 @@ import ProtectedRoute from './components/ProtectedRoute';
 import './index.css';
 
 function App() {
+  useEffect(() => {
+    // Initial health check
+    const checkSupabaseConnection = async () => {
+      try {
+        const healthCheck = await supabaseHealthCheck();
+        if (!healthCheck.ok) {
+          console.warn('Supabase health check failed:', healthCheck);
+          if (healthCheck.type === 'network') {
+            console.error('Network connection to Supabase failed. Check URL and keys.');
+          }
+        } else {
+          console.log('Supabase connection healthy');
+        }
+      } catch (error) {
+        console.error('Health check error:', error);
+      }
+    };
+    
+    checkSupabaseConnection();
+  }, []);
+
   return (
     <ThemeProvider>
       <NewsletterProvider>

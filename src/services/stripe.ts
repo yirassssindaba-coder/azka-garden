@@ -99,89 +99,109 @@ export class StripeService {
 
   static async getUserSubscription(): Promise<UserSubscription | null> {
     try {
+      // Check session first
+      const { data: { session } } = await supabase.auth.getSession();
+      console.log('Current session:', !!session);
+      
       const { data, error } = await supabase
         .from('stripe_user_subscriptions')
         .select('*')
         .maybeSingle();
 
       if (error) {
-        console.error('Error fetching user subscription:', error);
-        // Return mock data for demo
-        return {
-          customer_id: 'cus_demo',
-          subscription_id: 'sub_demo',
-          subscription_status: 'active',
-          price_id: 'price_1Rtp3SRMKiPOXCTjlAUBfQiI',
-          current_period_start: Math.floor(Date.now() / 1000),
-          current_period_end: Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60),
-          cancel_at_period_end: false,
-          payment_method_brand: 'visa',
-          payment_method_last4: '4242'
-        };
+        console.error('Fetch subscription failure detail', {
+          url: import.meta.env.VITE_SUPABASE_URL,
+          hasKey: !!import.meta.env.VITE_SUPABASE_ANON_KEY,
+          message: error?.message || error
+        });
+        
+        if (error.message?.includes('Failed to fetch')) {
+          // Network-level problem
+          throw new Error('Network fetch to Supabase failed. Periksa URL/Key atau koneksi.');
+        }
+        
+        // Only return mock for non-network errors (query issues)
+        if (!error.message?.includes('Failed to fetch')) {
+          console.log('Using mock data for demo (non-network error)');
+          return {
+            customer_id: 'cus_demo',
+            subscription_id: 'sub_demo',
+            subscription_status: 'active',
+            price_id: 'price_1Rtp3SRMKiPOXCTjlAUBfQiI',
+            current_period_start: Math.floor(Date.now() / 1000),
+            current_period_end: Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60),
+            cancel_at_period_end: false,
+            payment_method_brand: 'visa',
+            payment_method_last4: '4242'
+          };
+        }
+        
+        return null;
       }
 
       return data;
     } catch (error) {
-      console.error('Error getting user subscription:', error);
-      // Return mock data for demo
-      return {
-        customer_id: 'cus_demo',
-        subscription_id: 'sub_demo',
-        subscription_status: 'active',
-        price_id: 'price_1Rtp3SRMKiPOXCTjlAUBfQiI',
-        current_period_start: Math.floor(Date.now() / 1000),
-        current_period_end: Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60),
-        cancel_at_period_end: false,
-        payment_method_brand: 'visa',
-        payment_method_last4: '4242'
-      };
+      console.error('Unhandled getUserSubscription error:', error);
+      
+      if ((error as any)?.message?.includes('Failed to fetch')) {
+        throw new Error('Network connection to Supabase failed');
+      }
+      
+      return null;
     }
   }
 
   static async getUserOrders(): Promise<UserOrder[]> {
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      console.log('Getting orders for session:', !!session);
+      
       const { data, error } = await supabase
         .from('stripe_user_orders')
         .select('*')
         .order('order_date', { ascending: false });
 
       if (error) {
-        console.error('Error fetching user orders:', error);
-        // Return mock data for demo
-        return [
-          {
-            customer_id: 'cus_demo',
-            order_id: 1,
-            checkout_session_id: 'cs_test_demo123',
-            payment_intent_id: 'pi_demo123',
-            amount_subtotal: 2000,
-            amount_total: 2333,
-            currency: 'usd',
-            payment_status: 'paid',
-            order_status: 'completed',
-            order_date: new Date().toISOString()
-          }
-        ];
+        console.error('Fetch orders failure detail', {
+          url: import.meta.env.VITE_SUPABASE_URL,
+          hasKey: !!import.meta.env.VITE_SUPABASE_ANON_KEY,
+          message: error?.message || error
+        });
+        
+        if (error.message?.includes('Failed to fetch')) {
+          throw new Error('Network fetch to Supabase failed');
+        }
+        
+        // Only mock for non-network errors
+        if (!error.message?.includes('Failed to fetch')) {
+          return [
+            {
+              customer_id: 'cus_demo',
+              order_id: 1,
+              checkout_session_id: 'cs_test_demo123',
+              payment_intent_id: 'pi_demo123',
+              amount_subtotal: 2000,
+              amount_total: 2333,
+              currency: 'usd',
+              payment_status: 'paid',
+              order_status: 'completed',
+              order_date: new Date().toISOString()
+            }
+          ];
+        }
+        
+        return [];
       }
 
       return data || [];
     } catch (error) {
-      console.error('Error getting user orders:', error);
-      // Return mock data for demo
-      return [
-        {
-          customer_id: 'cus_demo',
-          order_id: 1,
-          checkout_session_id: 'cs_test_demo123',
-          payment_intent_id: 'pi_demo123',
-          amount_subtotal: 2000,
-          amount_total: 2333,
-          currency: 'usd',
-          payment_status: 'paid',
-          order_status: 'completed',
-          order_date: new Date().toISOString()
-        }
-      ];
+      console.error('Unhandled getUserOrders error:', error);
+      
+      if ((error as any)?.message?.includes('Failed to fetch')) {
+        throw new Error('Network connection to Supabase failed');
+      }
+      
+      return [];
     }
   }
 

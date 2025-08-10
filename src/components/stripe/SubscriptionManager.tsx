@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, CreditCard, AlertTriangle, CheckCircle, X, Settings, RefreshCw } from 'lucide-react';
 import { StripeService } from '../../services/stripe';
+import { supabaseHealthCheck } from '../../services/health';
 
 interface Subscription {
   customer_id: string;
@@ -17,6 +18,7 @@ interface Subscription {
 const SubscriptionManager: React.FC = () => {
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [loading, setLoading] = useState(true);
+  const [connectionError, setConnectionError] = useState<string | null>(null);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [cancelling, setCancelling] = useState(false);
 
@@ -26,10 +28,24 @@ const SubscriptionManager: React.FC = () => {
 
   const loadSubscription = async () => {
     try {
+      setConnectionError(null);
+      
+      // Health check first
+      const healthCheck = await supabaseHealthCheck();
+      if (!healthCheck.ok) {
+        if (healthCheck.type === 'network') {
+          setConnectionError('Koneksi ke Supabase gagal. Periksa koneksi internet atau konfigurasi.');
+          return;
+        }
+      }
+      
       const subData = await StripeService.getUserSubscription();
       setSubscription(subData);
     } catch (error) {
       console.error('Error loading subscription:', error);
+      if ((error as any)?.message?.includes('Network')) {
+        setConnectionError('Gagal terhubung ke server. Silakan coba lagi.');
+      }
     } finally {
       setLoading(false);
     }
@@ -108,6 +124,28 @@ const SubscriptionManager: React.FC = () => {
           <div className="bg-gray-300 h-6 w-48 mb-4 rounded"></div>
           <div className="bg-gray-300 h-4 w-32 mb-2 rounded"></div>
           <div className="bg-gray-300 h-4 w-24 rounded"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (connectionError) {
+    return (
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+        <div className="text-center">
+          <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+            Koneksi Bermasalah
+          </h3>
+          <p className="text-gray-600 dark:text-gray-300 mb-6">
+            {connectionError}
+          </p>
+          <button
+            onClick={loadSubscription}
+            className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors"
+          >
+            Coba Lagi
+          </button>
         </div>
       </div>
     );
