@@ -167,14 +167,10 @@ function App() {
                       
                      {/* Stripe Routes */}
                      <Route path="/stripe-products" element={
-                       <ProtectedRoute>
                          <StripeProducts />
-                       </ProtectedRoute>
                      } />
                      <Route path="/success" element={
-                       <ProtectedRoute>
                          <StripeSuccess />
-                       </ProtectedRoute>
                      } />
                      
                      {/* Legal Pages */}

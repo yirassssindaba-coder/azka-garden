@@ -39,30 +39,9 @@ const StripeProducts: React.FC = () => {
 
 
   const handlePurchase = async (product: StripeProduct) => {
-    if (!isAuthenticated) {
-      // Redirect to login if not authenticated
-      navigate('/login');
-      return;
-    }
-    
-    // Direct checkout for authenticated users
+    // Langsung ke checkout tanpa requirement login atau newsletter
     setSelectedProduct(product);
     setShowCheckout(true);
-  };
-
-  const getCategoryIcon = (name: string) => {
-    if (name.toLowerCase().includes('bonsai')) return 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg';
-    if (name.toLowerCase().includes('pot')) return 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg';
-    if (name.toLowerCase().includes('batu')) return 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg';
-    if (name.toLowerCase().includes('media')) return 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg';
-    if (name.toLowerCase().includes('kaktus')) return 'https://images.pexels.com/photos/1974928/pexels-photo-1974928.jpeg';
-    if (name.toLowerCase().includes('cemara')) return 'https://images.pexels.com/photos/1084199/pexels-photo-1084199.jpeg';
-    if (name.toLowerCase().includes('bunga') || name.toLowerCase().includes('alamanda') || name.toLowerCase().includes('gestrum')) return 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg';
-    if (name.toLowerCase().includes('lidah mertua')) return 'https://images.pexels.com/photos/2123482/pexels-photo-2123482.jpeg';
-    if (name.toLowerCase().includes('anthurium') || name.toLowerCase().includes('kuping gajah')) return 'https://images.pexels.com/photos/7084308/pexels-photo-7084308.jpeg';
-    if (name.toLowerCase().includes('philodendron') || name.toLowerCase().includes('pakis')) return 'https://images.pexels.com/photos/6208087/pexels-photo-6208087.jpeg';
-    if (name.toLowerCase().includes('bringin') || name.toLowerCase().includes('sikas')) return 'https://images.pexels.com/photos/1005058/pexels-photo-1005058.jpeg';
-    return 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg';
   };
 
   const getCareLevel = (description: string) => {
@@ -137,7 +116,7 @@ const StripeProducts: React.FC = () => {
               <div className="relative">
                 <div className="h-48 border-b border-green-200">
                   <img
-                    src={getCategoryIcon(product.name)}
+                    src={product.image}
                     alt={product.name}
                     className="w-full h-full object-cover"
                   />
