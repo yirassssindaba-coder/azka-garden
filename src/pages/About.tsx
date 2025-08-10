@@ -34,17 +34,18 @@ const About: React.FC = () => {
               <div className="space-y-6 text-gray-600 leading-relaxed">
                 <p>
                   Azka Garden dimulai sebagai usaha keluarga Pak Hendrik di Jl. Raya KSU, Depok, Jawa Barat. 
-                  Dengan passion yang mendalam terhadap tanaman hias, kami memulai perjalanan untuk menyediakan 
-                  tanaman berkualitas tinggi bagi masyarakat Indonesia.
+                  Dengan passion yang mendalam terhadap tanaman hias dan pengalaman bertahun-tahun di bidang hortikultura, 
+                  kami memulai perjalanan untuk menyediakan tanaman berkualitas tinggi bagi masyarakat Indonesia.
                   Dari awal berdiri, kami berkomitmen tidak hanya menjual tanaman, tetapi juga mengedukasi 
-                  pelanggan tentang cara merawat tanaman dengan benar.
+                  pelanggan tentang cara merawat tanaman dengan benar melalui berbagai platform digital.
                 </p>
                 <p>
                   Seiring berjalannya waktu, kami tidak hanya fokus pada penjualan tanaman, tetapi juga 
                   mengembangkan platform edukasi melalui YouTube channel "Azka Garden Indonesia" yang kini 
-                  memiliki lebih dari 13.000 subscriber. Setiap minggu kami berbagi tips perawatan tanaman 
-                  dan tutorial budidaya. Channel ini menjadi sumber informasi terpercaya bagi pecinta tanaman 
-                  di seluruh Indonesia, dengan video-video berkualitas tinggi yang mudah dipahami.
+                  memiliki lebih dari 13.000 subscriber aktif. Setiap minggu kami berbagi tips perawatan tanaman, 
+                  tutorial budidaya, dan solusi masalah tanaman yang sering dihadapi. Channel ini menjadi sumber 
+                  informasi terpercaya bagi pecinta tanaman di seluruh Indonesia, dengan video-video berkualitas 
+                  tinggi yang mudah dipahami dan dapat dipraktikkan langsung di rumah.
                 </p>
                 <p>
                   Komitmen kami adalah memberikan yang terbaik - dari tanaman indoor mudah perawatan untuk 

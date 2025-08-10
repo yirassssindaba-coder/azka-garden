@@ -15,6 +15,8 @@ export class AuthService implements IUserService {
       status: 'ACTIVE' as any,
       emailVerified: true,
       phoneNumber: '+62812345678',
+      dateOfBirth: new Date('1980-01-01'),
+      address: 'Jl. Admin No. 1, Jakarta',
       addresses: [],
       preferences: {
         language: 'id',
