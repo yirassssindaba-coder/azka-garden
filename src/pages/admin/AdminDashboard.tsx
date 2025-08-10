@@ -808,6 +808,16 @@ const AdminDashboard: React.FC = () => {
                         </td>
                         <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
                           <div className="flex space-x-2">
+                           {order.status !== 'delivered' && order.status !== 'cancelled' && (
+                             <button
+                               onClick={() => handleUpdateOrderStatus(order.id, 'delivered')}
+                               className="bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 transition-colors text-xs font-medium flex items-center space-x-1"
+                               title="Tandai sebagai selesai"
+                             >
+                               <CheckCircle className="h-3 w-3" />
+                               <span>Selesai</span>
+                             </button>
+                           )}
                             <button className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300">
                               <Eye className="h-4 w-4" />
                             </button>
