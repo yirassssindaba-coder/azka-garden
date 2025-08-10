@@ -8,6 +8,11 @@ export interface HealthCheckResult {
 
 export async function supabaseHealthCheck(): Promise<HealthCheckResult> {
   try {
+    // Check if Supabase client is available
+    if (!supabase) {
+      return { ok: false, type: 'network', error: new Error('Supabase client not initialized') };
+    }
+    
     const { error } = await supabase
       .from('stripe_user_subscriptions')
       .select('subscription_id')
@@ -29,12 +34,19 @@ export async function supabaseHealthCheck(): Promise<HealthCheckResult> {
 
 export async function testManualFetch(): Promise<HealthCheckResult> {
   try {
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseKey) {
+      return { ok: false, type: 'network', error: new Error('Missing Supabase configuration') };
+    }
+    
     const response = await fetch(
-      `${import.meta.env.VITE_SUPABASE_URL}/rest/v1/stripe_user_subscriptions?select=*`,
+      `${supabaseUrl}/rest/v1/stripe_user_subscriptions?select=*`,
       {
         headers: {
-          apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`
         }
       }
     );

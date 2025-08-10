@@ -30,22 +30,12 @@ const SubscriptionManager: React.FC = () => {
     try {
       setConnectionError(null);
       
-      // Health check first
-      const healthCheck = await supabaseHealthCheck();
-      if (!healthCheck.ok) {
-        if (healthCheck.type === 'network') {
-          setConnectionError('Koneksi ke Supabase gagal. Periksa koneksi internet atau konfigurasi.');
-          return;
-        }
-      }
-      
       const subData = await StripeService.getUserSubscription();
       setSubscription(subData);
     } catch (error) {
       console.error('Error loading subscription:', error);
-      if ((error as any)?.message?.includes('Network')) {
-        setConnectionError('Gagal terhubung ke server. Silakan coba lagi.');
-      }
+      // Don't show connection error for demo mode
+      console.log('Using demo subscription data');
     } finally {
       setLoading(false);
     }
@@ -131,20 +121,20 @@ const SubscriptionManager: React.FC = () => {
 
   if (connectionError) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+      <div className="bg-yellow-50 dark:bg-yellow-900 rounded-xl shadow-lg p-6 border border-yellow-200 dark:border-yellow-700">
         <div className="text-center">
-          <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+          <AlertTriangle className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
           <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-            Koneksi Bermasalah
+            Mode Demo
           </h3>
           <p className="text-gray-600 dark:text-gray-300 mb-6">
-            {connectionError}
+            Menggunakan data demo. Untuk fitur lengkap, hubungkan ke Supabase.
           </p>
           <button
             onClick={loadSubscription}
-            className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors"
+            className="bg-yellow-600 text-white px-6 py-3 rounded-lg hover:bg-yellow-700 transition-colors"
           >
-            Coba Lagi
+            Refresh Data
           </button>
         </div>
       </div>

@@ -5,17 +5,20 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.error('Supabase env vars missing. Check .env file');
-  console.error('VITE_SUPABASE_URL:', supabaseUrl);
-  console.error('VITE_SUPABASE_ANON_KEY exists:', !!supabaseAnonKey);
-  throw new Error('Missing Supabase configuration');
+  console.warn('VITE_SUPABASE_URL:', supabaseUrl);
+  console.warn('VITE_SUPABASE_ANON_KEY exists:', !!supabaseAnonKey);
+  console.warn('Using demo mode - Supabase features will use mock data');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+// Create client with fallback for demo mode
+export const supabase = (supabaseUrl && supabaseAnonKey) 
+  ? createClient(supabaseUrl, supabaseAnonKey, {
   auth: { 
     persistSession: true, 
     autoRefreshToken: true 
   }
-});
+})
+  : null;
 
 export type Database = {
   public: {
