@@ -248,7 +248,7 @@ const GlobalChatSystem: React.FC = () => {
               <div className="p-4 border-b border-gray-200 mobile-p-3">
                 <h3 className="font-bold text-gray-900 mobile-text-sm">Chat Rooms</h3>
               </div>
-                    className="flex-1 px-3 py-2 border-2 border-green-200 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-400 text-sm mobile-form-input transition-all duration-200"
+              <div className="p-4 space-y-2 mobile-p-3">
                 {chatRooms.map((room) => (
                   <button
                     key={room.id}
@@ -257,7 +257,7 @@ const GlobalChatSystem: React.FC = () => {
                       selectedRoom === room.id
                         ? 'bg-green-100 text-green-800'
                         : 'hover:bg-gray-100 text-gray-700'
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 hover:shadow-lg transition-all duration-200 disabled:opacity-50 mobile-btn transform hover:scale-105"
+                    }`}
                   >
                     <div className="font-medium mobile-text-sm">{room.name}</div>
                     <div className="text-xs text-gray-600 mobile-text-xs">{room.description}</div>
@@ -322,28 +322,28 @@ const GlobalChatSystem: React.FC = () => {
                       key={msg.id}
                       className={`flex ${msg.senderId === user?.id ? 'justify-end' : 'justify-start'}`}
                     >
-                      <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                      <div className={\`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
                         msg.senderId === user?.id
-                          ? 'bg-green-600 text-white'
-                        ? 'bg-green-600 text-white shadow-lg'
-                        : 'bg-white text-gray-900 border border-green-200 shadow-md'
+                          ? 'bg-green-600 text-white shadow-lg'
+                          : 'bg-white text-gray-900 border border-green-200 shadow-md'
+                      }`}>
                         <div className="flex items-center space-x-2 mb-1">
                           <span className="text-xs font-medium mobile-text-xs">{msg.senderName}</span>
-                          <div className={`w-4 h-4 rounded-full flex items-center justify-center ${getRoleColor(msg.senderRole)}`}>
-                        <div className={`w-4 h-4 rounded-full flex items-center justify-center ${
-                          msg.senderRole === 'admin' ? 'bg-green-500 text-white' :
-                          msg.senderRole === 'developer' ? 'bg-green-700 text-white' :
-                          'bg-gray-500 text-white'
-                        }`}>
+                          <div className={`w-4 h-4 rounded-full flex items-center justify-center ${
+                            msg.senderRole === 'admin' ? 'bg-green-500 text-white' :
+                            msg.senderRole === 'developer' ? 'bg-green-700 text-white' :
+                            'bg-gray-500 text-white'
+                          }`}>
+                            {getRoleIcon(msg.senderRole)}
                           </div>
                         </div>
-                        <p className="text-sm mobile-text-xs">{msg.message}</p>
-                        <p className="text-xs opacity-75 mt-1 mobile-text-xs">{formatTime(msg.timestamp)}</p>
+                        <p className="text-sm mobile-text-xs break-words">{msg.message}</p>
+                        <p className={`text-xs mt-1 mobile-text-xs ${
+                          msg.senderId === user?.id ? 'text-green-100' : 'text-gray-500'
+                        }`}>{formatTime(msg.timestamp)}</p>
                       </div>
-                      <p className="text-sm mobile-text-xs break-words">{msg.message}</p>
-                      <p className={`text-xs mt-1 mobile-text-xs ${
-                        msg.senderId === user?.id ? 'text-green-100' : 'text-gray-500'
-                      }`}>{formatTime(msg.timestamp)}</p>
+                    </div>
+                  ))}
                 </div>
                 
                 {user && (
