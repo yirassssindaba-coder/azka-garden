@@ -1,10 +1,10 @@
 import { loadStripe } from '@stripe/stripe-js';
 
-// Initialize Stripe with proper error handling
-const stripePublishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+// Initialize Stripe with your actual keys
+const stripePublishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_51Ru3Is81xruOlT8qa5xzfetnj1P0lsKLqm3D6Vno2T4EBSL26fYeGn1gYnmcDvkojXMpMt56t8y4cVwcuqzWy6Ju00B4Sq8Seh';
 
 if (!stripePublishableKey) {
-  console.error('VITE_STRIPE_PUBLISHABLE_KEY is not set in environment variables');
+  console.warn('Using fallback Stripe key - update .env for production');
 }
 
 const stripePromise = stripePublishableKey 

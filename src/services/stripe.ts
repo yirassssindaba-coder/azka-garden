@@ -56,7 +56,7 @@ export class StripeService {
     try {
       const token = await this.getAuthToken();
       
-      // Try to call Supabase edge function
+      // Call Supabase edge function with your Stripe integration
       try {
         const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stripe-checkout`, {
           method: 'POST',
@@ -75,11 +75,13 @@ export class StripeService {
         if (response.ok) {
           return await response.json();
         }
+        
+        console.log('Supabase function response:', response.status, response.statusText);
       } catch (fetchError) {
-        console.log('Supabase function not available, using fallback');
+        console.log('Supabase function not available, using demo mode');
       }
 
-      // Fallback for demo
+      // Demo mode fallback - replace with real Stripe when Supabase is connected
       const sessionId = 'cs_test_' + Math.random().toString(36).substr(2, 9);
       return {
         sessionId,
@@ -88,7 +90,7 @@ export class StripeService {
     } catch (error) {
       console.error('Error creating checkout session:', error);
       
-      // Fallback for demo
+      // Error fallback
       const sessionId = 'cs_test_' + Math.random().toString(36).substr(2, 9);
       return {
         sessionId,

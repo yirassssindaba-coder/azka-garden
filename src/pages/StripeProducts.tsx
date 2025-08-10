@@ -103,22 +103,22 @@ const StripeProducts: React.FC = () => {
             </div>
             <h1 className="text-5xl font-bold mb-4">Koleksi Premium Azka Garden</h1>
             <p className="text-xl text-green-100 max-w-2xl mx-auto">
-              Tanaman hias berkualitas tinggi dengan sistem pembayaran yang aman dan fleksibel
+              47+ Tanaman hias premium dengan sistem pembayaran Stripe yang aman dan berlangganan bulanan
             </p>
             
             {/* Trust Indicators */}
             <div className="flex items-center justify-center space-x-8 mt-8">
               <div className="flex items-center space-x-2">
                 <Shield className="h-5 w-5 text-green-200" />
-                <span className="text-green-100 text-sm">Pembayaran Aman</span>
+                <span className="text-green-100 text-sm">Stripe SSL Secure</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Star className="h-5 w-5 text-yellow-400" />
-                <span className="text-green-100 text-sm">Kualitas Terjamin</span>
+                <span className="text-green-100 text-sm">Premium Quality</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Zap className="h-5 w-5 text-blue-400" />
-                <span className="text-green-100 text-sm">Pengiriman Cepat</span>
+                <span className="text-green-100 text-sm">Monthly Delivery</span>
               </div>
             </div>
           </div>
