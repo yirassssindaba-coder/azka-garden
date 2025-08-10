@@ -126,12 +126,12 @@ const PlantShowcase: React.FC = () => {
       </section>
 
       {/* Flowering Plants */}
-      <section className="bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-8 mx-4">
+      <section className="bg-gradient-to-r from-green-50 to-green-100 rounded-2xl p-8 mx-4 border border-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <div className="text-6xl mb-4">🌸</div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Tanaman Berbunga Cantik</h2>
-            <p className="text-lg text-gray-600">
+            <h2 className="text-3xl font-bold text-black mb-4">Ramah di Kantong</h2>
+            <p className="text-lg text-black">
               Percantik taman Anda dengan tanaman berbunga yang menawan
             </p>
           </div>
@@ -139,7 +139,7 @@ const PlantShowcase: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {floweringPlants.map((plant) => (
               <div key={plant.id} className="relative">
-                <div className="absolute top-2 left-2 bg-pink-500 text-white text-xs px-2 py-1 rounded-full z-10">
+                <div className="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full z-10 border border-white">
                   BERBUNGA
                 </div>
                 <ProductCard plant={plant} />
@@ -173,12 +173,12 @@ const PlantShowcase: React.FC = () => {
 
       {/* Bonsai Spotlight */}
       {bonsaiCollection.length > 0 && (
-        <section className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-8 mx-4">
+        <section className="bg-gradient-to-r from-green-50 to-green-100 rounded-2xl p-8 mx-4 border border-white">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <Award className="h-12 w-12 text-amber-600 mx-auto mb-4" />
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Koleksi Bonsai Eksklusif</h2>
-              <p className="text-lg text-gray-600">
+              <Award className="h-12 w-12 text-green-600 mx-auto mb-4" />
+              <h2 className="text-3xl font-bold text-black mb-4">Koleksi Bonsai Eksklusif</h2>
+              <p className="text-lg text-black">
                 Seni tanaman miniatur untuk kolektor dan pecinta bonsai
               </p>
             </div>
@@ -186,7 +186,7 @@ const PlantShowcase: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {bonsaiCollection.map((plant) => (
                 <div key={plant.id} className="relative group">
-                  <div className="absolute top-4 left-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs px-3 py-1 rounded-full font-bold z-10">
+                  <div className="absolute top-4 left-4 bg-gradient-to-r from-green-500 to-green-600 text-white text-xs px-3 py-1 rounded-full font-bold z-10 border border-white">
                     BONSAI MASTER
                   </div>
                   <div className="bg-white rounded-lg overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-300">

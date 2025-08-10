@@ -544,10 +544,10 @@ const Home: React.FC = () => {
       {/* YouTube Channel Promotion */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-r from-red-500 to-red-600 rounded-2xl p-8 text-white text-center">
+          <div className="bg-gradient-to-r from-green-600 to-green-700 rounded-2xl p-8 text-white text-center border border-white">
             <div className="text-6xl mb-6">📺</div>
             <h2 className="text-3xl font-bold mb-4">Channel YouTube Azka Garden Indonesia</h2>
-            <p className="text-xl text-red-100 mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-green-100 mb-8 max-w-2xl mx-auto">
               Lebih dari 13.000 subscriber mempercayai kami untuk tutorial perawatan tanaman. 
               Video baru setiap minggu dengan tips dan trik dari para ahli.
             </p>
@@ -556,7 +556,7 @@ const Home: React.FC = () => {
                 href="https://www.youtube.com/channel/UCuAUD9jzepl1iay_eIlDgKw"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-8 py-4 bg-white text-green-600 font-bold rounded-xl hover:bg-green-50 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                className="inline-flex items-center px-8 py-4 bg-white text-black font-bold rounded-xl hover:bg-green-50 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl border border-white"
               >
                 <ExternalLink className="mr-2 h-5 w-5" />
                 Tonton di YouTube
@@ -565,7 +565,7 @@ const Home: React.FC = () => {
                 href="https://wa.me/6289635086182"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-8 py-4 border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-green-600 hover:scale-105 transition-all duration-300"
+                className="inline-flex items-center px-8 py-4 border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-black hover:scale-105 transition-all duration-300"
               >
                 <MessageCircle className="mr-2 h-5 w-5" />
                 Konsultasi Langsung
@@ -573,7 +573,7 @@ const Home: React.FC = () => {
             </div>
             
             {/* Additional Hero Information */}
-            <div className="mt-8 bg-white bg-opacity-10 rounded-lg p-4 max-w-2xl mx-auto">
+            <div className="mt-8 bg-white bg-opacity-10 rounded-lg p-4 max-w-2xl mx-auto border border-white">
               <p className="text-green-100 text-sm leading-relaxed">
                 <strong>Azka Garden</strong> adalah toko tanaman hias terpercaya di Depok yang melayani seluruh Indonesia. 
                 Kami mengkhususkan diri pada tanaman hias berkualitas tinggi dengan layanan konsultasi gratis, 

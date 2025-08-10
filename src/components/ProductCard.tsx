@@ -26,7 +26,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ plant }) => {
 
   return (
     <Link to={`/products/${plant.id}`} className="group">
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:-translate-y-1">
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-white hover:-translate-y-1">
         <div className="relative">
           <img
             src={plant.image}
@@ -35,17 +35,17 @@ const ProductCard: React.FC<ProductCardProps> = ({ plant }) => {
           />
           <button 
             onClick={handleAddToCart}
-            className="absolute top-4 right-4 p-2 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:bg-green-50 dark:hover:bg-gray-700 hover:scale-110 transition-all duration-300"
+            className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-lg hover:bg-green-50 hover:scale-110 transition-all duration-300 border border-white"
           >
             <ShoppingCart className="h-5 w-5 text-green-600" />
           </button>
-          <button className="absolute top-4 left-4 p-2 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:bg-red-50 dark:hover:bg-gray-700 hover:scale-110 transition-all duration-300">
+          <button className="absolute top-4 left-4 p-2 bg-white rounded-full shadow-lg hover:bg-red-50 hover:scale-110 transition-all duration-300 border border-white">
             <Heart className="h-5 w-5 text-gray-400 hover:text-red-500" />
           </button>
           
           {/* Stock indicator */}
           {plant.stock <= 5 && plant.stock > 0 && (
-            <div className="absolute bottom-4 left-4 bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+            <div className="absolute bottom-4 left-4 bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium border border-white">
               Stok Terbatas
             </div>
           )}
@@ -60,10 +60,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ plant }) => {
         </div>
         
         <div className="p-6">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors line-clamp-2">
+          <h3 className="text-lg font-bold text-black mb-2 group-hover:text-green-600 transition-colors line-clamp-2">
             {plant.name}
           </h3>
-          <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2 leading-relaxed">
+          <p className="text-black text-sm mb-4 line-clamp-2 leading-relaxed">
             {plant.description}
           </p>
           
@@ -71,7 +71,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ plant }) => {
             <span className="text-2xl font-bold text-green-600">
               Rp {plant.price.toLocaleString('id-ID')}
             </span>
-            <span className="text-xs text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full font-medium">
+            <span className="text-xs text-black bg-green-100 px-3 py-1 rounded-full font-medium border border-white">
               {plant.category}
             </span>
           </div>
@@ -83,9 +83,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ plant }) => {
                 plant.care_level === 'Mudah' ? 'bg-blue-500' :
                 plant.care_level === 'Sedang' ? 'bg-yellow-500' : 'bg-red-500'
               }`}></span>
-              <span className="text-gray-600 dark:text-gray-400 font-medium">{plant.care_level}</span>
+              <span className="text-black font-medium">{plant.care_level}</span>
             </div>
-            <span className="text-gray-500 dark:text-gray-300">Stok: {plant.stock}</span>
+            <span className="text-black">Stok: {plant.stock}</span>
           </div>
         </div>
       </div>
