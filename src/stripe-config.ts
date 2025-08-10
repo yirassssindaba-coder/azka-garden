@@ -8,373 +8,373 @@ export interface StripeProduct {
 
 export const stripeProducts: StripeProduct[] = [
   {
-    priceId: 'price_1Rtp3SRMKiPOXCTjlAUBfQiI',
-    name: 'Pucuk Merah (tinggi 250 cm)',
-    description: 'Tanaman pucuk merah tinggi yang sering digunakan sebagai pagar hidup atau dekorasi taman, memberikan warna cerah yang menarik dan menambah estetika lingkungan.',
+    priceId: 'price_1RuZTX81xruOlT8qEM278WfI',
+    name: 'Pucuk Merah (250 cm)',
+    description: 'Tanaman pucuk merah tinggi 250 cm yang sering digunakan sebagai pagar hidup atau dekorasi taman dengan warna cerah menarik.',
     mode: 'subscription',
     price: 23.33
   },
   {
-    priceId: 'price_1Rtp2xRMKiPOXCTjodrtpXq4',
+    priceId: 'price_1RuZRW81xruOlT8qoDtfw4Gv',
     name: 'Kadaka Tempel',
-    description: 'Tanaman hias dengan daun menarik yang mudah dirawat dan sesuai untuk taman tropis maupun sebagai tanaman pagar hidup.',
+    description: 'Tanaman hias dengan daun menarik yang mudah dirawat dan sesuai untuk taman tropis atau pagar hidup.',
     mode: 'subscription',
     price: 2.33
   },
   {
-    priceId: 'price_1Rtp2JRMKiPOXCTjWJfTQAoM',
-    name: 'Sikas (tinggi 70 cm)',
-    description: 'Tanaman sikas berukuran besar yang cocok sebagai tanaman hias eksklusif dengan perawatan khusus.',
-    mode: 'subscription',
-    price: 113.33
-  },
-  {
-    priceId: 'price_1Rtp1pRMKiPOXCTjdNanO3U8',
+    priceId: 'price_1RuZQx81xruOlT8qPaUDEloJ',
     name: 'Asoka Singapur',
-    description: 'Tanaman berbunga kecil yang populer sebagai pagar hidup, mudah dirawat dan sesuai untuk pemula.',
+    description: 'Tanaman berbunga kecil yang populer sebagai pagar hidup dan mudah dirawat untuk pemula.',
     mode: 'subscription',
     price: 1.67
   },
   {
-    priceId: 'price_1Rtp0iRMKiPOXCTjySp3MkkZ',
+    priceId: 'price_1RuZPq81xruOlT8qYBXe9CVn',
+    name: 'Sikas (70 cm)',
+    description: 'Tanaman sikas berukuran besar tinggi 70 cm yang cocok sebagai tanaman hias eksklusif dengan perawatan khusus.',
+    mode: 'subscription',
+    price: 113.33
+  },
+  {
+    priceId: 'price_1RuZP681xruOlT8qF0i7m6md',
     name: 'Jeruk Lemon',
     description: 'Tanaman buah jeruk lemon kecil yang memberikan aroma segar dan cocok untuk taman maupun kebun rumah.',
     mode: 'subscription',
     price: 4.00
   },
   {
-    priceId: 'price_1RtoziRMKiPOXCTjEwDYEVT6',
-    name: 'Jambu Kanci (tinggi 50 cm)',
-    description: 'Tanaman buah jambu kanci kecil yang juga dapat dijadikan tanaman hias, cocok untuk taman dan kebun rumah.',
+    priceId: 'price_1RuZNX81xruOlT8q3RgX2wvj',
+    name: 'Jambu Kanci (50 cm)',
+    description: 'Tanaman buah jambu kanci kecil tinggi 50 cm yang dapat dijadikan tanaman hias untuk taman dan kebun.',
     mode: 'subscription',
     price: 4.00
   },
   {
-    priceId: 'price_1Rtoz7RMKiPOXCTj75KFAev3',
+    priceId: 'price_1RuZLi81xruOlT8qVRDGtTjI',
     name: 'Bunga Kertas',
-    description: 'Tanaman hias dengan warna-warni cerah yang mudah dirawat dan cocok untuk memperindah pagar atau taman. Tanaman ini sangat sesuai bagi pemula.',
+    description: 'Tanaman hias dengan warna-warni cerah yang mudah dirawat dan cocok untuk memperindah pagar atau taman.',
     mode: 'subscription',
     price: 2.00
   },
   {
-    priceId: 'price_1RtoxQRMKiPOXCTjoKPvob23',
+    priceId: 'price_1RuZKt81xruOlT8quqHuPYg0',
     name: 'Bonsai Cemara Udang',
-    description: 'Bonsai cemara unik yang menyerupai udang dan merupakan tanaman koleksi menarik dengan perawatan khusus.',
+    description: 'Bonsai cemara unik menyerupai udang yang merupakan tanaman koleksi menarik dengan perawatan khusus.',
     mode: 'subscription',
     price: 43.33
   },
   {
-    priceId: 'price_1Rtow8RMKiPOXCTjjTQ02NO9',
+    priceId: 'price_1RuZJI81xruOlT8quWq8CCMp',
     name: 'Bonsai Gestrum Ukuran M',
-    description: 'Bonsai berukuran sedang dengan daun Gestrum yang cantik, memberikan kesan elegan di rumah atau kantor.',
+    description: 'Bonsai berukuran sedang dengan daun Gestrum cantik yang memberikan kesan elegan di rumah atau kantor.',
     mode: 'subscription',
     price: 33.33
   },
   {
-    priceId: 'price_1RtovMRMKiPOXCTjRbMuMGMu',
+    priceId: 'price_1RuZIb81xruOlT8qf0FNwR4Y',
     name: 'Bonsai Gestrum Ukuran L',
-    description: 'Bonsai besar dengan daun Gestrum yang indah, cocok untuk koleksi eksklusif dengan perawatan khusus.',
+    description: 'Bonsai besar dengan daun Gestrum indah yang cocok untuk koleksi eksklusif dengan perawatan khusus.',
     mode: 'subscription',
     price: 80.00
   },
   {
-    priceId: 'price_1RtouhRMKiPOXCTjP4FStO1I',
-    name: 'Kaktus Koboy (tinggi 70 cm)',
-    description: 'Kaktus besar berbentuk unik yang tahan kering dan mudah dirawat, sangat cocok untuk dekorasi rumah.',
+    priceId: 'price_1RuZFS81xruOlT8qyAfWT1yz',
+    name: 'Kaktus Koboy (70 cm)',
+    description: 'Kaktus besar tinggi 70 cm berbentuk unik yang tahan kering dan mudah dirawat untuk dekorasi rumah.',
     mode: 'subscription',
     price: 10.00
   },
   {
-    priceId: 'price_1RtotORMKiPOXCTjNMMepqS3',
+    priceId: 'price_1RuZEt81xruOlT8qEZgV5H5T',
     name: 'Marigool',
-    description: 'Tanaman berbunga oranye cerah yang populer sebagai tanaman hias dan penangkal serangga di taman rumah.',
+    description: 'Tanaman berbunga oranye cerah yang populer sebagai tanaman hias dan penangkal serangga di taman.',
     mode: 'subscription',
     price: 1.67
   },
   {
-    priceId: 'price_1Rtos9RMKiPOXCTjDzfHWWHg',
+    priceId: 'price_1RuZDv81xruOlT8qw36FxBJR',
     name: 'Bringin Korea Micro',
-    description: 'Varian kecil dari Bringin Korea yang cocok untuk koleksi bonsai dengan bentuk daun menarik dan perawatan mudah.',
+    description: 'Varian kecil Bringin Korea yang cocok untuk koleksi bonsai dengan bentuk daun menarik dan perawatan mudah.',
     mode: 'subscription',
     price: 100.00
   },
   {
-    priceId: 'price_1RtorNRMKiPOXCTjzpVhKiPw',
+    priceId: 'price_1RuZCx81xruOlT8q5vn78GuJ',
     name: 'Lidah Mertua',
-    description: 'Tanaman hias indoor dengan daun panjang tajam yang mudah dirawat dan sesuai untuk dekorasi meja atau rak tanaman.',
+    description: 'Tanaman hias indoor dengan daun panjang tajam yang mudah dirawat untuk dekorasi meja atau rak.',
     mode: 'subscription',
     price: 1.67
   },
   {
-    priceId: 'price_1RtoqaRMKiPOXCTjnY1NHYX1',
+    priceId: 'price_1RuZBB81xruOlT8qyWfXgw2Z',
     name: 'Pandan Bali',
     description: 'Tanaman pandan beraroma khas yang digunakan sebagai tanaman hias dan bumbu dapur di daerah tropis.',
     mode: 'subscription',
     price: 10.00
   },
   {
-    priceId: 'price_1Rtoq2RMKiPOXCTj1ADbBdxW',
+    priceId: 'price_1RuZAb81xruOlT8qKpaJtn9Z',
     name: 'Asoka India',
-    description: 'Tanaman berbunga kecil yang sering digunakan sebagai pagar hidup, mudah dirawat dan sesuai untuk pemula.',
+    description: 'Tanaman berbunga kecil yang sering digunakan sebagai pagar hidup dan mudah dirawat untuk pemula.',
     mode: 'subscription',
     price: 0.67
   },
   {
-    priceId: 'price_1RtopARMKiPOXCTjYMd9PNAT',
+    priceId: 'price_1RuZA181xruOlT8q4aEJPKOT',
     name: 'Bromelian Baby Pink',
-    description: 'Bromeliad dengan bunga pink kecil yang cantik, menjadi favorit tanaman eksotis untuk dekorasi interior.',
+    description: 'Bromelian dengan bunga pink kecil cantik yang menjadi favorit tanaman eksotis untuk dekorasi interior.',
     mode: 'subscription',
     price: 8.33
   },
   {
-    priceId: 'price_1RtooIRMKiPOXCTjg2ekY73L',
+    priceId: 'price_1RuZ5881xruOlT8qbErTNn8s',
     name: 'Bringin Putih',
-    description: 'Tanaman hias dengan daun putih hijau yang menawan, memberikan kesan elegan untuk taman dan halaman.',
+    description: 'Tanaman hias dengan daun putih hijau menawan yang memberikan kesan elegan untuk taman.',
     mode: 'subscription',
     price: 3.33
   },
   {
-    priceId: 'price_1Rton5RMKiPOXCTjQo0rMpzY',
+    priceId: 'price_1RuZ4K81xruOlT8q725qCCY2',
     name: 'Kamboja Jepang',
-    description: 'Tanaman hias berbunga cantik dan harum yang sering digunakan sebagai tanaman pekarangan di daerah tropis.',
+    description: 'Tanaman hias berbunga cantik dan harum yang sering digunakan sebagai tanaman pekarangan tropis.',
     mode: 'subscription',
     price: 3.33
   },
   {
-    priceId: 'price_1RtomURMKiPOXCTjjUVcD5eQ',
+    priceId: 'price_1RuZ3j81xruOlT8qnkfYU6Az',
     name: 'Jamani Cobra',
-    description: 'Tanaman hias eksotis dengan bentuk unik dan harga tinggi, sangat cocok untuk koleksi tanaman langka.',
+    description: 'Tanaman hias eksotis dengan bentuk unik dan harga tinggi yang cocok untuk koleksi tanaman langka.',
     mode: 'subscription',
     price: 20.00
   },
   {
-    priceId: 'price_1RtoltRMKiPOXCTjIQWSbsg5',
+    priceId: 'price_1RuYru81xruOlT8qKYb7fUu6',
     name: 'Media Tanah',
-    description: 'Media tanam berkualitas tinggi yang mendukung pertumbuhan berbagai tanaman hias dan dapat digunakan untuk tanaman dalam pot maupun di tanah terbuka.',
+    description: 'Media tanam berkualitas tinggi yang mendukung pertumbuhan berbagai tanaman hias dalam pot atau tanah terbuka.',
     mode: 'subscription',
     price: 1.00
   },
   {
-    priceId: 'price_1Rtol0RMKiPOXCTjCUmup76M',
+    priceId: 'price_1RuYqw81xruOlT8qn7c0aeYl',
     name: 'Berekele',
-    description: 'Tanaman hias yang menambah warna dan tekstur pada taman tropis maupun sebagai tanaman pagar hidup.',
+    description: 'Tanaman hias yang menambah warna dan tekstur pada taman tropis atau sebagai pagar hidup.',
     mode: 'subscription',
     price: 1.00
   },
   {
-    priceId: 'price_1RtojBRMKiPOXCTj94WqCsIN',
-    name: 'Ketapang Kaligata Tinggi 60 cm',
-    description: 'Tanaman hias kecil dengan daun khas yang memberikan kesan asri, sangat sesuai untuk taman minimalis.',
+    priceId: 'price_1RuYpY81xruOlT8qHQqs6Kio',
+    name: 'Ketapang Kaligata (60 cm)',
+    description: 'Tanaman hias kecil tinggi 60 cm dengan daun khas yang sesuai untuk taman minimalis.',
     mode: 'subscription',
     price: 2.33
   },
   {
-    priceId: 'price_1RtnugRMKiPOXCTjat94kaJb',
-    name: 'Pitalub Tinggi 70 cm',
-    description: 'Tanaman hias berukuran sedang dengan daun lebat, mudah dirawat dan sesuai sebagai penghias taman, khususnya bagi pemula.',
+    priceId: 'price_1RuYol81xruOlT8qDLoA5W1p',
+    name: 'Pitalub Tinggi (70 cm)',
+    description: 'Tanaman hias berukuran sedang tinggi 70 cm dengan daun lebat yang mudah dirawat untuk pemula.',
     mode: 'subscription',
     price: 5.33
   },
   {
-    priceId: 'price_1RtntuRMKiPOXCTjGlpaurNW',
-    name: 'Cemara Tretes (tinggi 120 cm)',
-    description: 'Tanaman cemara mini yang memberikan kesan asri dan elegan, sangat cocok untuk taman dan penghias ruang luar.',
+    priceId: 'price_1RuYoB81xruOlT8qhokHR3tG',
+    name: 'Cemara Tretes (120 cm)',
+    description: 'Tanaman cemara mini tinggi 120 cm yang memberikan kesan asri dan elegan untuk taman.',
     mode: 'subscription',
     price: 16.67
   },
   {
-    priceId: 'price_1RtnseRMKiPOXCTjkVlCDpg5',
+    priceId: 'price_1RuYmm81xruOlT8qjeraIMo6',
     name: 'Pot Hitam Diameter 40 cm',
-    description: 'Pot plastik hitam berukuran besar yang tahan lama dan ideal untuk tanaman hias berukuran sedang hingga besar. Pot ini dapat digunakan di dalam maupun luar ruangan.',
+    description: 'Pot plastik hitam berukuran besar yang tahan lama dan ideal untuk tanaman sedang hingga besar.',
     mode: 'subscription',
     price: 2.67
   },
   {
-    priceId: 'price_1RtnrcRMKiPOXCTjfq20KaNZ',
-    name: 'Pot Tanah Coklat, Putih, dan Bintik Hitam (diameter 30 cm)',
-    description: 'Pot tanah liat minimalis yang sesuai untuk berbagai tanaman hias.',
+    priceId: 'price_1RuYlz81xruOlT8qbKISFZtQ',
+    name: 'Pot Tanah Coklat, Putih, dan Bintik Hitam (30 cm)',
+    description: 'Pot tanah liat minimalis diameter 30 cm yang sesuai untuk berbagai tanaman hias.',
     mode: 'subscription',
     price: 4.33
   },
   {
-    priceId: 'price_1RtnqlRMKiPOXCTjr0uKU87v',
-    name: 'Pot Kapsul Coklat dan Hitam (diameter 35 cm, tinggi 60 cm)',
-    description: 'Pot dengan desain kapsul elegan yang cocok untuk tanaman besar atau bonsai.',
+    priceId: 'price_1RuYiU81xruOlT8qIVupX3Ti',
+    name: 'Pot Kapsul Coklat dan Hitam (35 cm)',
+    description: 'Pot desain kapsul elegan diameter 35 cm tinggi 60 cm yang cocok untuk tanaman besar atau bonsai.',
     mode: 'subscription',
     price: 5.67
   },
   {
-    priceId: 'price_1RtnqBRMKiPOXCTj9TcmaOMF',
+    priceId: 'price_1RuYgl81xruOlT8quSAbX6u3',
     name: 'Aglonema Valentin',
-    description: 'Tanaman hias dengan daun hijau-merah muda yang populer untuk dekorasi interior dan mudah tumbuh subur di tempat teduh.',
+    description: 'Tanaman hias dengan daun hijau-merah muda yang populer untuk dekorasi interior dan mudah tumbuh.',
     mode: 'subscription',
     price: 4.67
   },
   {
-    priceId: 'price_1RtnpfRMKiPOXCTjcZYr9HL9',
+    priceId: 'price_1RuYft81xruOlT8q2o0tFAVj',
     name: 'Pitalub Kecil',
-    description: 'Tanaman hias kecil dengan daun lebat berwarna hijau, cocok sebagai penghias meja atau sudut ruangan, mudah dirawat dan sesuai untuk pemula.',
+    description: 'Tanaman hias kecil dengan daun lebat hijau yang cocok sebagai penghias meja dan mudah dirawat.',
     mode: 'subscription',
     price: 2.00
   },
   {
-    priceId: 'price_1RtnosRMKiPOXCTjg8W6kU4m',
+    priceId: 'price_1RuYee81xruOlT8qBTA5lb3O',
     name: 'Sarbena Hijau',
-    description: 'Varian tanaman hias dengan daun hijau cerah yang memberikan kesan segar dan alami pada ruang hijau.',
+    description: 'Varian tanaman hias dengan daun hijau cerah yang memberikan kesan segar dan alami.',
     mode: 'subscription',
     price: 0.67
   },
   {
-    priceId: 'price_1RtnoMRMKiPOXCTjlUxeVCDx',
+    priceId: 'price_1RuYdW81xruOlT8qJA558RKu',
     name: 'Sarbena Putih (Sabrina)',
-    description: 'Tanaman hias gantung dengan bunga putih kecil yang menawan, ideal untuk taman minimalis atau teras rumah.',
+    description: 'Tanaman hias gantung dengan bunga putih kecil yang ideal untuk taman minimalis atau teras.',
     mode: 'subscription',
     price: 0.67
   },
   {
-    priceId: 'price_1RtnnqRMKiPOXCTj3sDhz81k',
+    priceId: 'price_1RuYcx81xruOlT8qTFwvZaKd',
     name: 'Alamanda Kuning (Allamanda cathartica)',
-    description: 'Tanaman hias berbunga terompet emas berwarna kuning cerah dengan diameter 5–7,5 cm, populer untuk taman dan pagar hidup.',
+    description: 'Tanaman berbunga terompet emas kuning cerah diameter 5-7,5 cm yang populer untuk pagar hidup.',
     mode: 'subscription',
     price: 5.00
   },
   {
-    priceId: 'price_1RtnnJRMKiPOXCTjgnFpaVAA',
+    priceId: 'price_1RuYc781xruOlT8qvIev4GgF',
     name: 'Jayen (Episcia)',
-    description: 'Tanaman hias indoor dengan daun berbentuk hati dan bunga kecil berwarna cerah, cocok untuk dekorasi meja atau rak tanaman dalam ruangan.',
+    description: 'Tanaman hias indoor dengan daun berbentuk hati dan bunga kecil cerah untuk dekorasi meja.',
     mode: 'subscription',
     price: 5.33
   },
   {
-    priceId: 'price_1Rtnm9RMKiPOXCTjVdfWZKmA',
+    priceId: 'price_1RuYaJ81xruOlT8qWqwenJCE',
     name: 'Kadaka Tanduk (Platycerium)',
-    description: 'Tanaman paku-pakuan epifit yang biasanya hidup menempel pada batang tanaman lain, namun dapat juga ditanam dalam pot dan umum ditemukan di daerah lembap.',
+    description: 'Tanaman paku-pakuan epifit yang dapat ditanam dalam pot dan umum ditemukan di daerah lembap.',
     mode: 'subscription',
     price: 2.00
   },
   {
-    priceId: 'price_1RtnkrRMKiPOXCTjeNTzxc5V',
+    priceId: 'price_1RuYZj81xruOlT8qZhOJUedU',
     name: 'Maranti Bali (Stromanthe sanguinea)',
-    description: 'Tanaman hias tropis dari hutan hujan Brasil yang memiliki daun berwarna-warni merah, hijau, dan putih mencolok, sangat populer di kalangan penggemar tanaman hias.',
+    description: 'Tanaman hias tropis dari Brasil dengan daun berwarna-warni merah, hijau, dan putih yang mencolok.',
     mode: 'subscription',
     price: 1.00
   },
   {
-    priceId: 'price_1Rtnk1RMKiPOXCTjmKp6q5HH',
+    priceId: 'price_1RuYYx81xruOlT8qquKbPJRG',
     name: 'Batu Taman Hitam dan Putih',
-    description: 'Batu hias yang digunakan untuk dekorasi taman, tersedia dalam warna hitam dan putih yang memberikan kontras alami dan estetis pada taman.',
+    description: 'Batu hias dekorasi taman dalam warna hitam dan putih yang memberikan kontras alami dan estetis.',
     mode: 'subscription',
     price: 2.00
   },
   {
-    priceId: 'price_1RtnjKRMKiPOXCTjTaj5Xhwq',
+    priceId: 'price_1RuYYF81xruOlT8qdwutvYgI',
     name: 'Airis Brazil (Iris variegata)',
-    description: 'Tanaman hias outdoor dengan daun panjang hijau cerah bergaris putih yang memberikan tampilan segar dan menarik, cocok untuk taman dan pot.',
+    description: 'Tanaman hias outdoor dengan daun panjang hijau bergaris putih yang memberikan tampilan segar.',
     mode: 'subscription',
     price: 0.67
   },
   {
-    priceId: 'price_1RtnilRMKiPOXCTjDjbUE1En',
+    priceId: 'price_1RuYXN81xruOlT8qlHzA599s',
     name: 'Teratai (Nymphaea)',
-    description: 'Tanaman air dengan bunga besar indah yang mengapung di permukaan air. Warnanya bervariasi dari putih, merah muda hingga ungu, sering digunakan untuk mempercantik kolam atau taman air.',
+    description: 'Tanaman air dengan bunga besar indah yang mengapung, sering digunakan untuk mempercantik kolam.',
     mode: 'subscription',
     price: 5.00
   },
   {
-    priceId: 'price_1Rtnf6RMKiPOXCTjWxBVom5R',
+    priceId: 'price_1RuYWN81xruOlT8q0M9HGfwS',
     name: 'Kana (Canna indica)',
-    description: 'Tanaman tropis dengan daun lebar hijau cerah dan bunga besar berwarna merah, kuning, atau oranye yang mencolok. Tumbuh hingga 1–2 meter, cocok untuk taman dan halaman, tahan berbagai kondisi cuaca dan mudah dirawat sehingga sesuai untuk pemula.',
+    description: 'Tanaman tropis dengan daun lebar dan bunga besar berwarna cerah yang tahan berbagai kondisi cuaca.',
     mode: 'subscription',
     price: 2.00
   },
   {
-    priceId: 'price_1RtneRMKiPOXCTjC4KORKCP',
+    priceId: 'price_1RuYVn81xruOlT8qIlCzH6x5',
     name: 'Sampang Dara (Excoecaria cochinchinensis)',
-    description: 'Perdu tropis dengan daun hijau cerah di bagian atas dan merah gelap di bagian bawah, tumbuh hingga 1–2 meter. Memberikan tampilan alami dan eksotis, tanaman ini cocok untuk taman indoor maupun outdoor. Perlu hati-hati karena getahnya beracun saat perawatan.',
+    description: 'Perdu tropis dengan daun hijau cerah di atas dan merah gelap di bawah, namun getahnya beracun.',
     mode: 'subscription',
     price: 1.07
   },
   {
-    priceId: 'price_1RtndQRMKiPOXCTjiPzmbBQ6',
+    priceId: 'price_1RuYUu81xruOlT8qAvQj9K6B',
     name: 'Siklok (Agave attenuata)',
-    description: 'Foxtail Agave adalah tanaman sukulen asal Meksiko dengan daun panjang runcing berwarna hijau keabu-abuan dengan pinggiran putih membentuk roseta yang elegan. Tahan terhadap panas dan kekeringan, cocok untuk taman tropis maupun subtropis serta perawatan mudah.',
+    description: 'Tanaman sukulen dari Meksiko dengan daun panjang runcing membentuk roseta yang tahan panas dan kekeringan.',
     mode: 'subscription',
     price: 4.67
   },
   {
-    priceId: 'price_1RtncYRMKiPOXCTjUCOpR0kB',
+    priceId: 'price_1RuYTb81xruOlT8q74VCTi5F',
     name: 'Brokoli Hijau',
-    description: 'Tanaman hias dengan daun hijau segar yang menyerupai sayur brokoli. Tanaman ini sering digunakan sebagai tanaman hias unik yang menambah sentuhan alami pada taman atau ruangan.',
+    description: 'Tanaman hias unik dengan daun hijau segar menyerupai sayur brokoli untuk sentuhan alami.',
     mode: 'subscription',
     price: 0.67
   },
   {
-    priceId: 'price_1Rtn6RMKiPOXCTjpaTZT2Sw',
+    priceId: 'price_1RuYT481xruOlT8q8aPDtWGR',
     name: 'Gestrum Kuning (Gestrum coromandelianum)',
-    description: 'Tanaman tropis dengan bunga kuning cerah dan daun hijau lebat yang dapat tumbuh hingga 2 meter. Tanaman ini cocok untuk taman atau halaman rumah, tahan berbagai kondisi cuaca dan mudah dirawat.',
+    description: 'Tanaman tropis dengan bunga kuning cerah yang tahan berbagai kondisi cuaca dan mudah dirawat.',
     mode: 'subscription',
     price: 2.00
   },
   {
-    priceId: 'price_1RtnZMRMKiPOXCTjxw9d5cXy',
+    priceId: 'price_1RuYRi81xruOlT8qhfWd2SWu',
     name: 'Bringin Korea (Ficus microcarpa)',
-    description: 'Tanaman hias populer untuk taman dan interior dengan tinggi sekitar 2 meter, batang kokoh, dan daun hijau mengkilap yang memberikan suasana alami dan sejuk. Tanaman ini mudah beradaptasi dengan berbagai kondisi cahaya dan perawatan sehingga cocok untuk pemula maupun penghobi.',
+    description: 'Tanaman hias besar setinggi 2 meter dengan daun hijau mengkilap yang mudah beradaptasi.',
     mode: 'subscription',
     price: 133.33
   },
   {
-    priceId: 'price_1RtnVZRMKiPOXCTjF9scowcG',
+    priceId: 'price_1RuYQm81xruOlT8qM06nJelR',
     name: 'Cemara Perak (Juniperus chinensis)',
-    description: 'Tanaman konifer hijau kekuningan berbentuk rimbun menyerupai pohon cemara mini. Tanaman ini cocok untuk taman, halaman, maupun sebagai tanaman indoor, memberikan kesan alami dan segar.',
+    description: 'Tanaman konifer hijau kekuningan berbentuk rimbun yang cocok untuk taman dan indoor.',
     mode: 'subscription',
     price: 3.33
   },
   {
-    priceId: 'price_1RtnUHRMKiPOXCTjn53EGg34',
+    priceId: 'price_1RuYPJ81xruOlT8qOHgC1qWm',
     name: 'Puting Cabe (Euphorbia milii)',
-    description: 'Tanaman hias berbunga dari keluarga Euphorbiaceae yang memiliki bunga kecil cerah serta duri tajam pada batangnya. Daunnya hijau rapat dengan bunga muncul dalam kelompok kecil, menciptakan tampilan eksotis. Tanaman ini tahan terhadap cahaya rendah hingga sedang dan mampu bertahan dalam kondisi kering berkat cadangan air pada batangnya.',
+    description: 'Tanaman berbunga dengan duri tajam yang tahan kekeringan dan memberikan tampilan eksotis.',
     mode: 'subscription',
     price: 0.67
   },
   {
-    priceId: 'price_1RtnT2RMKiPOXCTjxOibVUOJ',
-    name: 'Pot Tanah Liat diameter 15 cm',
-    description: 'Dibuat dari bahan tanah liat berkualitas tinggi dengan design minimalis yang sesuai untuk berbagai tanaman hias kecil hingga sedang. Pot ini tersedia dalam warna coklat, hitam, dan putih, memberikan pilihan dekorasi menarik serta harga terjangkau untuk menambah estetika tanaman di rumah Anda.',
+    priceId: 'price_1RuYNt81xruOlT8qEx6tPlcz',
+    name: 'Pot Tanah Liat 15 cm',
+    description: 'Pot tanah liat berkualitas tinggi dengan desain minimalis tersedia dalam warna coklat, hitam, dan putih.',
     mode: 'subscription',
     price: 2.67
   },
   {
-    priceId: 'price_1RtnRxRMKiPOXCTj0kq7Ylwb',
+    priceId: 'price_1RuYMr81xruOlT8qKwcjPsmQ',
     name: 'Cemara Ekor Tupai (Asparagus densiflorus)',
-    description: 'Tanaman tahunan hijau abadi dari keluarga Asparagaceae yang berasal dari Afrika Selatan. Daunnya menyerupai ekor tupai dengan daun kecil berwarna hijau cerah yang tumbuh rimbun dan mengerucut. Tanaman ini cocok sebagai tanaman hias interior karena toleransi terhadap cahaya rendah hingga sedang serta kemampuannya bertahan pada kondisi kering.',
+    description: 'Tanaman hijau abadi dari Afrika Selatan dengan daun menyerupai ekor tupai yang cocok untuk interior.',
     mode: 'subscription',
     price: 2.67
   },
   {
-    priceId: 'price_1RtnPvRMKiPOXCTjirTLTcxe',
+    priceId: 'price_1RuYLz81xruOlT8q6ILSYSAR',
     name: 'Kuping Gajah (Anthurium crystallinum)',
-    description: 'Varietas Anthurium dari keluarga Araceae dengan daun besar berbentuk hati dan permukaan berkilau. Urat daun berwarna keputih-putihan yang mencolok menambah kesan elegan dan eksotis. Tanaman ini cocok untuk dekorasi interior, memiliki toleransi terhadap cahaya rendah hingga sedang serta tahan pada periode kekeringan.',
+    description: 'Anthurium dengan daun besar berbentuk hati berkilau dan urat putih mencolok yang elegan untuk dekorasi interior.',
     mode: 'subscription',
     price: 5.00
   },
   {
-    priceId: 'price_1RtnPDRMKiPOXCTj6EJnSnRs',
+    priceId: 'price_1RuYKg81xruOlT8qlihI4fnm',
     name: 'Pakis Kuning (Nephrolepis exaltata \'Golden\')',
-    description: 'Varietas pakis hias yang memiliki daun muda berwarna kuning cerah yang berubah menjadi hijau saat dewasa. Daunnya berbentuk pedang dan tumbuh merumpun, menciptakan tampilan alami dan menyegarkan. Tanaman ini ideal ditempatkan di area teduh dengan cahaya matahari tidak langsung dan mudah dirawat, memberikan sentuhan hijau segar pada lingkungan sekitar.',
+    description: 'Pakis hias dengan daun muda kuning cerah yang berubah hijau saat dewasa, ideal untuk area teduh.',
     mode: 'subscription',
     price: 1.67
   },
   {
-    priceId: 'price_1RtnN1RMKiPOXCTjiy6FzZOQ',
+    priceId: 'price_1RuYJf81xruOlT8qyG3K3iTK',
     name: 'Dragon Sekel (Alocasia baginda \'Dragon Scale\')',
-    description: 'Varietas Alocasia dari keluarga Araceae yang terkenal dengan motif daun unik menyerupai sisik naga. Daunnya hijau zamrud dengan urat perak metalik yang mencolok, memberikan kesan eksotis dan elegan. Tanaman ini sangat cocok untuk dekorasi interior karena toleransinya terhadap cahaya rendah hingga sedang serta kemampuannya bertahan dalam kondisi kering.',
+    description: 'Varietas Alocasia eksotis dengan motif daun menyerupai sisik naga berwarna hijau zamrud dan urat perak metalik.',
     mode: 'subscription',
     price: 8.33
   },
   {
-    priceId: 'price_1Rtl1PRMKiPOXCTjtcdq9Sa1',
+    priceId: 'price_1RuYIh81xruOlT8qq6lEI0kU',
     name: 'Jamani Dolar (Zamioculcas zamiifolia)',
-    description: 'Tanaman perennial tropis dari keluarga Araceae yang berasal dari Afrika Timur seperti Kenya, Tanzania, dan Afrika Selatan. Tumbuh dari rimpang tebal yang menyimpan cadangan air, tanaman ini menghasilkan daun majemuk menyirip berwarna hijau pekat dan mengkilap dengan 6–8 pasang foliol oval sepanjang 7–15 cm. ZZ Plant sangat toleran terhadap cahaya rendah hingga sedang dan mampu bertahan lama dalam kondisi kekeringan.',
+    description: 'Tanaman perennial tropis dari Afrika Timur yang toleran terhadap cahaya rendah dan tahan kekeringan dengan daun hijau pekat mengkilap.',
     mode: 'subscription',
     price: 4.67
   }
@@ -394,4 +394,12 @@ export const formatPrice = (price: number): string => {
     currency: 'USD',
     minimumFractionDigits: 2
   }).format(price);
+};
+
+export const formatPriceIDR = (price: number): string => {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0
+  }).format(price * 15000); // Convert USD to IDR (approximate rate)
 };
