@@ -1,0 +1,78 @@
+Dokumen: Permohonan Izin Penelitian dan Wawancara
+No. Surat: Istimewa
+Lampiran: 1 (satu) berkas
+Perihal: Permohonan Izin Penelitian dan Wawancara
+Depok, 17 Juni 2025
+
+Kepada Yth,
+Bapak Hendrik
+Pemilik Azka Garden
+Jl. Raya KSU RRI Parung Serab, Depok, Jawa Barat
+WA Bisnis: +62 896-3508-6182
+
+Dengan hormat,
+
+Saya, Roberto Oca­viantyo Tahta Laksamana (NPM 31120049), mahasiswa Program Diploma Tiga (D-III) Manajemen Informatika Universitas Gundarma, dengan hormat memohon izin untuk melakukan penelitian lapangan sekaligus wawancara terstruktur di Azka Garden. Penelitian ini bertujuan untuk merancang serta membangun situs web perdagangan elektronik yang modern, responsif, dan terintegrasi guna mendukung penjualan tanaman hias maupun buah-buahan, layanan pembuatan maupun renovasi taman, serta pembuatan kolam ikan. Situs web tersebut juga diharapkan mampu mengoptimalkan proses bisnis melalui fitur manajemen produk, pesanan, pembayaran, pengiriman, promosi, dan analitik penjualan.
+
+Metode pengembangan yang digunakan mengikuti kerangka System Development Life Cycle (SDLC), meliputi tahap perencanaan, analisis, perancangan, implementasi, dan uji coba. Data primer akan diperoleh melalui observasi langsung serta wawancara dengan pihak-pihak terkait (pemilik, administrator penjualan, staf kebun, dan lain-lain). Seluruh informasi yang diperoleh akan dijaga kerahasiaannya dan hanya digunakan untuk kepentingan akademik sesuai etika penelitian. Daftar pertanyaan wawancara tercantum pada Lampiran 1.
+
+Demikian permohonan ini saya sampaikan. Besar harapan saya Bapak berkenan memberikan izin dan dukungan demi kelancaran penelitian ini. Atas perhatian dan kerja sama yang Bapak berikan, saya ucapkan terima kasih.
+
+Hormat saya,
+Roberto Oca­viantyo T. Laksamana
+
+(Tanda Tangan)
+(Rp. Hendrik)
+
+Lampiran 1: Daftar Pertanyaan Wawancara
+Bagaimana sejarah berdirinya Azka Garden dan layanan apa saja yang saat ini ditawarkan?
+Jawaban: Ingin menciptakan lapangan pekerjaan untuk keluarga secara menetop.
+
+Siapa target pasar utama (konsumen dan segmen) Azka Garden?
+Jawaban: Pelanggan.
+
+Produk atau tanaman apa yang paling banyak diminati pelanggan?
+Jawaban: Mawar, Aglaonema, Bonsai cemora udang, dan bonsai Bringin Korea.
+
+Bagaimana alur pemesanan produk dan jasa secara offline saat ini?
+Jawaban: Pelanggan datang ke tempat lapak Azka Garden.
+
+Metode pembayaran apa saja yang biasa digunakan pelanggan?
+Jawaban: Kas uang kas dan Qris.
+
+Bagaimana proses pengiriman produk ke pelanggan dan area jangkauan pengiriman?
+Jawaban: Di antar pake motor sampai lokasi.
+
+Bagaimana cara Azka Garden mempromosikan produk atau jasa saat ini (online & offline)?
+Jawaban: Online melalui status WhatsApp; offline melalui pelanggan.
+
+Adakah kendala dalam pengelolaan stok, update harga, atau katalog produk?
+Jawaban: Tidak ada.
+
+Siapa yang akan mengelola konten dan pesanan di situs web nantinya?
+Jawaban: Saya sendiri.
+
+Fitur apa yang paling diharapkan hadir di situs web (misalnya monitoring order, chat, promosi)?
+Jawaban: Promosi.
+
+Bagian 1: Lampiran Pertanyaan Wawancara
+Pertanyaan 11:
+
+Pertanyaan: Adakah contoh situs web pesaing atau referensi desain yang disukai?
+Jawaban: Tidak Ada
+Pertanyaan 12:
+
+Pertanyaan: Seberapa sering Azka Garden membutuhkan laporan penjualan dan analitik?
+Jawaban: Belum Pernah
+Pertanyaan 13:
+
+Pertanyaan: Bagaimana rencana pengembangan usaha (produk atau jasa baru) ke depan?
+Jawaban: Buka Cabang
+Pertanyaan 14:
+
+Pertanyaan: Adakah kebijakan garansi atau retur produk yang perlu ditampilkan di situs web?
+Jawaban: Ada
+Pertanyaan 15:
+
+Pertanyaan: Apakah ada batasan atau preferensi terkait tampilan, warna, mau pun bahasa pada situs web?
+Jawaban: Tidak
