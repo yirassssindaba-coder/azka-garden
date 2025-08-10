@@ -45,6 +45,18 @@ const PricingCard: React.FC<PricingCardProps> = ({
     return features.slice(0, 4);
   };
 
+  const getProductImage = (name: string) => {
+    if (name.toLowerCase().includes('bonsai')) return 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg';
+    if (name.toLowerCase().includes('pot')) return 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg';
+    if (name.toLowerCase().includes('kaktus')) return 'https://images.pexels.com/photos/1974928/pexels-photo-1974928.jpeg';
+    if (name.toLowerCase().includes('cemara')) return 'https://images.pexels.com/photos/1084199/pexels-photo-1084199.jpeg';
+    if (name.toLowerCase().includes('bunga') || name.toLowerCase().includes('alamanda') || name.toLowerCase().includes('gestrum')) return 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg';
+    if (name.toLowerCase().includes('lidah mertua')) return 'https://images.pexels.com/photos/2123482/pexels-photo-2123482.jpeg';
+    if (name.toLowerCase().includes('anthurium') || name.toLowerCase().includes('kuping gajah')) return 'https://images.pexels.com/photos/7084308/pexels-photo-7084308.jpeg';
+    if (name.toLowerCase().includes('philodendron') || name.toLowerCase().includes('pakis')) return 'https://images.pexels.com/photos/6208087/pexels-photo-6208087.jpeg';
+    if (name.toLowerCase().includes('bringin') || name.toLowerCase().includes('sikas')) return 'https://images.pexels.com/photos/1005058/pexels-photo-1005058.jpeg';
+    return 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'; // Default plant image
+  };
   return (
     <div className={`relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg border-2 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
       isPopular ? 'border-green-500 scale-105' : 'border-gray-200 dark:border-gray-700'
@@ -72,10 +84,12 @@ const PricingCard: React.FC<PricingCardProps> = ({
       <div className="p-8">
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="text-4xl mb-4">
-            {product.name.includes('Bonsai') ? '🌳' : 
-             product.name.includes('Pot') ? '🏺' : 
-             product.name.includes('Kaktus') ? '🌵' : '🌿'}
+          <div className="mb-4">
+            <img
+              src={getProductImage(product.name)}
+              alt={product.name}
+              className="w-full h-32 object-cover rounded-lg"
+            />
           </div>
           <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">
             {product.name}

@@ -54,12 +54,18 @@ const StripeProducts: React.FC = () => {
   };
 
   const getCategoryIcon = (name: string) => {
-    if (name.toLowerCase().includes('bonsai')) return '🌳';
-    if (name.toLowerCase().includes('pot')) return '🏺';
-    if (name.toLowerCase().includes('batu')) return '🪨';
-    if (name.toLowerCase().includes('media')) return '🌱';
-    if (name.toLowerCase().includes('kaktus')) return '🌵';
-    return '🌿';
+    if (name.toLowerCase().includes('bonsai')) return 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg';
+    if (name.toLowerCase().includes('pot')) return 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg';
+    if (name.toLowerCase().includes('batu')) return 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg';
+    if (name.toLowerCase().includes('media')) return 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg';
+    if (name.toLowerCase().includes('kaktus')) return 'https://images.pexels.com/photos/1974928/pexels-photo-1974928.jpeg';
+    if (name.toLowerCase().includes('cemara')) return 'https://images.pexels.com/photos/1084199/pexels-photo-1084199.jpeg';
+    if (name.toLowerCase().includes('bunga') || name.toLowerCase().includes('alamanda') || name.toLowerCase().includes('gestrum')) return 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg';
+    if (name.toLowerCase().includes('lidah mertua')) return 'https://images.pexels.com/photos/2123482/pexels-photo-2123482.jpeg';
+    if (name.toLowerCase().includes('anthurium') || name.toLowerCase().includes('kuping gajah')) return 'https://images.pexels.com/photos/7084308/pexels-photo-7084308.jpeg';
+    if (name.toLowerCase().includes('philodendron') || name.toLowerCase().includes('pakis')) return 'https://images.pexels.com/photos/6208087/pexels-photo-6208087.jpeg';
+    if (name.toLowerCase().includes('bringin') || name.toLowerCase().includes('sikas')) return 'https://images.pexels.com/photos/1005058/pexels-photo-1005058.jpeg';
+    return 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg';
   };
 
   const getCareLevel = (description: string) => {
@@ -132,12 +138,16 @@ const StripeProducts: React.FC = () => {
           {stripeProducts.map((product) => (
             <div key={product.priceId} className="bg-green-50 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border-2 border-black">
               <div className="relative">
-                <div className="h-48 bg-green-100 flex items-center justify-center border-b border-black">
-                  <div className="text-6xl">{getCategoryIcon(product.name)}</div>
+                <div className="h-48 border-b border-green-200">
+                  <img
+                    src={getCategoryIcon(product.name)}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 
                 <div className="absolute top-4 left-4 flex space-x-2">
-                  <span className="bg-white text-gray-800 px-2 py-1 rounded-full text-xs font-medium border border-black">
+                  <span className="bg-white text-gray-800 px-2 py-1 rounded-full text-xs font-medium border border-green-200">
                     {getCategoryFromName(product.name)}
                   </span>
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -187,7 +197,7 @@ const StripeProducts: React.FC = () => {
 
                 <button
                   onClick={() => handlePurchase(product)}
-                  className="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center border border-black"
+                  className="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center border border-green-200"
                 >
                   {product.mode === 'subscription' ? (
                     <Calendar className="h-5 w-5 mr-2" />
