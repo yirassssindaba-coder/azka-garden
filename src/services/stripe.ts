@@ -280,7 +280,7 @@ export class StripeService {
   }
 
   static getProductByPriceId(priceId: string) {
-    return getProductByPriceId(priceId);
+    return stripeProducts.find(product => product.priceId === priceId);
   }
 
   static formatPrice(price: number): string {
