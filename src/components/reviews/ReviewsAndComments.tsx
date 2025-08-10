@@ -314,11 +314,11 @@ const ReviewsAndComments: React.FC = () => {
 
         {/* Add Review Form */}
         {user && (
-          <div className="bg-white p-6 rounded-lg shadow-md mb-8 border border-gray-200 mobile-card mobile-p-3">
-            <h3 className="text-lg font-bold text-gray-900 mb-4 mobile-text-sm">Tulis Ulasan Global</h3>
+          <div className="bg-white p-6 rounded-lg shadow-md mb-8 border border-white mobile-card mobile-p-3">
+            <h3 className="text-lg font-bold text-black mb-4 mobile-text-sm">Tulis Ulasan Global</h3>
             <form onSubmit={handleSubmitReview}>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2 mobile-text-xs">
+                <label className="block text-sm font-medium text-black mb-2 mobile-text-xs">
                   Rating
                 </label>
                 <div className="flex space-x-1">
@@ -340,14 +340,14 @@ const ReviewsAndComments: React.FC = () => {
               </div>
               
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2 mobile-text-xs">
+                <label className="block text-sm font-medium text-black mb-2 mobile-text-xs">
                   Komentar
                 </label>
                 <textarea
                   rows={4}
                   value={newReview.comment}
                   onChange={(e) => setNewReview(prev => ({ ...prev, comment: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent mobile-form-input"
+                  className="w-full px-3 py-2 border border-white bg-white text-black rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent mobile-form-input"
                   placeholder="Bagikan pengalaman Anda dengan Azka Garden..."
                   required
                 />
@@ -355,7 +355,7 @@ const ReviewsAndComments: React.FC = () => {
               
               <button
                 type="submit"
-                className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors mobile-btn"
+                className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors mobile-btn border border-white"
               >
                 Kirim Ulasan
               </button>
@@ -366,21 +366,21 @@ const ReviewsAndComments: React.FC = () => {
         {/* Reviews List */}
         <div className="space-y-6">
           {reviews.map((review) => (
-            <div key={review.id} className="bg-white p-6 rounded-lg shadow-md border border-gray-200 mobile-card mobile-p-3">
+            <div key={review.id} className="bg-white p-6 rounded-lg shadow-md border border-white mobile-card mobile-p-3">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-                    <span className="text-green-600 dark:text-green-400 font-bold">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center border border-white">
+                    <span className="text-green-600 font-bold">
                       {review.userName.charAt(0)}
                     </span>
                   </div>
                   <div>
                     <div className="flex items-center space-x-2">
-                      <span className="font-medium text-gray-900 mobile-text-sm">{review.userName}</span>
+                      <span className="font-medium text-black mobile-text-sm">{review.userName}</span>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                         review.userRole === 'admin' ? 'bg-green-100 text-green-800' :
                         review.userRole === 'developer' ? 'bg-green-200 text-green-900' :
-                        'bg-gray-100 text-gray-800'
+                        'bg-green-100 text-black'
                       }`}>
                         {getRoleLabel(review.userRole)}
                       </span>
@@ -396,7 +396,7 @@ const ReviewsAndComments: React.FC = () => {
                           />
                         ))}
                       </div>
-                      <span className="text-sm text-gray-600 mobile-text-xs">
+                      <span className="text-sm text-black mobile-text-xs">
                         {review.createdAt.toLocaleDateString('id-ID')}
                       </span>
                     </div>
@@ -406,14 +406,14 @@ const ReviewsAndComments: React.FC = () => {
                 {(user?.id === review.userId || user?.role === 'ADMIN') && (
                   <button
                     onClick={() => handleDeleteReview(review.id)}
-                    className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+                    className="text-red-500 hover:text-red-700"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
                 )}
               </div>
               
-              <p className="text-gray-700 mb-4 leading-relaxed break-words mobile-text-xs">{review.comment}</p>
+              <p className="text-black mb-4 leading-relaxed break-words mobile-text-xs">{review.comment}</p>
               
               <div className="flex items-center space-x-4 mb-4">
                 <button
@@ -421,7 +421,7 @@ const ReviewsAndComments: React.FC = () => {
                   className={`flex items-center space-x-1 text-sm transition-colors ${
                     user && review.likes.includes(user.id)
                       ? 'text-red-600 dark:text-red-400'
-                      : 'text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400'
+                      : 'text-black hover:text-red-600'
                   }`}
                 >
                   <ThumbsUp className="h-4 w-4" />
@@ -431,7 +431,7 @@ const ReviewsAndComments: React.FC = () => {
                 {user && (
                   <button
                     onClick={() => setReplyTo(replyTo === review.id ? null : review.id)}
-                    className="flex items-center space-x-1 text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+                    className="flex items-center space-x-1 text-sm text-black hover:text-green-600 transition-colors"
                   >
                     <Reply className="h-4 w-4" />
                     <span>Balas</span>
@@ -441,10 +441,10 @@ const ReviewsAndComments: React.FC = () => {
 
               {/* Reply Form */}
               {replyTo === review.id && user && (
-                <div className="mb-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div className="mb-4 p-4 bg-green-50 rounded-lg border border-white">
                   <div className="flex space-x-3">
-                    <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-green-600 dark:text-green-400 font-bold text-sm">
+                    <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 border border-white">
+                      <span className="text-green-600 font-bold text-sm">
                         {(user.fullName || user.email).charAt(0)}
                       </span>
                     </div>
@@ -453,20 +453,20 @@ const ReviewsAndComments: React.FC = () => {
                         rows={3}
                         value={replyComment}
                         onChange={(e) => setReplyComment(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
+                        className="w-full px-3 py-2 border border-white bg-white text-black rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
                         placeholder="Tulis balasan Anda..."
                       />
                       <div className="flex justify-end space-x-2 mt-2">
                         <button
                           onClick={() => setReplyTo(null)}
-                          className="px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
+                          className="px-3 py-1 text-sm text-black hover:text-gray-800"
                         >
                           Batal
                         </button>
                         <button
                           onClick={() => handleSubmitReply(review.id)}
                           disabled={!replyComment.trim()}
-                          className="flex items-center space-x-1 px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition-colors disabled:opacity-50"
+                          className="flex items-center space-x-1 px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition-colors disabled:opacity-50 border border-white"
                         >
                           <Send className="h-3 w-3" />
                           <span>Kirim</span>
@@ -479,34 +479,34 @@ const ReviewsAndComments: React.FC = () => {
 
               {/* Replies */}
               {review.replies.length > 0 && (
-                <div className="ml-8 space-y-4 border-l-2 border-gray-200 dark:border-gray-600 pl-4">
+                <div className="ml-8 space-y-4 border-l-2 border-green-200 pl-4">
                   {review.replies.map((reply) => (
-                    <div key={reply.id} className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                    <div key={reply.id} className="bg-green-50 p-4 rounded-lg border border-white">
                       <div className="flex items-center space-x-2 mb-2">
-                        <div className="w-6 h-6 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-                          <span className="text-green-600 dark:text-green-400 font-bold text-xs">
+                        <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center border border-white">
+                          <span className="text-green-600 font-bold text-xs">
                             {reply.userName.charAt(0)}
                           </span>
                         </div>
-                        <span className="font-medium text-gray-900 dark:text-white text-sm">{reply.userName}</span>
+                        <span className="font-medium text-black text-sm">{reply.userName}</span>
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                           reply.userRole === 'admin' ? 'bg-green-100 text-green-800' :
                           reply.userRole === 'developer' ? 'bg-green-200 text-green-900' :
-                          'bg-gray-100 text-gray-800'
+                          'bg-green-100 text-black'
                         }`}>
                           {getRoleLabel(reply.userRole)}
                         </span>
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                        <span className="text-xs text-black">
                           {reply.createdAt.toLocaleDateString('id-ID')}
                         </span>
                       </div>
-                      <p className="text-gray-700 dark:text-gray-300 text-sm mb-2 break-words">{reply.comment}</p>
+                      <p className="text-black text-sm mb-2 break-words">{reply.comment}</p>
                       <button
                         onClick={() => handleLikeReply(review.id, reply.id)}
                         className={`flex items-center space-x-1 text-xs transition-colors ${
                           user && reply.likes.includes(user.id)
                             ? 'text-red-600 dark:text-red-400'
-                            : 'text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400'
+                            : 'text-black hover:text-red-600'
                         }`}
                       >
                         <ThumbsUp className="h-3 w-3" />
