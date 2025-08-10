@@ -377,7 +377,11 @@ const ReviewsAndComments: React.FC = () => {
                   <div>
                     <div className="flex items-center space-x-2">
                       <span className="font-medium text-gray-900 mobile-text-sm">{review.userName}</span>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRoleColor(review.userRole)}`}>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        review.userRole === 'admin' ? 'bg-green-100 text-green-800' :
+                        review.userRole === 'developer' ? 'bg-green-200 text-green-900' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
                         {getRoleLabel(review.userRole)}
                       </span>
                     </div>
@@ -485,7 +489,11 @@ const ReviewsAndComments: React.FC = () => {
                           </span>
                         </div>
                         <span className="font-medium text-gray-900 dark:text-white text-sm">{reply.userName}</span>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRoleColor(reply.userRole)}`}>
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          reply.userRole === 'admin' ? 'bg-green-100 text-green-800' :
+                          reply.userRole === 'developer' ? 'bg-green-200 text-green-900' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
                           {getRoleLabel(reply.userRole)}
                         </span>
                         <span className="text-xs text-gray-500 dark:text-gray-400">
