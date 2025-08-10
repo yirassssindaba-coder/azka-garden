@@ -1,15 +1,10 @@
 import { supabase } from '../lib/supabase';
 
 export interface HealthCheckResult {
-  // If supabase client is null (not configured), return demo mode status
-  if (!supabase) {
-    console.log('Supabase not configured - running in demo mode');
-    return { ok: false, type: 'not_configured', demo: true };
-  }
-
   ok: boolean;
   type?: 'network' | 'query' | 'unexpected';
   error?: any;
+  demo?: boolean;
 }
 
 export async function supabaseHealthCheck(): Promise<HealthCheckResult> {
