@@ -485,55 +485,55 @@ const Home: React.FC = () => {
       </section>
 
       {/* Trust & Credibility Section */}
-      <section className="py-20 bg-green-600 text-white">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Dipercaya Ribuan Pelanggan</h2>
-            <p className="text-xl text-green-100 max-w-2xl mx-auto">
+            <h2 className="text-4xl font-bold mb-4 text-black">Dipercaya Ribuan Pelanggan</h2>
+            <p className="text-xl text-black max-w-2xl mx-auto">
               Pengalaman bertahun-tahun dan komitmen kualitas membuat kami menjadi pilihan utama
             </p>
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-5xl font-bold mb-2">59+</div>
-              <div className="text-green-200 font-medium">Jenis Tanaman</div>
+              <div className="text-5xl font-bold mb-2 text-black">59+</div>
+              <div className="text-black font-medium">Jenis Tanaman</div>
             </div>
             <div className="text-center">
-              <div className="text-5xl font-bold mb-2">24/7</div>
-              <div className="text-green-200 font-medium">Layanan</div>
+              <div className="text-5xl font-bold mb-2 text-black">24/7</div>
+              <div className="text-black font-medium">Layanan</div>
             </div>
             <div className="text-center">
-              <div className="text-5xl font-bold mb-2">10k+</div>
-              <div className="text-green-200 font-medium">Pelanggan Puas</div>
+              <div className="text-5xl font-bold mb-2 text-black">10k+</div>
+              <div className="text-black font-medium">Pelanggan Puas</div>
             </div>
             <div className="text-center">
-              <div className="text-5xl font-bold mb-2">4.9</div>
-              <div className="text-green-200 font-medium">Rating Bintang</div>
+              <div className="text-5xl font-bold mb-2 text-black">4.9</div>
+              <div className="text-black font-medium">Rating Bintang</div>
             </div>
           </div>
           
           <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white bg-opacity-10 p-6 rounded-xl backdrop-blur-sm">
-              <Award className="h-8 w-8 text-green-200 mb-4" />
-              <h3 className="text-lg font-bold mb-2">Kualitas Terjamin</h3>
-              <p className="text-green-100 text-sm">
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-lg">
+              <Award className="h-8 w-8 text-green-600 mb-4" />
+              <h3 className="text-lg font-bold mb-2 text-black">Kualitas Terjamin</h3>
+              <p className="text-black text-sm">
                 Setiap tanaman dipilih dengan teliti dan dijamin sehat saat sampai di tangan Anda
               </p>
             </div>
             
-            <div className="bg-white bg-opacity-10 p-6 rounded-xl backdrop-blur-sm">
-              <Shield className="h-8 w-8 text-green-200 mb-4" />
-              <h3 className="text-lg font-bold mb-2">Garansi Hidup</h3>
-              <p className="text-green-100 text-sm">
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-lg">
+              <Shield className="h-8 w-8 text-green-600 mb-4" />
+              <h3 className="text-lg font-bold mb-2 text-black">Garansi Hidup</h3>
+              <p className="text-black text-sm">
                 Garansi tanaman hidup dan panduan perawatan lengkap untuk setiap pembelian
               </p>
             </div>
             
-            <div className="bg-white bg-opacity-10 p-6 rounded-xl backdrop-blur-sm">
-              <Users className="h-8 w-8 text-green-200 mb-4" />
-              <h3 className="text-lg font-bold mb-2">Komunitas Aktif</h3>
-              <p className="text-green-100 text-sm">
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-lg">
+              <Users className="h-8 w-8 text-green-600 mb-4" />
+              <h3 className="text-lg font-bold mb-2 text-black">Komunitas Aktif</h3>
+              <p className="text-black text-sm">
                 Bergabung dengan komunitas pecinta tanaman dan dapatkan tips dari para ahli
               </p>
             </div>
