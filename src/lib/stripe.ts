@@ -146,3 +146,4 @@ export class StripeService {
       minimumFractionDigits: 0
     }).format(price * 15000); // Convert USD to IDR
   }
+}
