@@ -178,34 +178,39 @@ const Home: React.FC = () => {
       </section>
 
       {/* About Azka Garden Section */}
-      <section className="py-20 bg-white dark:bg-gray-900">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Tentang Azka Garden</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Tentang Azka Garden</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Toko Bunga Hendrik - Azka Garden adalah usaha hortikultura keluarga yang telah melayani 
-              pecinta tanaman hias di Depok dan sekitarnya dengan dedikasi tinggi
+              pecinta tanaman hias di Depok dan sekitarnya dengan dedikasi tinggi. Didirikan dengan visi 
+              menghijaukan Indonesia, kami telah menjadi pilihan utama ribuan pelanggan di seluruh nusantara.
             </p>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Sejarah & Visi Kami</h3>
-              <div className="space-y-4 text-gray-600 dark:text-gray-300 leading-relaxed">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Sejarah & Visi Kami</h3>
+              <div className="space-y-4 text-gray-600 leading-relaxed">
                 <p>
                   Azka Garden didirikan oleh keluarga Pak Hendrik di Jl. Raya KSU, Depok, sebagai 
                   nursery yang mengkhususkan diri pada tanaman hias berkualitas tinggi. Dengan pengalaman 
                   bertahun-tahun, kami memahami kebutuhan setiap tanaman dan memberikan panduan perawatan 
-                  yang tepat untuk setiap pelanggan.
+                  yang tepat untuk setiap pelanggan. Perjalanan kami dimulai dari kecintaan terhadap tanaman 
+                  dan berkembang menjadi misi menghijaukan rumah-rumah di Indonesia.
                 </p>
                 <p>
                   Visi kami adalah menjadi toko tanaman hias terpercaya yang tidak hanya menjual produk, 
                   tetapi juga mengedukasi masyarakat tentang cara merawat tanaman dengan benar melalui 
-                  kanal YouTube dan media sosial kami.
+                  kanal YouTube dan media sosial kami. Kami percaya bahwa setiap orang bisa menjadi 
+                  plant parent yang sukses dengan bimbingan yang tepat dan tanaman berkualitas.
                 </p>
                 <p>
                   Dengan koleksi 59+ varietas tanaman dari yang mudah perawatan hingga koleksi premium 
-                  eksklusif, kami berkomitmen memberikan yang terbaik untuk setiap rumah di Indonesia.
+                  eksklusif, kami berkomitmen memberikan yang terbaik untuk setiap rumah di Indonesia. 
+                  Setiap tanaman dipilih dengan teliti, dikemas dengan aman, dan disertai panduan perawatan 
+                  yang mudah dipahami. Kepuasan pelanggan adalah prioritas utama kami.
                 </p>
               </div>
             </div>
@@ -234,30 +239,33 @@ const Home: React.FC = () => {
           </div>
 
           {/* Location & Contact Info */}
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8">
+          <div className="bg-green-50 border border-green-200 rounded-2xl p-8">
             <div className="text-center mb-8">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Kunjungi Toko Kami</h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Kunjungi Toko Kami</h3>
+              <p className="text-gray-600">
                 Datang langsung ke nursery kami untuk melihat koleksi lengkap dan konsultasi gratis
+                Nikmati pengalaman berbelanja tanaman secara langsung dengan bimbingan ahli kami.
               </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
-                <div className="bg-green-100 dark:bg-green-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <MapPin className="h-8 w-8 text-green-600 dark:text-green-400" />
+                <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <MapPin className="h-8 w-8 text-green-600" />
                 </div>
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Alamat Lengkap</h4>
-                <p className="text-gray-600 dark:text-gray-300 text-sm">
+                <h4 className="font-semibold text-gray-900 mb-2">Alamat Lengkap</h4>
+                <p className="text-gray-600 text-sm">
                   Jl. Raya KSU, Tirtajaya<br />
                   Kec. Sukmajaya, Kota Depok<br />
-                  Jawa Barat 16412, Indonesia
+                  Jawa Barat 16412, Indonesia<br />
+                  <strong>Landmark:</strong> Dekat KSU, mudah diakses<br />
+                  <strong>Parkir:</strong> Tersedia area parkir luas
                 </p>
                 <a 
                   href="https://maps.app.goo.gl/j5AuLF1AZ3VVgovcA"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 text-sm mt-2 font-medium"
+                  className="inline-flex items-center text-green-600 hover:text-green-700 text-sm mt-2 font-medium"
                 >
                   Buka di Google Maps
                   <ExternalLink className="h-3 w-3 ml-1" />
@@ -265,19 +273,21 @@ const Home: React.FC = () => {
               </div>
               
               <div className="text-center">
-                <div className="bg-green-100 dark:bg-green-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Phone className="h-8 w-8 text-green-600 dark:text-green-400" />
+                <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Phone className="h-8 w-8 text-green-600" />
                 </div>
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Hubungi Kami</h4>
-                <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">
+                <h4 className="font-semibold text-gray-900 mb-2">Hubungi Kami</h4>
+                <p className="text-gray-600 text-sm mb-2">
                   0896-3508-6182<br />
-                  WhatsApp & Telepon
+                  WhatsApp & Telepon<br />
+                  <strong>Respons:</strong> Rata-rata 5 menit<br />
+                  <strong>Bahasa:</strong> Indonesia & English
                 </p>
                 <a 
                   href="https://wa.me/6289635086182"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 text-sm font-medium"
+                  className="inline-flex items-center text-green-600 hover:text-green-700 text-sm font-medium"
                 >
                   Chat WhatsApp
                   <MessageCircle className="h-3 w-3 ml-1" />
@@ -285,14 +295,16 @@ const Home: React.FC = () => {
               </div>
               
               <div className="text-center">
-                <div className="bg-green-100 dark:bg-green-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Clock className="h-8 w-8 text-green-600 dark:text-green-400" />
+                <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Clock className="h-8 w-8 text-green-600" />
                 </div>
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Jam Operasional</h4>
-                <p className="text-gray-600 dark:text-gray-300 text-sm">
+                <h4 className="font-semibold text-gray-900 mb-2">Jam Operasional</h4>
+                <p className="text-gray-600 text-sm">
                   Buka 24 Jam<br />
                   Setiap Hari<br />
-                  <span className="text-green-600 dark:text-green-400 font-medium">Konsultasi & Pemesanan</span>
+                  <span className="text-green-600 font-medium">Konsultasi & Pemesanan</span><br />
+                  <strong>Kunjungan terbaik:</strong> Pagi hari (07:00-10:00)<br />
+                  <strong>Konsultasi intensif:</strong> Tersedia appointment
                 </p>
               </div>
             </div>
@@ -306,7 +318,8 @@ const Home: React.FC = () => {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Mengapa Memilih Azka Garden?</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Komitmen kami untuk memberikan yang terbaik bagi pecinta tanaman hias di Indonesia
+              Komitmen kami untuk memberikan yang terbaik bagi pecinta tanaman hias di Indonesia. 
+              Lebih dari sekedar toko, kami adalah partner dalam perjalanan berkebun Anda.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -317,7 +330,8 @@ const Home: React.FC = () => {
               <h3 className="text-2xl font-bold mb-4 text-gray-900">59+ Varietas Premium</h3>
               <p className="text-gray-600 leading-relaxed">
                 Dari Jamani Dolar hingga Bonsai eksklusif, semua tanaman dipilih dengan teliti untuk kualitas optimal 
-                dan disesuaikan dengan iklim Indonesia.
+                dan disesuaikan dengan iklim Indonesia. Koleksi kami mencakup tanaman indoor, outdoor, sukulen, 
+                tanaman berbunga, hingga tanaman langka yang sulit ditemukan di tempat lain.
               </p>
             </div>
             <div className="text-center group">
@@ -327,7 +341,8 @@ const Home: React.FC = () => {
               <h3 className="text-2xl font-bold mb-4 text-gray-900">Panduan Perawatan Lengkap</h3>
               <p className="text-gray-600 leading-relaxed">
                 Setiap tanaman dilengkapi panduan perawatan detail dari frekuensi penyiraman hingga tips khusus 
-                berdasarkan pengalaman bertahun-tahun.
+                berdasarkan pengalaman bertahun-tahun. Panduan mencakup cara penyiraman, pemupukan, 
+                penanganan hama, repotting, dan troubleshooting masalah umum yang mungkin terjadi.
               </p>
             </div>
             <div className="text-center group">
@@ -337,7 +352,8 @@ const Home: React.FC = () => {
               <h3 className="text-2xl font-bold mb-4 text-gray-900">Harga Terjangkau</h3>
               <p className="text-gray-600 leading-relaxed">
                 Mulai dari Rp10.000 hingga koleksi premium. Ada tanaman untuk setiap budget dan kebutuhan 
-                dengan kualitas terjamin.
+                dengan kualitas terjamin. Kami percaya tanaman hias berkualitas harus dapat diakses oleh semua kalangan, 
+                dari mahasiswa hingga kolektor profesional. Sistem pembayaran fleksibel dan promo reguler tersedia.
               </p>
             </div>
           </div>
@@ -350,40 +366,45 @@ const Home: React.FC = () => {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Layanan Azka Garden</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Lebih dari sekedar toko tanaman, kami menyediakan solusi lengkap untuk kebutuhan taman Anda
+              Lebih dari sekedar toko tanaman, kami menyediakan solusi lengkap untuk kebutuhan taman Anda. 
+              Dari konsultasi hingga maintenance, kami adalah partner terpercaya dalam perjalanan berkebun Anda.
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300 border border-gray-200">
+            <div className="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300 border border-green-200">
               <div className="text-4xl mb-4">🌱</div>
               <h3 className="text-lg font-bold text-gray-900 mb-2">Penjualan Tanaman</h3>
               <p className="text-gray-600 text-sm">
-                59+ varietas tanaman hias dari indoor hingga outdoor, bibit buah, dan koleksi bonsai premium
+                59+ varietas tanaman hias dari indoor hingga outdoor, bibit buah, dan koleksi bonsai premium. 
+                Semua tanaman dipilih langsung dari petani terpercaya dengan standar kualitas internasional.
               </p>
             </div>
             
-            <div className="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300 border border-gray-200">
+            <div className="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300 border border-green-200">
               <div className="text-4xl mb-4">🏡</div>
               <h3 className="text-lg font-bold text-gray-900 mb-2">Jasa Taman</h3>
               <p className="text-gray-600 text-sm">
-                Pembuatan dan renovasi taman, desain landscape, dan penataan area hijau untuk rumah atau kantor
+                Pembuatan dan renovasi taman, desain landscape, dan penataan area hijau untuk rumah atau kantor. 
+                Tim landscape designer berpengalaman siap mewujudkan taman impian Anda dengan konsep modern dan berkelanjutan.
               </p>
             </div>
             
-            <div className="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300 border border-gray-200">
+            <div className="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300 border border-green-200">
               <div className="text-4xl mb-4">🐠</div>
               <h3 className="text-lg font-bold text-gray-900 mb-2">Kolam Ikan</h3>
               <p className="text-gray-600 text-sm">
-                Pembuatan kolam ikan hias, kolam koi, dan water feature untuk mempercantik taman Anda
+                Pembuatan kolam ikan hias, kolam koi, dan water feature untuk mempercantik taman Anda. 
+                Desain custom dengan sistem filtrasi modern dan maintenance berkala untuk menjaga kejernihan air.
               </p>
             </div>
             
-            <div className="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300 border border-gray-200">
+            <div className="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300 border border-green-200">
               <div className="text-4xl mb-4">📚</div>
               <h3 className="text-lg font-bold text-gray-900 mb-2">Edukasi & Konsultasi</h3>
               <p className="text-gray-600 text-sm">
-                Tutorial perawatan tanaman melalui YouTube dan konsultasi gratis via WhatsApp untuk semua pelanggan
+                Tutorial perawatan tanaman melalui YouTube dan konsultasi gratis via WhatsApp untuk semua pelanggan. 
+                Program edukasi mencakup workshop offline, webinar online, dan panduan tertulis yang mudah dipahami.
               </p>
             </div>
           </div>
@@ -399,17 +420,20 @@ const Home: React.FC = () => {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Tanaman untuk Setiap Budget</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Dari yang terjangkau hingga koleksi eksklusif untuk semua kalangan
+              Dari yang terjangkau hingga koleksi eksklusif untuk semua kalangan. 
+              Kami percaya setiap orang berhak memiliki tanaman hias berkualitas, apapun budgetnya.
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-2xl text-center shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:-translate-y-2">
+            <div className="bg-white p-8 rounded-2xl text-center shadow-lg hover:shadow-xl transition-all duration-300 border border-green-200 hover:-translate-y-2">
               <div className="text-6xl mb-6">🌱</div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">Budget Friendly</h3>
               <p className="text-green-600 font-bold text-lg mb-4">Rp10.000 - Rp50.000</p>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                Tanaman berkualitas dengan harga terjangkau untuk pemula dan pecinta tanaman dengan budget terbatas
+                Tanaman berkualitas dengan harga terjangkau untuk pemula dan pecinta tanaman dengan budget terbatas. 
+                Pilihan perfect untuk mahasiswa, karyawan baru, atau siapa saja yang ingin memulai hobi berkebun 
+                tanpa mengeluarkan biaya besar.
               </p>
               <Link
                 to="/products?price=budget"
@@ -419,31 +443,37 @@ const Home: React.FC = () => {
               </Link>
             </div>
             
-            <div className="bg-white p-8 rounded-2xl text-center shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:-translate-y-2">
+            <div className="bg-white p-8 rounded-2xl text-center shadow-lg hover:shadow-xl transition-all duration-300 border border-green-200 hover:-translate-y-2">
               <div className="text-6xl mb-6">🌿</div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">Mid Range</h3>
-              <p className="text-blue-600 font-bold text-lg mb-4">Rp50.000 - Rp500.000</p>
+              <p className="text-green-600 font-bold text-lg mb-4">Rp50.000 - Rp500.000</p>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                Tanaman berkualitas tinggi untuk penggemar tanaman hias yang ingin koleksi lebih beragam
+              Dengan pengalaman bertahun-tahun, kami menyediakan tanaman terbaik dengan panduan perawatan lengkap 
+              dan dukungan konsultasi gratis seumur hidup untuk setiap pembelian.
+                Tanaman berkualitas tinggi untuk penggemar tanaman hias yang ingin koleksi lebih beragam. 
+                Kategori ini mencakup tanaman hias populer, tanaman berbunga, dan varietas unik yang 
+                perfect untuk mendekorasi rumah atau kantor dengan style yang lebih sophisticated.
               </p>
               <Link
                 to="/stripe-products"
-                className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 hover:scale-105 transition-all duration-300 shadow-lg"
+                className="inline-flex items-center px-6 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 hover:scale-105 transition-all duration-300 shadow-lg"
               >
                 Koleksi Premium
               </Link>
             </div>
             
-            <div className="bg-white p-8 rounded-2xl text-center shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:-translate-y-2">
+            <div className="bg-white p-8 rounded-2xl text-center shadow-lg hover:shadow-xl transition-all duration-300 border border-green-200 hover:-translate-y-2">
               <div className="text-6xl mb-6">👑</div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">Premium Collection</h3>
-              <p className="text-gray-800 font-bold text-lg mb-4">Rp500.000+</p>
+              <p className="text-green-600 font-bold text-lg mb-4">Rp500.000+</p>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                Bonsai eksklusif dan tanaman langka untuk kolektor sejati yang menghargai keunikan dan kualitas
+                Bonsai eksklusif dan tanaman langka untuk kolektor sejati yang menghargai keunikan dan kualitas. 
+                Setiap tanaman premium dilengkapi sertifikat keaslian, panduan perawatan khusus, dan 
+                layanan konsultasi intensif dari master bonsai kami.
               </p>
               <Link
                 to="/products?price=premium"
-                className="inline-flex items-center px-6 py-3 bg-gray-800 text-white font-semibold rounded-xl hover:bg-black hover:scale-105 transition-all duration-300 shadow-lg"
+                className="inline-flex items-center px-6 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 hover:scale-105 transition-all duration-300 shadow-lg"
               >
                 Koleksi Eksklusif
               </Link>
@@ -524,7 +554,7 @@ const Home: React.FC = () => {
                 href="https://www.youtube.com/channel/UCuAUD9jzepl1iay_eIlDgKw"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-8 py-4 bg-white text-red-600 font-bold rounded-xl hover:bg-red-50 hover:scale-105 transition-all duration-300 shadow-lg"
+                className="inline-flex items-center px-8 py-4 bg-white text-green-600 font-bold rounded-xl hover:bg-green-50 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 <ExternalLink className="mr-2 h-5 w-5" />
                 Tonton di YouTube
@@ -533,11 +563,21 @@ const Home: React.FC = () => {
                 href="https://wa.me/6289635086182"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-8 py-4 border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-red-600 hover:scale-105 transition-all duration-300"
+                className="inline-flex items-center px-8 py-4 border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-green-600 hover:scale-105 transition-all duration-300"
               >
                 <MessageCircle className="mr-2 h-5 w-5" />
                 Konsultasi Langsung
               </a>
+            </div>
+            
+            {/* Additional Hero Information */}
+            <div className="mt-8 bg-white bg-opacity-10 rounded-lg p-4 max-w-2xl mx-auto">
+              <p className="text-green-100 text-sm leading-relaxed">
+                <strong>Azka Garden</strong> adalah toko tanaman hias terpercaya di Depok yang melayani seluruh Indonesia. 
+                Kami mengkhususkan diri pada tanaman hias berkualitas tinggi dengan layanan konsultasi gratis, 
+                panduan perawatan lengkap, dan garansi tanaman hidup. Dari pemula hingga kolektor berpengalaman, 
+                kami memiliki solusi tanaman yang tepat untuk setiap kebutuhan dan budget.
+              </p>
             </div>
           </div>
         </div>
