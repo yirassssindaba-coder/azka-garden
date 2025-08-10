@@ -143,21 +143,21 @@ const SubscriptionManager: React.FC = () => {
 
   if (!subscription) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center border border-gray-200 dark:border-gray-700">
+      <div className="bg-white rounded-xl shadow-lg p-6 text-center border-2 border-black">
         <div className="text-gray-400 mb-4">
           <CreditCard className="h-12 w-12 mx-auto" />
         </div>
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-          Belum Ada Berlangganan
+        <h3 className="text-lg font-bold text-black mb-2">
+          Sudah Berlangganan
         </h3>
-        <p className="text-gray-600 dark:text-gray-300 mb-6">
-          Mulai berlangganan untuk mendapatkan akses ke koleksi premium
+        <p className="text-black mb-6">
+          Anda sudah berlangganan dan dapat mengakses semua koleksi premium
         </p>
         <a
           href="/stripe-products"
-          className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors"
+          className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors border border-black"
         >
-          Lihat Paket Berlangganan
+          Jelajahi Koleksi Premium
         </a>
       </div>
     );
@@ -168,13 +168,13 @@ const SubscriptionManager: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Subscription Status */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+      <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-black">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">Status Berlangganan</h2>
+          <h2 className="text-xl font-bold text-black">Status Berlangganan</h2>
           <div className="flex items-center space-x-2">
             <button
               onClick={loadSubscription}
-              className="p-2 text-gray-400 hover:text-green-600 transition-colors"
+              className="p-2 text-black hover:text-green-600 transition-colors"
             >
               <RefreshCw className="h-4 w-4" />
             </button>
@@ -187,23 +187,23 @@ const SubscriptionManager: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">Detail Paket</h3>
+            <h3 className="font-semibold text-black mb-3">Detail Paket</h3>
             <div className="space-y-2">
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Paket:</span>
-                <span className="font-medium text-gray-900 dark:text-white">
+                <span className="text-black">Paket:</span>
+                <span className="font-medium text-black">
                   {product?.name || 'Paket Premium'}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Harga:</span>
-                <span className="font-medium text-gray-900 dark:text-white">
+                <span className="text-black">Harga:</span>
+                <span className="font-medium text-black">
                   {StripeService.formatPrice(product?.price || 0)}/bulan
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Status:</span>
-                <span className="font-medium text-gray-900 dark:text-white">
+                <span className="text-black">Status:</span>
+                <span className="font-medium text-black">
                   {subscription.cancel_at_period_end ? 'Akan dibatalkan' : 'Aktif'}
                 </span>
               </div>
@@ -211,11 +211,11 @@ const SubscriptionManager: React.FC = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">Periode Billing</h3>
+            <h3 className="font-semibold text-black mb-3">Periode Billing</h3>
             <div className="space-y-2">
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Mulai:</span>
-                <span className="font-medium text-gray-900 dark:text-white">
+                <span className="text-black">Mulai:</span>
+                <span className="font-medium text-black">
                   {subscription.current_period_start 
                     ? new Date(subscription.current_period_start * 1000).toLocaleDateString('id-ID')
                     : 'N/A'
@@ -223,8 +223,8 @@ const SubscriptionManager: React.FC = () => {
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Berakhir:</span>
-                <span className="font-medium text-gray-900 dark:text-white">
+                <span className="text-black">Berakhir:</span>
+                <span className="font-medium text-black">
                   {subscription.current_period_end
                     ? new Date(subscription.current_period_end * 1000).toLocaleDateString('id-ID')
                     : 'N/A'
@@ -233,8 +233,8 @@ const SubscriptionManager: React.FC = () => {
               </div>
               {subscription.payment_method_brand && (
                 <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">Kartu:</span>
-                  <span className="font-medium text-gray-900 dark:text-white">
+                  <span className="text-black">Kartu:</span>
+                  <span className="font-medium text-black">
                     {subscription.payment_method_brand} ****{subscription.payment_method_last4}
                   </span>
                 </div>
@@ -248,20 +248,20 @@ const SubscriptionManager: React.FC = () => {
           {subscription.cancel_at_period_end ? (
             <button
               onClick={handleReactivateSubscription}
-              className="flex-1 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors"
+              className="flex-1 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors border border-black"
             >
               Aktifkan Kembali
             </button>
           ) : (
             <button
               onClick={() => setShowCancelModal(true)}
-              className="flex-1 bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors"
+              className="flex-1 bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors border border-black"
             >
               Batalkan Berlangganan
             </button>
           )}
           
-          <button className="flex-1 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 py-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+          <button className="flex-1 border-2 border-black text-black py-3 rounded-lg hover:bg-green-50 transition-colors">
             Ubah Metode Pembayaran
           </button>
         </div>

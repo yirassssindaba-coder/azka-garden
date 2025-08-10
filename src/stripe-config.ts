@@ -10,84 +10,84 @@ export const stripeProducts: StripeProduct[] = [
   {
     priceId: 'price_1RuZTX81xruOlT8qEM278WfI',
     name: 'Pucuk Merah (250 cm)',
-    description: 'Tanaman pucuk merah tinggi 250 cm yang sering digunakan sebagai pagar hidup atau dekorasi taman dengan warna cerah menarik.',
+    description: 'Tanaman bonsai pucuk merah tinggi 250 cm dengan daun hijau segar yang indah untuk dekorasi taman.',
     mode: 'subscription',
     price: 23.33
   },
   {
     priceId: 'price_1RuZRW81xruOlT8qoDtfw4Gv',
     name: 'Kadaka Tempel',
-    description: 'Tanaman hias dengan daun menarik yang mudah dirawat dan sesuai untuk taman tropis atau pagar hidup.',
+    description: 'Tanaman bonsai kadaka dengan daun hijau lebat yang mudah dirawat untuk koleksi indoor.',
     mode: 'subscription',
     price: 2.33
   },
   {
     priceId: 'price_1RuZQx81xruOlT8qPaUDEloJ',
     name: 'Asoka Singapur',
-    description: 'Tanaman berbunga kecil yang populer sebagai pagar hidup dan mudah dirawat untuk pemula.',
+    description: 'Tanaman bonsai asoka dengan bunga kecil putih yang harum dan mudah dirawat.',
     mode: 'subscription',
     price: 1.67
   },
   {
     priceId: 'price_1RuZPq81xruOlT8qYBXe9CVn',
     name: 'Sikas (70 cm)',
-    description: 'Tanaman sikas berukuran besar tinggi 70 cm yang cocok sebagai tanaman hias eksklusif dengan perawatan khusus.',
+    description: 'Bonsai sikas premium tinggi 70 cm dengan daun hijau mengkilap untuk koleksi eksklusif.',
     mode: 'subscription',
     price: 113.33
   },
   {
     priceId: 'price_1RuZP681xruOlT8qF0i7m6md',
     name: 'Jeruk Lemon',
-    description: 'Tanaman buah jeruk lemon kecil yang memberikan aroma segar dan cocok untuk taman maupun kebun rumah.',
+    description: 'Bonsai jeruk lemon dengan buah kecil kuning dan aroma segar untuk koleksi tanaman buah.',
     mode: 'subscription',
     price: 4.00
   },
   {
     priceId: 'price_1RuZNX81xruOlT8q3RgX2wvj',
     name: 'Jambu Kanci (50 cm)',
-    description: 'Tanaman buah jambu kanci kecil tinggi 50 cm yang dapat dijadikan tanaman hias untuk taman dan kebun.',
+    description: 'Bonsai jambu kanci tinggi 50 cm dengan buah merah kecil yang manis dan daun hijau segar.',
     mode: 'subscription',
     price: 4.00
   },
   {
     priceId: 'price_1RuZLi81xruOlT8qVRDGtTjI',
     name: 'Bunga Kertas',
-    description: 'Tanaman hias dengan warna-warni cerah yang mudah dirawat dan cocok untuk memperindah pagar atau taman.',
+    description: 'Bonsai bunga kertas dengan bunga berwarna-warni cerah yang tahan lama dan mudah dirawat.',
     mode: 'subscription',
     price: 2.00
   },
   {
     priceId: 'price_1RuZKt81xruOlT8quqHuPYg0',
     name: 'Bonsai Cemara Udang',
-    description: 'Bonsai cemara unik menyerupai udang yang merupakan tanaman koleksi menarik dengan perawatan khusus.',
+    description: 'Bonsai cemara dengan bentuk unik menyerupai udang, tanaman koleksi eksklusif dengan daun hijau halus.',
     mode: 'subscription',
     price: 43.33
   },
   {
     priceId: 'price_1RuZJI81xruOlT8quWq8CCMp',
     name: 'Bonsai Gestrum Ukuran M',
-    description: 'Bonsai berukuran sedang dengan daun Gestrum cantik yang memberikan kesan elegan di rumah atau kantor.',
+    description: 'Bonsai gestrum ukuran sedang dengan daun hijau mengkilap dan bunga kuning harum.',
     mode: 'subscription',
     price: 33.33
   },
   {
     priceId: 'price_1RuZIb81xruOlT8qf0FNwR4Y',
     name: 'Bonsai Gestrum Ukuran L',
-    description: 'Bonsai besar dengan daun Gestrum indah yang cocok untuk koleksi eksklusif dengan perawatan khusus.',
+    description: 'Bonsai gestrum ukuran besar dengan daun hijau lebat dan bunga kuning yang harum.',
     mode: 'subscription',
     price: 80.00
   },
   {
     priceId: 'price_1RuZFS81xruOlT8qyAfWT1yz',
     name: 'Kaktus Koboy (70 cm)',
-    description: 'Kaktus besar tinggi 70 cm berbentuk unik yang tahan kering dan mudah dirawat untuk dekorasi rumah.',
+    description: 'Bonsai kaktus koboy tinggi 70 cm dengan bentuk unik dan duri halus, tahan kekeringan.',
     mode: 'subscription',
     price: 10.00
   },
   {
     priceId: 'price_1RuZEt81xruOlT8qEZgV5H5T',
     name: 'Marigool',
-    description: 'Tanaman berbunga oranye cerah yang populer sebagai tanaman hias dan penangkal serangga di taman.',
+    description: 'Bonsai marigold dengan bunga oranye cerah yang harum dan daun hijau segar.',
     mode: 'subscription',
     price: 1.67
   },

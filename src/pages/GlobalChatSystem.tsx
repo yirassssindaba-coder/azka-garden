@@ -287,19 +287,22 @@ const GlobalChatSystem: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-green-50">
+    <div className="min-h-screen bg-gradient-to-br from-green-400 via-green-500 to-green-600">
       {/* Header */}
-      <div className="bg-green-600 text-white py-8 border-b-2 border-black">
+      <div className="bg-green-700 text-white py-8 border-b-4 border-black shadow-2xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <MessageCircle className="h-16 w-16 text-white mx-auto mb-4" />
-            <h1 className="text-4xl font-bold mb-2">Chat Global Azka Garden</h1>
-            <p className="text-green-100 text-lg">
+            <div className="bg-white bg-opacity-20 rounded-full p-4 w-20 h-20 mx-auto mb-6 backdrop-blur-sm">
+              <MessageCircle className="h-12 w-12 text-white mx-auto" />
+            </div>
+            <h1 className="text-5xl font-bold mb-4 drop-shadow-lg">Chat Global Azka Garden</h1>
+            <p className="text-green-100 text-xl mb-4">
               Bergabunglah dalam percakapan dengan sesama pecinta tanaman
             </p>
-            <div className="flex items-center justify-center space-x-2 mt-4">
+            <div className="flex items-center justify-center space-x-3 bg-white bg-opacity-20 rounded-full px-6 py-3 backdrop-blur-sm">
               <Users className="h-5 w-5 text-green-200" />
-              <span className="text-green-100 font-medium">{onlineUsers} pengguna online</span>
+              <span className="text-white font-bold text-lg">{onlineUsers} pengguna online</span>
+              <div className="w-3 h-3 bg-green-300 rounded-full animate-pulse"></div>
             </div>
           </div>
         </div>
@@ -307,8 +310,8 @@ const GlobalChatSystem: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Room Selector */}
-        <div className="mb-6">
-          <div className="flex space-x-2 justify-center">
+        <div className="mb-8">
+          <div className="flex space-x-4 justify-center">
             {[
               { id: 'general', label: 'Umum', icon: '💬' },
               { id: 'support', label: 'Support', icon: '🆘' },
@@ -317,38 +320,43 @@ const GlobalChatSystem: React.FC = () => {
               <button
                 key={room.id}
                 onClick={() => setActiveRoom(room.id as any)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-colors border-2 border-black ${
+                className={`flex items-center space-x-3 px-6 py-3 rounded-xl font-bold text-lg transition-all duration-300 border-2 border-black shadow-lg hover:shadow-xl transform hover:scale-105 ${
                   activeRoom === room.id
-                    ? 'bg-green-600 text-white'
-                    : 'bg-white text-gray-700 hover:bg-green-100'
+                    ? 'bg-white text-green-700 shadow-2xl scale-105'
+                    : 'bg-green-600 text-white hover:bg-green-500'
                 }`}
               >
-                <span>{room.icon}</span>
+                <span className="text-2xl">{room.icon}</span>
                 <span>{room.label}</span>
               </button>
             ))}
           </div>
+          <div className="text-center mt-4">
+            <p className="text-white text-lg font-medium bg-black bg-opacity-30 rounded-full px-6 py-2 backdrop-blur-sm">
+              Room aktif: <span className="font-bold">{activeRoom.toUpperCase()}</span>
+            </p>
+          </div>
         </div>
 
         {/* Chat Container */}
-        <div className="bg-white rounded-xl shadow-lg border border-white overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-2xl border-4 border-black overflow-hidden">
           {/* Messages Area */}
-          <div className="h-96 overflow-y-auto p-6 space-y-4 bg-green-50">
+          <div className="h-96 overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-green-50 to-white">
             {messages.map((message) => (
               <div key={message.id} className="space-y-3">
                 <div className={`flex ${message.senderId === user.id ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-xs lg:max-w-md p-4 rounded-lg border-2 border-black ${
+                  <div className={`max-w-xs lg:max-w-md p-4 rounded-xl border-2 border-black shadow-lg ${
                     message.senderId === user.id
-                      ? 'bg-green-600 text-white'
+                      ? 'bg-green-600 text-white shadow-green-200'
                       : 'bg-white text-black'
                   }`}>
                     <div className="flex items-center space-x-2 mb-2">
                       <span className="font-medium text-sm">{message.senderName}</span>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium border border-white ${getRoleColor(message.senderRole)}`}>
+                      <span className={`px-2 py-1 rounded-full text-xs font-bold border border-black ${getRoleColor(message.senderRole)}`}>
                         {getRoleLabel(message.senderRole)}
                       </span>
                     </div>
-                    <p className="text-sm leading-relaxed">{message.message}</p>
+                    <p className="text-sm leading-relaxed font-medium">{message.message}</p>
                     <div className="flex items-center justify-between mt-2">
                       <span className={`text-xs ${message.senderId === user.id ? 'text-green-100' : 'text-gray-500'}`}>
                         {formatTime(message.timestamp)}
@@ -386,9 +394,9 @@ const GlobalChatSystem: React.FC = () => {
 
                 {/* Reply Form */}
                 {replyTo === message.id && (
-                  <div className="ml-8 p-4 bg-green-100 rounded-lg border border-white">
+                  <div className="ml-8 p-4 bg-green-100 rounded-xl border-2 border-black shadow-lg">
                     <div className="flex space-x-3">
-                      <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center border border-white">
+                      <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center border-2 border-black">
                         <span className="text-white font-bold text-sm">
                           {(user.fullName || user.email).charAt(0)}
                         </span>
@@ -398,20 +406,20 @@ const GlobalChatSystem: React.FC = () => {
                           rows={2}
                           value={replyMessage}
                           onChange={(e) => setReplyMessage(e.target.value)}
-                          className="w-full px-3 py-2 border border-white bg-white text-black rounded-lg focus:ring-2 focus:ring-green-500 text-sm"
+                          className="w-full px-3 py-2 border-2 border-black bg-white text-black rounded-lg focus:ring-2 focus:ring-green-500 text-sm"
                           placeholder="Tulis balasan..."
                         />
                         <div className="flex justify-end space-x-2 mt-2">
                           <button
                             onClick={() => setReplyTo(null)}
-                            className="px-3 py-1 text-sm text-gray-600 hover:text-gray-800"
+                            className="px-3 py-1 text-sm text-black hover:text-gray-800 border border-black rounded"
                           >
                             Batal
                           </button>
                           <button
                             onClick={() => handleReplyToMessage(message.id)}
                             disabled={!replyMessage.trim()}
-                            className="flex items-center space-x-1 px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition-colors disabled:opacity-50 border border-white"
+                            className="flex items-center space-x-1 px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition-colors disabled:opacity-50 border-2 border-black"
                           >
                             <Send className="h-3 w-3" />
                             <span>Kirim</span>
@@ -426,22 +434,22 @@ const GlobalChatSystem: React.FC = () => {
                 {message.replies.length > 0 && (
                   <div className="ml-8 space-y-3">
                     {message.replies.map((reply) => (
-                      <div key={reply.id} className="bg-green-100 p-3 rounded-lg border border-white">
+                      <div key={reply.id} className="bg-green-100 p-3 rounded-lg border-2 border-black shadow-md">
                         <div className="flex items-center space-x-2 mb-2">
-                          <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center border border-white">
+                          <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center border border-black">
                             <span className="text-white font-bold text-xs">
                               {reply.senderName.charAt(0)}
                             </span>
                           </div>
                           <span className="font-medium text-black text-sm">{reply.senderName}</span>
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium border border-white ${getRoleColor(reply.senderRole)}`}>
+                          <span className={`px-2 py-1 rounded-full text-xs font-bold border border-black ${getRoleColor(reply.senderRole)}`}>
                             {getRoleLabel(reply.senderRole)}
                           </span>
                           <span className="text-xs text-black">
                             {formatTime(reply.timestamp)}
                           </span>
                         </div>
-                        <p className="text-black text-sm">{reply.comment}</p>
+                        <p className="text-black text-sm font-medium">{reply.message}</p>
                       </div>
                     ))}
                   </div>
@@ -452,33 +460,33 @@ const GlobalChatSystem: React.FC = () => {
           </div>
 
           {/* Input Area */}
-          <div className="p-4 border-t border-white bg-white">
+          <div className="p-6 border-t-4 border-black bg-gradient-to-r from-green-50 to-white">
             <div className="flex space-x-3">
-              <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center border border-white">
+              <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center border-2 border-black shadow-lg">
                 <span className="text-white font-bold">
                   {(user.fullName || user.email).charAt(0)}
                 </span>
               </div>
               <div className="flex-1">
                 <textarea
-                  rows={2}
+                  rows={3}
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), handleSendMessage())}
-                  className="w-full px-4 py-3 border border-white bg-green-50 text-black rounded-lg focus:ring-2 focus:ring-green-500 resize-none"
+                  className="w-full px-4 py-3 border-2 border-black bg-white text-black rounded-xl focus:ring-4 focus:ring-green-300 resize-none shadow-lg font-medium"
                   placeholder={`Tulis pesan di room ${activeRoom.toUpperCase()}...`}
                 />
                 <div className="flex justify-between items-center mt-2">
-                  <div className="text-xs text-black">
+                  <div className="text-xs text-black font-medium bg-green-100 px-3 py-1 rounded-full border border-black">
                     Auto-routing: Technical → Developer, Support → Admin, Umum → Semua
                   </div>
                   <button
                     onClick={handleSendMessage}
                     disabled={!newMessage.trim()}
-                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 border border-white flex items-center space-x-2"
+                    className="bg-green-600 text-white px-6 py-3 rounded-xl hover:bg-green-700 transition-all duration-300 disabled:opacity-50 border-2 border-black flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
                   >
                     <Send className="h-4 w-4" />
-                    <span>Kirim</span>
+                    <span className="font-bold">Kirim</span>
                   </button>
                 </div>
               </div>
@@ -487,15 +495,29 @@ const GlobalChatSystem: React.FC = () => {
         </div>
 
         {/* Room Info */}
-        <div className="mt-6 bg-white p-4 rounded-lg border border-white">
-          <h3 className="font-bold text-black mb-2">
+        <div className="mt-8 bg-white p-6 rounded-2xl border-4 border-black shadow-2xl">
+          <h3 className="font-bold text-black mb-4 text-xl">
             Room {activeRoom.toUpperCase()} - {onlineUsers} pengguna online
           </h3>
-          <p className="text-black text-sm">
+          <p className="text-black text-base font-medium leading-relaxed">
             {activeRoom === 'general' && 'Diskusi umum tentang tanaman hias, tips perawatan, dan berbagi pengalaman.'}
             {activeRoom === 'support' && 'Bantuan customer service untuk pemesanan, pengiriman, dan layanan pelanggan.'}
             {activeRoom === 'technical' && 'Dukungan teknis untuk masalah website, aplikasi, dan sistem.'}
           </p>
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-green-50 p-3 rounded-lg border border-black">
+              <div className="text-green-600 font-bold text-sm">💬 Pesan Hari Ini</div>
+              <div className="text-black font-bold text-lg">{messages.length}</div>
+            </div>
+            <div className="bg-green-50 p-3 rounded-lg border border-black">
+              <div className="text-green-600 font-bold text-sm">👥 Pengguna Aktif</div>
+              <div className="text-black font-bold text-lg">{onlineUsers}</div>
+            </div>
+            <div className="bg-green-50 p-3 rounded-lg border border-black">
+              <div className="text-green-600 font-bold text-sm">🌱 Room Favorit</div>
+              <div className="text-black font-bold text-lg">{activeRoom.toUpperCase()}</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

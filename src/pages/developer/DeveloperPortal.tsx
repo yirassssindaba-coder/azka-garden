@@ -218,52 +218,52 @@ const DeveloperPortal: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-green-400 via-green-500 to-green-600">
       {/* Developer Header */}
-      <div className="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700">
+      <div className="bg-green-700 shadow-2xl border-b-4 border-black">
         <div className="max-w-full px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
-              <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-2 rounded-lg mr-3">
-                <Code className="h-6 w-6 text-white" />
+              <div className="bg-white bg-opacity-20 p-3 rounded-xl mr-4 backdrop-blur-sm">
+                <Code className="h-8 w-8 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white">Portal Pengembang - Azka Garden</h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400">System Development & Monitoring</p>
+                <h1 className="text-2xl font-bold text-white drop-shadow-lg">Portal Pengembang - Azka Garden</h1>
+                <p className="text-green-100 font-medium">System Development & Monitoring</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 bg-green-100 dark:bg-green-900 px-3 py-1 rounded-full">
+              <div className="flex items-center space-x-2 bg-white bg-opacity-20 px-4 py-2 rounded-full backdrop-blur-sm">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-green-800 dark:text-green-200 text-sm font-medium">Live Monitoring</span>
+                <span className="text-white text-sm font-bold">Live Monitoring</span>
               </div>
               <button 
                 onClick={loadDeveloperData}
-                className="p-2 text-gray-400 hover:text-green-600 transition-colors"
+                className="p-2 text-white hover:text-green-200 transition-colors"
               >
                 <RefreshCw className="h-5 w-5" />
               </button>
               <div className="relative group">
-                <button className="flex items-center space-x-2 p-2 text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">
+                <button className="flex items-center space-x-2 p-2 text-white hover:text-green-200 transition-colors">
                   <User className="h-5 w-5" />
                   <span className="text-sm font-medium">{user?.fullName}</span>
                 </button>
-                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border dark:border-gray-700">
-                  <div className="px-4 py-2 border-b dark:border-gray-700">
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">{user?.fullName}</p>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">{user?.email}</p>
-                    <p className="text-xs text-blue-600 dark:text-blue-400 font-medium">Pengembang</p>
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-2xl py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border-2 border-black">
+                  <div className="px-4 py-2 border-b border-black">
+                    <p className="text-sm font-medium text-black">{user?.fullName}</p>
+                    <p className="text-xs text-black">{user?.email}</p>
+                    <p className="text-xs text-green-600 font-bold">Pengembang</p>
                   </div>
                   <button
                     onClick={() => navigate('/')}
-                    className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    className="w-full text-left px-4 py-2 text-sm text-black hover:bg-green-50"
                   >
                     Kembali ke Website
                   </button>
-                  <hr className="my-1 dark:border-gray-700" />
+                  <hr className="my-1 border-black" />
                   <button
                     onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900 flex items-center"
+                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center"
                   >
                     <LogOut className="h-4 w-4 mr-2" />
                     Logout
@@ -276,7 +276,7 @@ const DeveloperPortal: React.FC = () => {
       </div>
 
       {/* Developer Navigation Tabs */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
+      <div className="bg-green-600 border-b-4 border-black overflow-x-auto shadow-xl">
         <div className="max-w-full px-4 sm:px-6 lg:px-8">
           <nav className="flex space-x-2 lg:space-x-4 min-w-max">
             {[
@@ -294,10 +294,10 @@ const DeveloperPortal: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-1 lg:space-x-2 py-4 px-2 lg:px-3 border-b-2 font-medium text-xs lg:text-sm transition-colors whitespace-nowrap ${
+                className={`flex items-center space-x-1 lg:space-x-2 py-4 px-3 lg:px-4 border-b-4 font-bold text-xs lg:text-sm transition-all duration-300 whitespace-nowrap ${
                   activeTab === tab.id
-                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300'
+                    ? 'border-white text-white bg-white bg-opacity-20 rounded-t-lg'
+                    : 'border-transparent text-green-100 hover:text-white hover:border-green-300'
                 }`}
               >
                 <tab.icon className="h-4 w-4" />
@@ -308,17 +308,17 @@ const DeveloperPortal: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-full px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-full px-4 sm:px-6 lg:px-8 py-8 bg-white bg-opacity-10 backdrop-blur-sm">
         {/* System Monitoring Tab */}
         {activeTab === 'monitoring' && (
           <div className="space-y-8">
             {/* Real-time System Metrics */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 border border-gray-100 dark:border-gray-700">
+              <div className="bg-white rounded-xl shadow-2xl p-4 border-2 border-black">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Uptime</p>
-                    <p className="text-2xl font-bold text-green-600 dark:text-green-400">{systemStats.uptime}</p>
+                    <p className="text-sm font-bold text-black mb-1">Uptime</p>
+                    <p className="text-2xl font-bold text-green-600">{systemStats.uptime}</p>
                   </div>
                   <Activity className="h-6 w-6 text-green-500" />
                 </div>
