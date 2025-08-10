@@ -351,16 +351,16 @@ const Footer: React.FC = () => {
             </div>
             
             <div className="flex flex-wrap items-center justify-center space-x-6 text-base">
-              <Link to="/privacy" className="text-gray-800 hover:text-green-700 transition-all duration-300 hover:underline font-medium hover:translate-y-1">
+              <Link to="/privacy" className="text-black hover:text-green-700 transition-all duration-300 hover:underline font-bold hover:translate-y-1">
                 Kebijakan Privasi
               </Link>
-              <Link to="/terms" className="text-gray-800 hover:text-green-700 transition-all duration-300 hover:underline font-medium hover:translate-y-1">
+              <Link to="/terms" className="text-black hover:text-green-700 transition-all duration-300 hover:underline font-bold hover:translate-y-1">
                 Syarat & Ketentuan
               </Link>
-              <Link to="/cookies" className="text-gray-800 hover:text-green-700 transition-all duration-300 hover:underline font-medium hover:translate-y-1">
+              <Link to="/cookies" className="text-black hover:text-green-700 transition-all duration-300 hover:underline font-bold hover:translate-y-1">
                 Kebijakan Cookie
               </Link>
-              <Link to="/sitemap" className="text-gray-800 hover:text-green-700 transition-all duration-300 hover:underline font-medium hover:translate-y-1">
+              <Link to="/sitemap" className="text-black hover:text-green-700 transition-all duration-300 hover:underline font-bold hover:translate-y-1">
                 Sitemap
               </Link>
             </div>

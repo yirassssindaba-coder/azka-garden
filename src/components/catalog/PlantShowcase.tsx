@@ -58,12 +58,12 @@ const PlantShowcase: React.FC = () => {
   return (
     <div className="space-y-16">
       {/* Premium Collection */}
-      <section className="bg-gradient-to-r from-gray-900 via-gray-800 to-black text-white rounded-2xl p-8 mx-4">
+      <section className="premium-collection bg-gradient-to-r from-green-50 via-green-100 to-green-200 rounded-2xl p-8 mx-4 border-2 border-green-300">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <Crown className="h-12 w-12 text-green-400 mx-auto mb-4" />
-            <h2 className="text-4xl font-bold mb-4">Koleksi Premium Eksklusif</h2>
-            <p className="text-xl text-gray-300">
+            <Crown className="h-12 w-12 text-green-600 mx-auto mb-4" />
+            <h2 className="text-4xl font-bold mb-4 text-black">Koleksi Premium Eksklusif</h2>
+            <p className="text-xl text-black">
               Bonsai dan tanaman langka untuk kolektor sejati
             </p>
           </div>
@@ -74,7 +74,7 @@ const PlantShowcase: React.FC = () => {
                 <div className="absolute top-4 left-4 bg-gradient-to-r from-green-500 to-green-600 text-white text-xs px-3 py-1 rounded-full font-bold z-10">
                   PREMIUM
                 </div>
-                <div className="bg-white rounded-lg overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-300">
+                <div className="bg-white rounded-lg overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-300 border-2 border-green-300">
                   <ProductCard plant={plant} />
                 </div>
               </div>
@@ -84,7 +84,7 @@ const PlantShowcase: React.FC = () => {
           <div className="text-center mt-8">
             <Link
               to="/products?category=4"
-              className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-bold rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-300"
+              className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-bold rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-300 border-2 border-green-500"
             >
               Lihat Semua Koleksi Premium
               <Crown className="ml-2 h-5 w-5" />
@@ -227,30 +227,30 @@ const PlantShowcase: React.FC = () => {
       </section>
 
       {/* Statistics */}
-      <section className="bg-gray-900 text-white rounded-2xl p-8 mx-4">
+      <section className="bg-gradient-to-r from-green-600 to-green-700 text-white rounded-2xl p-8 mx-4 border-2 border-green-500">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <TrendingUp className="h-12 w-12 text-green-500 mx-auto mb-4" />
+            <TrendingUp className="h-12 w-12 text-white mx-auto mb-4" />
             <h2 className="text-3xl font-bold mb-4">Azka Garden dalam Angka</h2>
-            <p className="text-xl text-gray-400">Kepercayaan pelanggan adalah prioritas utama kami</p>
+            <p className="text-xl text-green-100">Kepercayaan pelanggan adalah prioritas utama kami</p>
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-4xl font-bold text-green-500 mb-2">{allPlants.length}+</div>
-              <div className="text-gray-400">Jenis Tanaman</div>
+              <div className="text-4xl font-bold text-white mb-2">{allPlants.length}+</div>
+              <div className="text-green-100">Jenis Tanaman</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-white mb-2">10k+</div>
-              <div className="text-gray-400">Pelanggan Puas</div>
+              <div className="text-green-100">Pelanggan Puas</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-green-500 mb-2">4.9</div>
-              <div className="text-gray-400">Rating Bintang</div>
+              <div className="text-4xl font-bold text-white mb-2">4.9</div>
+              <div className="text-green-100">Rating Bintang</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-white mb-2">99%</div>
-              <div className="text-gray-400">Tingkat Kepuasan</div>
+              <div className="text-green-100">Tingkat Kepuasan</div>
             </div>
           </div>
         </div>

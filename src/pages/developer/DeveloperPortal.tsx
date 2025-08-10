@@ -218,13 +218,13 @@ const DeveloperPortal: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-400 via-green-500 to-green-600">
+    <div className="min-h-screen bg-gradient-to-br from-green-300 via-green-400 to-green-500">
       {/* Developer Header */}
-      <div className="bg-green-700 shadow-2xl border-b-4 border-black">
+      <div className="bg-green-600 shadow-2xl">
         <div className="max-w-full px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
-              <div className="bg-white bg-opacity-20 p-3 rounded-xl mr-4 backdrop-blur-sm">
+              <div className="bg-white bg-opacity-30 p-3 rounded-xl mr-4 backdrop-blur-sm">
                 <Code className="h-8 w-8 text-white" />
               </div>
               <div>
@@ -233,7 +233,7 @@ const DeveloperPortal: React.FC = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 bg-white bg-opacity-20 px-4 py-2 rounded-full backdrop-blur-sm">
+              <div className="flex items-center space-x-2 bg-white bg-opacity-30 px-4 py-2 rounded-full backdrop-blur-sm">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                 <span className="text-white text-sm font-bold">Live Monitoring</span>
               </div>
@@ -248,19 +248,19 @@ const DeveloperPortal: React.FC = () => {
                   <User className="h-5 w-5" />
                   <span className="text-sm font-medium">{user?.fullName}</span>
                 </button>
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-2xl py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border-2 border-black">
-                  <div className="px-4 py-2 border-b border-black">
-                    <p className="text-sm font-medium text-black">{user?.fullName}</p>
-                    <p className="text-xs text-black">{user?.email}</p>
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-2xl py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border border-gray-200">
+                  <div className="px-4 py-2 border-b border-gray-200">
+                    <p className="text-sm font-medium text-gray-900">{user?.fullName}</p>
+                    <p className="text-xs text-gray-600">{user?.email}</p>
                     <p className="text-xs text-green-600 font-bold">Pengembang</p>
                   </div>
                   <button
                     onClick={() => navigate('/')}
-                    className="w-full text-left px-4 py-2 text-sm text-black hover:bg-green-50"
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-green-50"
                   >
                     Kembali ke Website
                   </button>
-                  <hr className="my-1 border-black" />
+                  <hr className="my-1 border-gray-200" />
                   <button
                     onClick={handleLogout}
                     className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center"
@@ -276,7 +276,7 @@ const DeveloperPortal: React.FC = () => {
       </div>
 
       {/* Developer Navigation Tabs */}
-      <div className="bg-green-600 border-b-4 border-black overflow-x-auto shadow-xl">
+      <div className="bg-green-500 overflow-x-auto shadow-xl">
         <div className="max-w-full px-4 sm:px-6 lg:px-8">
           <nav className="flex space-x-2 lg:space-x-4 min-w-max">
             {[
@@ -294,10 +294,10 @@ const DeveloperPortal: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-1 lg:space-x-2 py-4 px-3 lg:px-4 border-b-4 font-bold text-xs lg:text-sm transition-all duration-300 whitespace-nowrap ${
+                className={`flex items-center space-x-1 lg:space-x-2 py-4 px-3 lg:px-4 border-b-2 font-bold text-xs lg:text-sm transition-all duration-300 whitespace-nowrap ${
                   activeTab === tab.id
-                    ? 'border-white text-white bg-white bg-opacity-20 rounded-t-lg'
-                    : 'border-transparent text-green-100 hover:text-white hover:border-green-300'
+                    ? 'border-white text-white bg-white bg-opacity-30 rounded-t-lg'
+                    : 'border-transparent text-green-100 hover:text-white hover:border-green-200'
                 }`}
               >
                 <tab.icon className="h-4 w-4" />
@@ -308,67 +308,67 @@ const DeveloperPortal: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-full px-4 sm:px-6 lg:px-8 py-8 bg-white bg-opacity-10 backdrop-blur-sm">
+      <div className="max-w-full px-4 sm:px-6 lg:px-8 py-8">
         {/* System Monitoring Tab */}
         {activeTab === 'monitoring' && (
           <div className="space-y-8">
             {/* Real-time System Metrics */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-              <div className="bg-white rounded-xl shadow-2xl p-4 border-2 border-black">
+              <div className="bg-white rounded-xl shadow-2xl p-4 border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-bold text-black mb-1">Uptime</p>
+                    <p className="text-sm font-bold text-gray-900 mb-1">Uptime</p>
                     <p className="text-2xl font-bold text-green-600">{systemStats.uptime}</p>
                   </div>
                   <Activity className="h-6 w-6 text-green-500" />
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 border border-gray-100 dark:border-gray-700">
+              <div className="bg-white rounded-xl shadow-lg p-4 border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Response Time</p>
-                    <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{systemStats.responseTime}</p>
+                    <p className="text-sm font-medium text-gray-600 mb-1">Response Time</p>
+                    <p className="text-2xl font-bold text-green-600">{systemStats.responseTime}</p>
                   </div>
-                  <Zap className="h-6 w-6 text-blue-500" />
+                  <Zap className="h-6 w-6 text-green-500" />
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 border border-gray-100 dark:border-gray-700">
+              <div className="bg-white rounded-xl shadow-lg p-4 border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Active Users</p>
-                    <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">{systemStats.activeUsers}</p>
+                    <p className="text-sm font-medium text-gray-600 mb-1">Active Users</p>
+                    <p className="text-2xl font-bold text-green-600">{systemStats.activeUsers}</p>
                   </div>
-                  <Users className="h-6 w-6 text-purple-500" />
+                  <Users className="h-6 w-6 text-green-500" />
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 border border-gray-100 dark:border-gray-700">
+              <div className="bg-white rounded-xl shadow-lg p-4 border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">CPU Usage</p>
-                    <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">{systemStats.cpuUsage}%</p>
+                    <p className="text-sm font-medium text-gray-600 mb-1">CPU Usage</p>
+                    <p className="text-2xl font-bold text-green-600">{systemStats.cpuUsage}%</p>
                   </div>
-                  <Cpu className="h-6 w-6 text-orange-500" />
+                  <Cpu className="h-6 w-6 text-green-500" />
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 border border-gray-100 dark:border-gray-700">
+              <div className="bg-white rounded-xl shadow-lg p-4 border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Memory</p>
-                    <p className="text-2xl font-bold text-red-600 dark:text-red-400">{systemStats.memoryUsage}%</p>
+                    <p className="text-sm font-medium text-gray-600 mb-1">Memory</p>
+                    <p className="text-2xl font-bold text-green-600">{systemStats.memoryUsage}%</p>
                   </div>
-                  <HardDrive className="h-6 w-6 text-red-500" />
+                  <HardDrive className="h-6 w-6 text-green-500" />
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 border border-gray-100 dark:border-gray-700">
+              <div className="bg-white rounded-xl shadow-lg p-4 border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Error Rate</p>
-                    <p className="text-2xl font-bold text-green-600 dark:text-green-400">{systemStats.errorRate}</p>
+                    <p className="text-sm font-medium text-gray-600 mb-1">Error Rate</p>
+                    <p className="text-2xl font-bold text-green-600">{systemStats.errorRate}</p>
                   </div>
                   <Bug className="h-6 w-6 text-green-500" />
                 </div>
@@ -376,30 +376,30 @@ const DeveloperPortal: React.FC = () => {
             </div>
 
             {/* System Health Overview */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">System Health Overview</h2>
+            <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+              <h2 className="text-xl font-bold text-gray-900 mb-6">System Health Overview</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div className="text-center">
-                  <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
-                    <Cpu className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                  <div className="bg-green-100 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                    <Cpu className="h-8 w-8 text-green-600" />
                   </div>
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{systemStats.cpuUsage}%</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">CPU Usage</div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
+                  <div className="text-2xl font-bold text-gray-900">{systemStats.cpuUsage}%</div>
+                  <div className="text-sm text-gray-600">CPU Usage</div>
+                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                     <div 
-                      className="bg-blue-600 h-2 rounded-full transition-all duration-300" 
+                      className="bg-green-600 h-2 rounded-full transition-all duration-300" 
                       style={{ width: `${systemStats.cpuUsage}%` }}
                     ></div>
                   </div>
                 </div>
 
                 <div className="text-center">
-                  <div className="bg-green-100 dark:bg-green-900 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
-                    <HardDrive className="h-8 w-8 text-green-600 dark:text-green-400" />
+                  <div className="bg-green-100 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                    <HardDrive className="h-8 w-8 text-green-600" />
                   </div>
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{systemStats.memoryUsage}%</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Memory Usage</div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
+                  <div className="text-2xl font-bold text-gray-900">{systemStats.memoryUsage}%</div>
+                  <div className="text-sm text-gray-600">Memory Usage</div>
+                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                     <div 
                       className="bg-green-600 h-2 rounded-full transition-all duration-300" 
                       style={{ width: `${systemStats.memoryUsage}%` }}
@@ -408,28 +408,28 @@ const DeveloperPortal: React.FC = () => {
                 </div>
 
                 <div className="text-center">
-                  <div className="bg-purple-100 dark:bg-purple-900 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
-                    <Database className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+                  <div className="bg-green-100 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                    <Database className="h-8 w-8 text-green-600" />
                   </div>
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{systemStats.diskUsage}%</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Disk Usage</div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
+                  <div className="text-2xl font-bold text-gray-900">{systemStats.diskUsage}%</div>
+                  <div className="text-sm text-gray-600">Disk Usage</div>
+                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                     <div 
-                      className="bg-purple-600 h-2 rounded-full transition-all duration-300" 
+                      className="bg-green-600 h-2 rounded-full transition-all duration-300" 
                       style={{ width: `${systemStats.diskUsage}%` }}
                     ></div>
                   </div>
                 </div>
 
                 <div className="text-center">
-                  <div className="bg-orange-100 dark:bg-orange-900 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
-                    <Wifi className="h-8 w-8 text-orange-600 dark:text-orange-400" />
+                  <div className="bg-green-100 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                    <Wifi className="h-8 w-8 text-green-600" />
                   </div>
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{systemStats.networkLatency}ms</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Network Latency</div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
+                  <div className="text-2xl font-bold text-gray-900">{systemStats.networkLatency}ms</div>
+                  <div className="text-sm text-gray-600">Network Latency</div>
+                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                     <div 
-                      className="bg-orange-600 h-2 rounded-full transition-all duration-300" 
+                      className="bg-green-600 h-2 rounded-full transition-all duration-300" 
                       style={{ width: `${Math.min(systemStats.networkLatency * 2, 100)}%` }}
                     ></div>
                   </div>
@@ -762,16 +762,16 @@ const DeveloperPortal: React.FC = () => {
 
         {/* Other tabs placeholder */}
         {['testing', 'deployment', 'documentation'].includes(activeTab) && (
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center border border-gray-100 dark:border-gray-700">
-            <div className="text-gray-400 dark:text-gray-500 mb-4">
+          <div className="bg-white rounded-xl shadow-lg p-8 text-center border border-gray-200">
+            <div className="text-gray-400 mb-4">
               <Code className="h-16 w-16 mx-auto" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+            <h3 className="text-xl font-bold text-gray-900 mb-2">
               {activeTab === 'testing' && 'Testing & QA Tools'}
               {activeTab === 'deployment' && 'Deployment Management'}
               {activeTab === 'documentation' && 'Technical Documentation'}
             </h3>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-600">
               Advanced developer tools are being implemented and will be available soon.
             </p>
           </div>

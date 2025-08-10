@@ -164,7 +164,7 @@ body {
   color: #16a34a !important;
 }
 
-/* Replace all red colors with green variants */
+/* Keep red colors for error states and warnings */
 .text-red-600,
 .dark\:text-red-600,
 .text-red-700,

@@ -38,6 +38,10 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import CustomerService from './pages/CustomerService';
 import GlobalChatSystem from './components/chat/GlobalChatSystem';
+import PrivacyPolicy from './pages/legal/PrivacyPolicy';
+import TermsConditions from './pages/legal/TermsConditions';
+import CookiePolicy from './pages/legal/CookiePolicy';
+import Sitemap from './pages/legal/Sitemap';
 import { CartProvider } from './contexts/CartContext';
 import { OrderProvider } from './contexts/OrderContext';
 import { AuthProvider } from './contexts/AuthContext';
@@ -172,6 +176,12 @@ function App() {
                          <StripeSuccess />
                        </ProtectedRoute>
                      } />
+                     
+                     {/* Legal Pages */}
+                     <Route path="/privacy" element={<PrivacyPolicy />} />
+                     <Route path="/terms" element={<TermsConditions />} />
+                     <Route path="/cookies" element={<CookiePolicy />} />
+                     <Route path="/sitemap" element={<Sitemap />} />
                      
                       {/* Admin Routes */}
                       <Route path="/admin/login" element={<AdminLogin />} />
