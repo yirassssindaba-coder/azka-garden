@@ -267,7 +267,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias dengan daun hijau-merah muda yang populer untuk dekorasi interior dan mudah tumbuh.',
     mode: 'subscription',
     price: 4.67,
-    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
+    image: 'https://images.pexels.com/photos/1005058/pexels-photo-1005058.jpeg'
   },
   {
     id: 'prod_SqFAnEdt6kqnoB',
@@ -474,7 +474,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Varietas Alocasia eksotis dengan motif daun menyerupai sisik naga berwarna hijau zamrud dan urat perak metalik.',
     mode: 'subscription',
     price: 8.33,
-    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
+    image: 'https://images.pexels.com/photos/1005058/pexels-photo-1005058.jpeg'
   },
   {
     id: 'prod_SqEmhZOk3Ds9qe',
@@ -483,7 +483,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman perennial tropis dari Afrika Timur yang toleran terhadap cahaya rendah dan tahan kekeringan dengan daun hijau pekat mengkilap.',
     mode: 'subscription',
     price: 4.67,
-    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
+    image: 'https://images.pexels.com/photos/1005058/pexels-photo-1005058.jpeg'
   }
 ];
 

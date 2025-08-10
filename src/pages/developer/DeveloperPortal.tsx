@@ -218,33 +218,33 @@ const DeveloperPortal: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-300 via-green-400 to-green-500">
+    <div className="min-h-screen bg-white">
       {/* Developer Header */}
-      <div className="bg-green-600 shadow-2xl">
+      <div className="bg-white shadow-lg border-b-2 border-green-500">
         <div className="max-w-full px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
-              <div className="bg-white bg-opacity-30 p-3 rounded-xl mr-4 backdrop-blur-sm">
+              <div className="bg-green-600 p-3 rounded-xl mr-4">
                 <Code className="h-8 w-8 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white drop-shadow-lg">Portal Pengembang - Azka Garden</h1>
-                <p className="text-green-100 font-medium">System Development & Monitoring</p>
+                <h1 className="text-2xl font-bold text-gray-900">Portal Pengembang - Azka Garden</h1>
+                <p className="text-gray-600 font-medium">System Development & Monitoring</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 bg-white bg-opacity-30 px-4 py-2 rounded-full backdrop-blur-sm">
+              <div className="flex items-center space-x-2 bg-green-100 px-4 py-2 rounded-full">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-white text-sm font-bold">Live Monitoring</span>
+                <span className="text-green-800 text-sm font-bold">Live Monitoring</span>
               </div>
               <button 
                 onClick={loadDeveloperData}
-                className="p-2 text-white hover:text-green-200 transition-colors"
+                className="p-2 text-gray-600 hover:text-green-600 transition-colors"
               >
                 <RefreshCw className="h-5 w-5" />
               </button>
               <div className="relative group">
-                <button className="flex items-center space-x-2 p-2 text-white hover:text-green-200 transition-colors">
+                <button className="flex items-center space-x-2 p-2 text-gray-700 hover:text-green-600 transition-colors">
                   <User className="h-5 w-5" />
                   <span className="text-sm font-medium">{user?.fullName}</span>
                 </button>
@@ -276,7 +276,7 @@ const DeveloperPortal: React.FC = () => {
       </div>
 
       {/* Developer Navigation Tabs */}
-      <div className="bg-green-500 overflow-x-auto shadow-xl">
+      <div className="bg-green-50 overflow-x-auto shadow-sm border-b border-gray-200">
         <div className="max-w-full px-4 sm:px-6 lg:px-8">
           <nav className="flex space-x-2 lg:space-x-4 min-w-max">
             {[
@@ -296,8 +296,8 @@ const DeveloperPortal: React.FC = () => {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center space-x-1 lg:space-x-2 py-4 px-3 lg:px-4 border-b-2 font-bold text-xs lg:text-sm transition-all duration-300 whitespace-nowrap ${
                   activeTab === tab.id
-                    ? 'border-white text-white bg-white bg-opacity-30 rounded-t-lg'
-                    : 'border-transparent text-green-100 hover:text-white hover:border-green-200'
+                    ? 'border-green-500 text-green-600 bg-green-100'
+                    : 'border-transparent text-gray-600 hover:text-green-600 hover:border-green-300'
                 }`}
               >
                 <tab.icon className="h-4 w-4" />
@@ -314,7 +314,7 @@ const DeveloperPortal: React.FC = () => {
           <div className="space-y-8">
             {/* Real-time System Metrics */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-              <div className="bg-white rounded-xl shadow-2xl p-4 border border-gray-200">
+              <div className="bg-white rounded-xl shadow-lg p-4 border-2 border-green-200">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-bold text-gray-900 mb-1">Uptime</p>
@@ -324,7 +324,7 @@ const DeveloperPortal: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl shadow-lg p-4 border border-gray-200">
+              <div className="bg-white rounded-xl shadow-lg p-4 border-2 border-green-200">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600 mb-1">Response Time</p>
@@ -334,7 +334,7 @@ const DeveloperPortal: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl shadow-lg p-4 border border-gray-200">
+              <div className="bg-white rounded-xl shadow-lg p-4 border-2 border-green-200">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600 mb-1">Active Users</p>
@@ -344,7 +344,7 @@ const DeveloperPortal: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl shadow-lg p-4 border border-gray-200">
+              <div className="bg-white rounded-xl shadow-lg p-4 border-2 border-green-200">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600 mb-1">CPU Usage</p>
@@ -354,7 +354,7 @@ const DeveloperPortal: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl shadow-lg p-4 border border-gray-200">
+              <div className="bg-white rounded-xl shadow-lg p-4 border-2 border-green-200">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600 mb-1">Memory</p>
@@ -364,7 +364,7 @@ const DeveloperPortal: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl shadow-lg p-4 border border-gray-200">
+              <div className="bg-white rounded-xl shadow-lg p-4 border-2 border-green-200">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600 mb-1">Error Rate</p>
@@ -376,7 +376,7 @@ const DeveloperPortal: React.FC = () => {
             </div>
 
             {/* System Health Overview */}
-            <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+            <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-green-200">
               <h2 className="text-xl font-bold text-gray-900 mb-6">System Health Overview</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div className="text-center">
