@@ -322,7 +322,7 @@ const GlobalChatSystem: React.FC = () => {
                       key={msg.id}
                       className={`flex ${msg.senderId === user?.id ? 'justify-end' : 'justify-start'}`}
                     >
-                      <div className={\`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                      <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
                         msg.senderId === user?.id
                           ? 'bg-green-600 text-white shadow-lg'
                           : 'bg-white text-gray-900 border border-green-200 shadow-md'
@@ -362,7 +362,7 @@ const GlobalChatSystem: React.FC = () => {
                         disabled={!newMessage.trim()}
                         className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 mobile-btn"
                       >
-                       <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                        <Send className="h-4 w-4" />
                       </button>
                     </div>
                   </div>
