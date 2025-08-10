@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Star, Heart, MessageCircle, Send, ThumbsUp, Reply, Trash2 } from 'lucide-react';
+import { Star, Heart, MessageCircle, Send, ThumbsUp, Reply, Trash2, Globe } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 interface Review {
@@ -392,7 +392,6 @@ const ReviewsAndComments: React.FC = () => {
                           />
                         ))}
                       </div>
-                      <span className="text-sm text-gray-600 dark:text-gray-400">
                       <span className="text-sm text-gray-600 mobile-text-xs">
                         {review.createdAt.toLocaleDateString('id-ID')}
                       </span>
@@ -410,7 +409,6 @@ const ReviewsAndComments: React.FC = () => {
                 )}
               </div>
               
-              <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed break-words">{review.comment}</p>
               <p className="text-gray-700 mb-4 leading-relaxed break-words mobile-text-xs">{review.comment}</p>
               
               <div className="flex items-center space-x-4 mb-4">
