@@ -53,6 +53,12 @@ function App() {
   useEffect(() => {
     // Initial health check
     const checkSupabaseConnection = async () => {
+      // Check if browser is offline
+      if (!navigator.onLine) {
+        console.log('Browser is offline - running in demo mode');
+        return;
+      }
+      
       try {
         const healthCheck = await supabaseHealthCheck();
         if (!healthCheck.ok) {
