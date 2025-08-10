@@ -122,7 +122,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
           {product.mode === 'subscription' ? (
             <>
               <Zap className="h-5 w-5 mr-2" />
-              Berlangganan Sekarang
+              Beli Sekarang
             </>
           ) : (
             <>

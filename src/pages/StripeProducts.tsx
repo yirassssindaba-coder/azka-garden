@@ -194,7 +194,7 @@ const StripeProducts: React.FC = () => {
                   ) : (
                     <ShoppingCart className="h-5 w-5 mr-2" />
                   )}
-                  {product.mode === 'subscription' ? 'Berlangganan Sekarang' : 'Beli Sekarang'}
+                  Beli Sekarang
                 </button>
               </div>
             </div>

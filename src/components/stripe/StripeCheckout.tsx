@@ -110,7 +110,7 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({
         ) : (
           <>
             <CreditCard className="h-5 w-5 mr-2" />
-            {mode === 'subscription' ? 'Berlangganan Sekarang' : 'Beli Sekarang'}
+            Beli Sekarang
           </>
         )}
       </button>
