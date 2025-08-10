@@ -1,6 +1,12 @@
 import { supabase } from '../lib/supabase';
 
 export interface HealthCheckResult {
+  // If supabase client is null (not configured), return demo mode status
+  if (!supabase) {
+    console.log('Supabase not configured - running in demo mode');
+    return { ok: false, type: 'not_configured', demo: true };
+  }
+
   ok: boolean;
   type?: 'network' | 'query' | 'unexpected';
   error?: any;
@@ -26,9 +32,11 @@ export async function supabaseHealthCheck(): Promise<HealthCheckResult> {
     return { ok: true };
   } catch (e: any) {
     if (e.message?.includes('Failed to fetch')) {
-      return { ok: false, type: 'network', error: e };
+      console.log('Network connection failed - using demo mode');
+      return { ok: false, type: 'network', error: e, demo: true };
     }
-    return { ok: false, type: 'unexpected', error: e };
+    console.log('Unexpected error - using demo mode');
+    return { ok: false, type: 'unexpected', error: e, demo: true };
   }
 }
 

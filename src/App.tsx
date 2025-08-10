@@ -56,15 +56,19 @@ function App() {
       try {
         const healthCheck = await supabaseHealthCheck();
         if (!healthCheck.ok) {
-          console.warn('Supabase health check failed:', healthCheck);
-          if (healthCheck.type === 'network') {
-            console.error('Network connection to Supabase failed. Check URL and keys.');
+          if (healthCheck.demo) {
+            console.log('Running in demo mode - Supabase not configured or unavailable');
+          } else {
+            console.warn('Supabase health check failed:', healthCheck);
+            if (healthCheck.type === 'network') {
+              console.error('Network connection to Supabase failed. Check URL and keys.');
+            }
           }
         } else {
           console.log('Supabase connection healthy');
         }
       } catch (error) {
-        console.error('Health check error:', error);
+        console.log('Health check failed - continuing in demo mode:', error);
       }
     };
     
