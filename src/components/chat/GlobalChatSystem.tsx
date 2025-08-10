@@ -1,8 +1,8 @@
-};
-  return <Navigate to="/global-chat" replace />;
-const GlobalChatSystem: React.FC = () => {
-
-import { Navigate } from 'react-router-dom';
 import React from 'react';
-// Redirect to the main chat page
+import { Navigate } from 'react-router-dom';
+
 // This component is now handled by the main GlobalChatSystem page
+// Redirect to the main chat page
+const GlobalChatSystem: React.FC = () => {
+  return <Navigate to="/global-chat" replace />;
+};
