@@ -39,16 +39,7 @@ const StripeProducts: React.FC = () => {
 
 
   const handlePurchase = async (product: StripeProduct) => {
-    if (!isSubscribed) {
-      alert('Silakan berlangganan newsletter terlebih dahulu untuk mengakses produk premium. Scroll ke bawah dan masukkan email Anda di bagian Newsletter.');
-      return;
-    }
-    
-    if (!isAuthenticated) {
-      alert('Silakan login terlebih dahulu untuk melakukan pembelian');
-      return;
-    }
-
+    // Langsung ke checkout tanpa requirement login atau newsletter
     setSelectedProduct(product);
     setShowCheckout(true);
   };
@@ -94,31 +85,31 @@ const StripeProducts: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-green-600 to-green-800 text-white py-20">
+      <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="flex items-center justify-center space-x-4 mb-6">
-              <Leaf className="h-16 w-16 text-green-200" />
-              <Crown className="h-16 w-16 text-yellow-400" />
+              <Leaf className="h-16 w-16 text-green-600" />
+              <Crown className="h-16 w-16 text-green-600" />
             </div>
-            <h1 className="text-5xl font-bold mb-4">Koleksi Premium Azka Garden</h1>
-            <p className="text-xl text-green-100 max-w-2xl mx-auto">
+            <h1 className="text-5xl font-bold mb-4 text-black">Koleksi Premium Azka Garden</h1>
+            <p className="text-xl text-black max-w-2xl mx-auto">
               47+ Tanaman hias premium dengan sistem pembayaran Stripe yang aman dan berlangganan bulanan
             </p>
             
             {/* Trust Indicators */}
             <div className="flex items-center justify-center space-x-8 mt-8">
               <div className="flex items-center space-x-2">
-                <Shield className="h-5 w-5 text-green-200" />
-                <span className="text-green-100 text-sm">Stripe SSL Secure</span>
+                <Shield className="h-5 w-5 text-green-600" />
+                <span className="text-black text-sm">Stripe SSL Secure</span>
               </div>
               <div className="flex items-center space-x-2">
-                <Star className="h-5 w-5 text-yellow-400" />
-                <span className="text-green-100 text-sm">Premium Quality</span>
+                <Star className="h-5 w-5 text-green-600" />
+                <span className="text-black text-sm">Premium Quality</span>
               </div>
               <div className="flex items-center space-x-2">
-                <Zap className="h-5 w-5 text-blue-400" />
-                <span className="text-green-100 text-sm">Monthly Delivery</span>
+                <Zap className="h-5 w-5 text-green-600" />
+                <span className="text-black text-sm">Monthly Delivery</span>
               </div>
             </div>
           </div>
@@ -136,7 +127,7 @@ const StripeProducts: React.FC = () => {
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {stripeProducts.map((product) => (
-            <div key={product.priceId} className="bg-green-50 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border-2 border-black">
+            <div key={product.priceId} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-200">
               <div className="relative">
                 <div className="h-48 border-b border-green-200">
                   <img
@@ -147,7 +138,7 @@ const StripeProducts: React.FC = () => {
                 </div>
                 
                 <div className="absolute top-4 left-4 flex space-x-2">
-                  <span className="bg-white text-gray-800 px-2 py-1 rounded-full text-xs font-medium border border-green-200">
+                  <span className="bg-green-100 text-black px-2 py-1 rounded-full text-xs font-medium border border-green-200">
                     {getCategoryFromName(product.name)}
                   </span>
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -173,11 +164,11 @@ const StripeProducts: React.FC = () => {
               </div>
               
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
+                <h3 className="text-xl font-bold text-black mb-3 line-clamp-2">
                   {product.name}
                 </h3>
                 
-                <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
+                <p className="text-black text-sm mb-4 line-clamp-3 leading-relaxed">
                   {product.description}
                 </p>
                 
@@ -197,7 +188,7 @@ const StripeProducts: React.FC = () => {
 
                 <button
                   onClick={() => handlePurchase(product)}
-                  className="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center border border-green-200"
+                  className="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center"
                 >
                   {product.mode === 'subscription' ? (
                     <Calendar className="h-5 w-5 mr-2" />
@@ -213,26 +204,26 @@ const StripeProducts: React.FC = () => {
 
         {/* Recent Orders */}
         {isAuthenticated && orders.length > 0 && (
-          <div className="mt-16 bg-green-50 rounded-xl shadow-lg p-6 border-2 border-black">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Riwayat Pembelian</h2>
+          <div className="mt-16 bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+            <h2 className="text-2xl font-bold text-black mb-6">Riwayat Pembelian</h2>
             <div className="space-y-4">
               {orders.slice(0, 5).map((order) => (
-                <div key={order.order_id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div key={order.order_id} className="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200">
                   <div className="flex items-center space-x-4">
-                    <div className="bg-green-100 p-2 rounded-full border border-black">
+                    <div className="bg-green-100 p-2 rounded-full">
                       <Package className="h-5 w-5 text-green-600" />
                     </div>
                     <div>
-                      <div className="font-medium text-gray-900">
+                      <div className="font-medium text-black">
                         Order #{order.checkout_session_id.slice(-8)}
                       </div>
-                      <div className="text-sm text-gray-600">
+                      <div className="text-sm text-black">
                         {new Date(order.order_date).toLocaleDateString('id-ID')}
                       </div>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="font-semibold text-gray-900">
+                    <div className="font-semibold text-black">
                       ${(order.amount_total / 100).toFixed(2)}
                     </div>
                     <div className={`text-sm px-2 py-1 rounded-full ${
@@ -249,94 +240,32 @@ const StripeProducts: React.FC = () => {
           </div>
         )}
 
-        {/* Authentication CTA */}
-        {!isAuthenticated && !isSubscribed && (
-          <div className="mt-16 bg-red-50 rounded-xl p-8 text-center mobile-card mobile-padding">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4 mobile-text-sm">
-              Berlangganan Newsletter untuk Akses Premium
-            </h3>
-            <p className="text-gray-600 mb-6 mobile-text-xs">
-              Masukkan email Anda di bagian Newsletter di bawah untuk mengakses koleksi premium dan sistem berlangganan tanaman hias
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button
-                onClick={() => document.querySelector('footer')?.scrollIntoView({ behavior: 'smooth' })}
-                className="inline-flex items-center px-8 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors mobile-btn"
-              >
-                Berlangganan Newsletter
-              </button>
+        {/* Info Section */}
+        <div className="mt-16 bg-white rounded-2xl p-8 text-center border border-gray-200 shadow-lg">
+          <h3 className="text-2xl font-bold text-black mb-4">
+            Koleksi Premium Tersedia untuk Semua
+          </h3>
+          <p className="text-black mb-6">
+            Semua produk premium dapat dibeli langsung tanpa perlu login atau berlangganan newsletter
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+            <div className="bg-green-50 p-3 rounded-lg border border-gray-200">
+              <Shield className="h-5 w-5 text-green-600 mx-auto mb-2" />
+              <div className="font-medium text-black">Pembayaran Aman</div>
+              <div className="text-black">SSL & Enkripsi Stripe</div>
+            </div>
+            <div className="bg-green-50 p-3 rounded-lg border border-gray-200">
+              <Star className="h-5 w-5 text-green-600 mx-auto mb-2" />
+              <div className="font-medium text-black">Kualitas Terjamin</div>
+              <div className="text-black">Garansi Hidup 24 Jam</div>
+            </div>
+            <div className="bg-green-50 p-3 rounded-lg border border-gray-200">
+              <Zap className="h-5 w-5 text-green-600 mx-auto mb-2" />
+              <div className="font-medium text-black">Pengiriman Cepat</div>
+              <div className="text-black">1-3 Hari Kerja</div>
             </div>
           </div>
-        )}
-        
-        {!isAuthenticated && isSubscribed && (
-          <div className="mt-16 bg-green-50 rounded-xl p-8 text-center">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4 mobile-text-sm">
-              Mulai Berlangganan Tanaman Premium
-            </h3>
-            <p className="text-gray-600 mb-6 mobile-text-xs">
-              Login untuk mengakses koleksi premium dan sistem berlangganan tanaman hias
-            </p>
-            <div className="bg-green-100 p-4 rounded-lg mb-6">
-              <div className="flex items-center space-x-2 justify-center">
-                <CheckCircle className="h-5 w-5 text-green-600" />
-                <span className="text-green-800 font-medium">Newsletter: {subscriberEmail}</span>
-              </div>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/login"
-                className="inline-flex items-center px-8 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors mobile-btn"
-              >
-                <CreditCard className="h-5 w-5 mr-2" />
-                Login & Mulai Berlangganan
-              </Link>
-              <Link
-                to="/register"
-                className="inline-flex items-center px-8 py-3 border-2 border-green-600 text-green-600 font-semibold rounded-lg hover:bg-green-50 transition-colors mobile-btn"
-              >
-                Daftar Akun Baru
-              </Link>
-            </div>
-          </div>
-        )}
-        
-        {/* Subscribed User - Show Products Available for Purchase */}
-        {isAuthenticated && isSubscribed && (
-          <div className="mt-16 bg-green-50 rounded-2xl p-8 text-center border-2 border-black shadow-xl">
-            <div className="bg-white rounded-xl p-6 mb-6 border border-black">
-              <div className="flex items-center justify-center space-x-3 mb-4">
-                <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center shadow-lg border border-black">
-                  <CheckCircle className="h-6 w-6 text-white" />
-                </div>
-                <div className="text-left">
-                  <h3 className="text-xl font-bold text-gray-900">Akses Premium Aktif</h3>
-                  <p className="text-gray-700 font-medium">Newsletter: {subscriberEmail}</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-                <div className="bg-green-50 p-3 rounded-lg border border-black">
-                  <Shield className="h-5 w-5 text-green-600 mx-auto mb-2" />
-                  <div className="font-medium text-gray-900">Pembayaran Aman</div>
-                  <div className="text-gray-600">SSL & Enkripsi</div>
-                </div>
-                <div className="bg-green-50 p-3 rounded-lg border border-black">
-                  <Star className="h-5 w-5 text-green-600 mx-auto mb-2" />
-                  <div className="font-medium text-gray-900">Kualitas Terjamin</div>
-                  <div className="text-gray-600">Garansi Hidup</div>
-                </div>
-                <div className="bg-green-50 p-3 rounded-lg border border-black">
-                  <Zap className="h-5 w-5 text-green-600 mx-auto mb-2" />
-                  <div className="font-medium text-gray-900">Pengiriman Cepat</div>
-                  <div className="text-gray-600">1-3 Hari</div>
-                </div>
-              </div>
-            </div>
-            <p className="text-lg text-gray-700 font-medium">
-              🎉 Selamat! Anda dapat membeli semua produk premium di bawah ini
-            </p>
-          </div>
-        )}
+        </div>
       </div>
 
       {/* Stripe Checkout Modal */}
