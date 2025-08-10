@@ -213,27 +213,17 @@ const ChatBot: React.FC = () => {
 
   if (!isOpen) {
     return (
-      <div className="fixed bottom-6 right-6 z-50">
-        <button
-          onClick={() => setIsOpen(true)}
-          className="bg-green-600 text-white p-4 rounded-full shadow-lg hover:bg-green-700 transition-colors animate-pulse mb-2"
-        >
-          <MessageCircle className="h-6 w-6" />
-        </button>
-        <div className="text-center">
-          <Link
-            to="/global-chat"
-            className="block bg-blue-600 text-white text-xs px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Chat Global
-          </Link>
-        </div>
-      </div>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="fixed bottom-6 right-6 bg-green-600 text-white p-4 rounded-full shadow-lg hover:bg-green-700 transition-colors animate-pulse z-50 border-2 border-black"
+      >
+        <MessageCircle className="h-6 w-6" />
+      </button>
     );
   }
 
   return (
-    <div className="fixed bottom-6 right-6 w-80 h-96 bg-white rounded-lg shadow-xl border border-gray-200 z-50 flex flex-col max-w-[calc(100vw-3rem)] mobile-card">
+    <div className="fixed bottom-6 right-6 w-80 h-96 bg-green-50 rounded-lg shadow-xl border-2 border-black z-50 flex flex-col max-w-[calc(100vw-3rem)] mobile-card">
       {/* Header */}
       <div className="bg-green-600 text-white p-4 rounded-t-lg flex items-center justify-between mobile-p-3">
         <div className="flex items-center space-x-2">
@@ -268,27 +258,19 @@ const ChatBot: React.FC = () => {
             <p className="text-xs mt-2 mobile-text-xs">Tim customer service siap membantu</p>
           </div>
         ) : (
-          currentSession?.messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex ${message.senderId === user.id ? 'justify-end' : 'justify-start'}`}
-            >
-              <div className={`flex items-start space-x-2 max-w-xs ${message.senderId === user.id ? 'flex-row-reverse space-x-reverse' : ''}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                  message.senderId === user.id
-                    ? 'bg-blue-500 text-white' 
-                    : getRoleColor(message.senderRole)
-                }`}>
-                  {message.senderId === user.id ? (
-                    <User className="h-4 w-4" />
-                  ) : (
+          <button
+            onClick={() => setIsOpen(false)}
+            className="text-white hover:text-green-200 transition-colors"
+          >
+            <X className="h-5 w-5" />
+          </button>
                     getRoleIcon(message.senderRole)
                   )}
                 </div>
                 <div className={`rounded-lg p-3 ${
                   message.senderId === user.id
                     ? 'bg-green-600 text-white shadow-lg'
-                    : 'bg-white text-gray-900 border-2 border-green-200 shadow-md'
+                    : 'bg-white text-gray-900 border-2 border-black shadow-md'
                 }`}>
                   <p className="text-sm whitespace-pre-wrap break-words mobile-text-xs leading-relaxed">{message.message}</p>
                   <p className={`text-xs mt-1 mobile-text-xs ${
@@ -308,7 +290,7 @@ const ChatBot: React.FC = () => {
               <div className="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center">
                 <Bot className="h-4 w-4" />
               </div>
-              <div className="bg-white rounded-lg p-3 border border-gray-200">
+              <div className="bg-white rounded-lg p-3 border-2 border-black">
                 <div className="flex space-x-1">
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
@@ -322,7 +304,7 @@ const ChatBot: React.FC = () => {
       </div>
 
       {/* Input */}
-      <div className="border-t border-gray-200 p-4 bg-white rounded-b-lg mobile-p-3">
+      <div className="border-t-2 border-black p-4 bg-white rounded-b-lg mobile-p-3">
         <div className="flex space-x-2">
           <input
             type="text"
@@ -330,27 +312,19 @@ const ChatBot: React.FC = () => {
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Ketik pesan Anda..."
-            className="flex-1 border-2 border-green-200 bg-white text-gray-900 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 focus:border-green-400 mobile-form-input transition-all duration-200"
+            className="flex-1 border-2 border-black bg-green-50 text-gray-900 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 mobile-form-input transition-all duration-200"
           />
           <button
             onClick={handleSendMessage}
             disabled={!inputMessage.trim() || isTyping || !currentSession}
-            className="bg-green-600 text-white p-2 rounded-lg hover:bg-green-700 hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed mobile-btn transform hover:scale-105"
+            className="bg-green-600 text-white p-2 rounded-lg hover:bg-green-700 hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed mobile-btn transform hover:scale-105 border border-black"
           >
             <Send className="h-4 w-4" />
           </button>
         </div>
-        <div className="mt-2 text-center">
-          <Link
-            to="/global-chat"
-            className="text-xs text-green-600 hover:text-green-700 mobile-text-xs"
-          >
-            Buka Chat Global →
-          </Link>
-        </div>
       </div>
     </div>
   );
-};
+      <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-green-50 mobile-p-3">
 
 export default ChatBot;

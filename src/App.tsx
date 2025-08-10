@@ -188,6 +188,9 @@ function App() {
                           <DeveloperPortal />
                         </ProtectedRoute>
                       } />
+                       
+                       {/* Global Chat Route */}
+                       <Route path="/global-chat" element={<GlobalChatSystem />} />
                         </Routes>
                         </main>
                         <Footer />

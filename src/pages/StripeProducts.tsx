@@ -130,14 +130,14 @@ const StripeProducts: React.FC = () => {
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {stripeProducts.map((product) => (
-            <div key={product.priceId} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-200">
+            <div key={product.priceId} className="bg-green-50 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border-2 border-black">
               <div className="relative">
-                <div className="h-48 bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
+                <div className="h-48 bg-green-100 flex items-center justify-center border-b border-black">
                   <div className="text-6xl">{getCategoryIcon(product.name)}</div>
                 </div>
                 
                 <div className="absolute top-4 left-4 flex space-x-2">
-                  <span className="bg-white text-gray-800 px-2 py-1 rounded-full text-xs font-medium">
+                  <span className="bg-white text-gray-800 px-2 py-1 rounded-full text-xs font-medium border border-black">
                     {getCategoryFromName(product.name)}
                   </span>
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -153,7 +153,7 @@ const StripeProducts: React.FC = () => {
 
                 <div className="absolute top-4 right-4">
                   <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                    product.mode === 'subscription' 
+                    product.mode === 'subscription'
                       ? 'bg-blue-500 text-white' 
                       : 'bg-green-500 text-white'
                   }`}>
@@ -187,7 +187,7 @@ const StripeProducts: React.FC = () => {
 
                 <button
                   onClick={() => handlePurchase(product)}
-                  className="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center"
+                  className="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center border border-black"
                 >
                   {product.mode === 'subscription' ? (
                     <Calendar className="h-5 w-5 mr-2" />
@@ -203,13 +203,13 @@ const StripeProducts: React.FC = () => {
 
         {/* Recent Orders */}
         {isAuthenticated && orders.length > 0 && (
-          <div className="mt-16 bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+          <div className="mt-16 bg-green-50 rounded-xl shadow-lg p-6 border-2 border-black">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Riwayat Pembelian</h2>
             <div className="space-y-4">
               {orders.slice(0, 5).map((order) => (
                 <div key={order.order_id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                   <div className="flex items-center space-x-4">
-                    <div className="bg-green-100 p-2 rounded-full">
+                    <div className="bg-green-100 p-2 rounded-full border border-black">
                       <Package className="h-5 w-5 text-green-600" />
                     </div>
                     <div>
@@ -293,29 +293,29 @@ const StripeProducts: React.FC = () => {
         
         {/* Subscribed User - Show Products Available for Purchase */}
         {isAuthenticated && isSubscribed && (
-          <div className="mt-16 bg-gradient-to-br from-green-50 via-green-100 to-emerald-50 rounded-2xl p-8 text-center border-2 border-green-200 shadow-xl">
-            <div className="bg-white bg-opacity-80 backdrop-blur-sm rounded-xl p-6 mb-6">
+          <div className="mt-16 bg-green-50 rounded-2xl p-8 text-center border-2 border-black shadow-xl">
+            <div className="bg-white rounded-xl p-6 mb-6 border border-black">
               <div className="flex items-center justify-center space-x-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center shadow-lg border border-black">
                   <CheckCircle className="h-6 w-6 text-white" />
                 </div>
                 <div className="text-left">
                   <h3 className="text-xl font-bold text-gray-900">Akses Premium Aktif</h3>
-                  <p className="text-green-700 font-medium">Newsletter: {subscriberEmail}</p>
+                  <p className="text-gray-700 font-medium">Newsletter: {subscriberEmail}</p>
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-                <div className="bg-green-50 p-3 rounded-lg border border-green-200">
+                <div className="bg-green-50 p-3 rounded-lg border border-black">
                   <Shield className="h-5 w-5 text-green-600 mx-auto mb-2" />
                   <div className="font-medium text-gray-900">Pembayaran Aman</div>
                   <div className="text-gray-600">SSL & Enkripsi</div>
                 </div>
-                <div className="bg-green-50 p-3 rounded-lg border border-green-200">
+                <div className="bg-green-50 p-3 rounded-lg border border-black">
                   <Star className="h-5 w-5 text-green-600 mx-auto mb-2" />
                   <div className="font-medium text-gray-900">Kualitas Terjamin</div>
                   <div className="text-gray-600">Garansi Hidup</div>
                 </div>
-                <div className="bg-green-50 p-3 rounded-lg border border-green-200">
+                <div className="bg-green-50 p-3 rounded-lg border border-black">
                   <Zap className="h-5 w-5 text-green-600 mx-auto mb-2" />
                   <div className="font-medium text-gray-900">Pengiriman Cepat</div>
                   <div className="text-gray-600">1-3 Hari</div>

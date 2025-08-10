@@ -90,7 +90,7 @@ const OrderTracker: React.FC<OrderTrackerProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 mobile-card mobile-p-3">
+    <div className="bg-green-50 rounded-xl shadow-lg p-6 border-2 border-black mobile-card mobile-p-3">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-gray-900 mobile-text-sm">Lacak Pesanan</h2>
         {trackingNumber && (
@@ -102,12 +102,12 @@ const OrderTracker: React.FC<OrderTrackerProps> = ({
 
       {/* Estimated Delivery */}
       {estimatedDelivery && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+        <div className="bg-green-100 border-2 border-black rounded-lg p-4 mb-6">
           <div className="flex items-center space-x-2">
-            <Truck className="h-5 w-5 text-blue-600" />
+            <Truck className="h-5 w-5 text-green-600" />
             <div>
-              <div className="font-medium text-blue-900 mobile-text-sm">Estimasi Tiba</div>
-              <div className="text-blue-700 mobile-text-xs">
+              <div className="font-medium text-gray-900 mobile-text-sm">Estimasi Tiba</div>
+              <div className="text-gray-700 mobile-text-xs">
                 {estimatedDelivery.toLocaleDateString('id-ID', {
                   weekday: 'long',
                   year: 'numeric',
@@ -175,12 +175,12 @@ const OrderTracker: React.FC<OrderTrackerProps> = ({
               href="https://wa.me/6289635086182"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors mobile-btn"
+              className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors mobile-btn border border-black"
             >
               <Phone className="h-4 w-4 mr-2" />
               Hubungi CS
             </a>
-            <button className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors mobile-btn">
+            <button className="inline-flex items-center px-4 py-2 border-2 border-black bg-green-50 text-gray-700 rounded-lg hover:bg-green-100 transition-colors mobile-btn">
               <Package className="h-4 w-4 mr-2" />
               Detail Lengkap
             </button>

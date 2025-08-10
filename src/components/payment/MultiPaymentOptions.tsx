@@ -23,17 +23,6 @@ const MultiPaymentOptions: React.FC<MultiPaymentOptionsProps> = ({
   amount
 }) => {
   const paymentOptions: PaymentOption[] = [
-    // Stripe Integration
-    {
-      id: 'stripe',
-      name: 'Kartu Kredit/Debit (Stripe)',
-      type: 'bank',
-      fee: 0,
-      icon: '💳',
-      description: 'Visa, Mastercard, American Express',
-      processingTime: 'Instan'
-    },
-    
     // Indonesian Banks
     {
       id: 'bca',
@@ -69,6 +58,24 @@ const MultiPaymentOptions: React.FC<MultiPaymentOptionsProps> = ({
       fee: 0,
       icon: '🏦',
       description: 'Bank Rakyat Indonesia',
+      processingTime: '1-24 jam'
+    },
+    {
+      id: 'cimb',
+      name: 'Transfer CIMB Niaga',
+      type: 'bank',
+      fee: 0,
+      icon: '🏦',
+      description: 'CIMB Niaga',
+      processingTime: '1-24 jam'
+    },
+    {
+      id: 'danamon',
+      name: 'Transfer Danamon',
+      type: 'bank',
+      fee: 0,
+      icon: '🏦',
+      description: 'Bank Danamon',
       processingTime: '1-24 jam'
     },
     
@@ -118,6 +125,46 @@ const MultiPaymentOptions: React.FC<MultiPaymentOptionsProps> = ({
       description: 'Dompet digital LinkAja',
       processingTime: 'Instan'
     },
+    {
+      id: 'jenius',
+      name: 'Jenius Pay',
+      type: 'ewallet',
+      fee: 2500,
+      icon: '📱',
+      description: 'Dompet digital Jenius',
+      processingTime: 'Instan'
+    },
+    
+    // Crypto Payment
+    {
+      id: 'bitcoin',
+      name: 'Bitcoin (BTC)',
+      type: 'crypto',
+      fee: 0,
+      icon: '₿',
+      description: 'Pembayaran cryptocurrency',
+      processingTime: '10-60 menit'
+    },
+    {
+      id: 'ethereum',
+      name: 'Ethereum (ETH)',
+      type: 'crypto',
+      fee: 0,
+      icon: 'Ξ',
+      description: 'Pembayaran cryptocurrency',
+      processingTime: '5-30 menit'
+    },
+    
+    // Credit Card via Stripe
+    {
+      id: 'stripe',
+      name: 'Kartu Kredit/Debit',
+      type: 'bank',
+      fee: 0,
+      icon: '💳',
+      description: 'Visa, Mastercard, American Express',
+      processingTime: 'Instan'
+    },
     
     // Cash on Delivery
     {
@@ -136,6 +183,7 @@ const MultiPaymentOptions: React.FC<MultiPaymentOptionsProps> = ({
       case 'bank': return <Building className="h-5 w-5" />;
       case 'ewallet': return <Smartphone className="h-5 w-5" />;
       case 'cod': return <Truck className="h-5 w-5" />;
+      case 'crypto': return <CreditCard className="h-5 w-5" />;
       default: return <CreditCard className="h-5 w-5" />;
     }
   };
@@ -145,6 +193,7 @@ const MultiPaymentOptions: React.FC<MultiPaymentOptionsProps> = ({
       case 'bank': return 'text-blue-600';
       case 'ewallet': return 'text-green-600';
       case 'cod': return 'text-orange-600';
+      case 'crypto': return 'text-purple-600';
       default: return 'text-gray-600';
     }
   };
@@ -159,10 +208,10 @@ const MultiPaymentOptions: React.FC<MultiPaymentOptionsProps> = ({
       {paymentOptions.map((option) => (
         <label
           key={option.id}
-          className={`block p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 hover:shadow-md mobile-card ${
+          className={`block p-4 border-2 border-black rounded-xl cursor-pointer transition-all duration-300 hover:shadow-md mobile-card ${
             selectedPayment === option.id
-              ? 'border-green-500 bg-green-50'
-              : 'border-gray-200 bg-white hover:border-green-300'
+              ? 'bg-green-100 shadow-lg'
+              : 'bg-green-50 hover:bg-green-100'
           }`}
         >
           <input
