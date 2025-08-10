@@ -15,7 +15,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman pucuk merah tinggi 250 cm yang sering digunakan sebagai pagar hidup atau dekorasi taman dengan warna cerah menarik.',
     mode: 'subscription',
     price: 23.33,
-    image: 'https://images.pexels.com/photos/1084199/pexels-photo-1084199.jpeg'
+    image: 'https://images.pexels.com/photos/1084199/pexels-photo-1084199.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFxmSl9RiTOyi',
@@ -24,7 +24,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias dengan daun menarik yang mudah dirawat dan sesuai untuk taman tropis atau pagar hidup.',
     mode: 'subscription',
     price: 2.33,
-    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
+    image: 'https://images.pexels.com/photos/6208087/pexels-photo-6208087.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFwZqlDUt4Y8N',
@@ -33,7 +33,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman berbunga kecil yang populer sebagai pagar hidup dan mudah dirawat untuk pemula.',
     mode: 'subscription',
     price: 1.67,
-    image: 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg'
+    image: 'https://images.pexels.com/photos/158028/bellis-perennis-daisy-flower-spring-158028.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFvkErMJIyVvu',
@@ -42,7 +42,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman sikas berukuran besar tinggi 70 cm yang cocok sebagai tanaman hias eksklusif dengan perawatan khusus.',
     mode: 'subscription',
     price: 113.33,
-    image: 'https://images.pexels.com/photos/1005058/pexels-photo-1005058.jpeg'
+    image: 'https://images.pexels.com/photos/3125195/pexels-photo-3125195.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFuE2J1R6tMhB',
@@ -51,7 +51,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman buah jeruk lemon kecil yang memberikan aroma segar dan cocok untuk taman maupun kebun rumah.',
     mode: 'subscription',
     price: 4.00,
-    image: 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg'
+    image: 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFtV0MUpHxezx',
@@ -60,7 +60,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman buah jambu kanci kecil tinggi 50 cm yang dapat dijadikan tanaman hias untuk taman dan kebun.',
     mode: 'subscription',
     price: 4.00,
-    image: 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg'
+    image: 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFr35dtXtt6Di',
@@ -69,7 +69,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias dengan warna-warni cerah yang mudah dirawat dan cocok untuk memperindah pagar atau taman.',
     mode: 'subscription',
     price: 2.00,
-    image: 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg'
+    image: 'https://images.pexels.com/photos/158028/bellis-perennis-daisy-flower-spring-158028.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFqbfGVZdsnFZ',
@@ -78,7 +78,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Bonsai cemara unik menyerupai udang yang merupakan tanaman koleksi menarik dengan perawatan khusus.',
     mode: 'subscription',
     price: 43.33,
-    image: 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg'
+    image: 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFo75M2v0IpZZ',
@@ -87,7 +87,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Bonsai berukuran sedang dengan daun Gestrum cantik yang memberikan kesan elegan di rumah atau kantor.',
     mode: 'subscription',
     price: 33.33,
-    image: 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg'
+    image: 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFonVB5T4252G',
@@ -96,7 +96,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Bonsai besar dengan daun Gestrum indah yang cocok untuk koleksi eksklusif dengan perawatan khusus.',
     mode: 'subscription',
     price: 80.00,
-    image: 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg'
+    image: 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFksA3Leku2nR',
@@ -105,7 +105,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Kaktus besar tinggi 70 cm berbentuk unik yang tahan kering dan mudah dirawat untuk dekorasi rumah.',
     mode: 'subscription',
     price: 10.00,
-    image: 'https://images.pexels.com/photos/1974928/pexels-photo-1974928.jpeg'
+    image: 'https://images.pexels.com/photos/1974928/pexels-photo-1974928.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFkDwDCwPhXiX',
@@ -114,7 +114,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman berbunga oranye cerah yang populer sebagai tanaman hias dan penangkal serangga di taman.',
     mode: 'subscription',
     price: 1.67,
-    image: 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg'
+    image: 'https://images.pexels.com/photos/158028/bellis-perennis-daisy-flower-spring-158028.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFj1dxwLhhLd9',
@@ -123,7 +123,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Varian kecil Bringin Korea yang cocok untuk koleksi bonsai dengan bentuk daun menarik dan perawatan mudah.',
     mode: 'subscription',
     price: 100.00,
-    image: 'https://images.pexels.com/photos/1005058/pexels-photo-1005058.jpeg'
+    image: 'https://images.pexels.com/photos/3125195/pexels-photo-3125195.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFiiCzdAVBAjB',
@@ -132,7 +132,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias indoor dengan daun panjang tajam yang mudah dirawat untuk dekorasi meja atau rak.',
     mode: 'subscription',
     price: 1.67,
-    image: 'https://images.pexels.com/photos/2123482/pexels-photo-2123482.jpeg'
+    image: 'https://images.pexels.com/photos/2123482/pexels-photo-2123482.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFgSCL5zzw77f',
@@ -141,7 +141,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman pandan beraroma khas yang digunakan sebagai tanaman hias dan bumbu dapur di daerah tropis.',
     mode: 'subscription',
     price: 10.00,
-    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
+    image: 'https://images.pexels.com/photos/4750274/pexels-photo-4750274.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFfbSV8ZTjawg',
@@ -150,7 +150,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman berbunga kecil yang sering digunakan sebagai pagar hidup dan mudah dirawat untuk pemula.',
     mode: 'subscription',
     price: 0.67,
-    image: 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg'
+    image: 'https://images.pexels.com/photos/158028/bellis-perennis-daisy-flower-spring-158028.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFf1EedNZmipG',
@@ -159,7 +159,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Bromelian dengan bunga pink kecil cantik yang menjadi favorit tanaman eksotis untuk dekorasi interior.',
     mode: 'subscription',
     price: 8.33,
-    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
+    image: 'https://images.pexels.com/photos/4503269/pexels-photo-4503269.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFa1UGwl9cSsI',
@@ -168,7 +168,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias dengan daun putih hijau menawan yang memberikan kesan elegan untuk taman.',
     mode: 'subscription',
     price: 3.33,
-    image: 'https://images.pexels.com/photos/1005058/pexels-photo-1005058.jpeg'
+    image: 'https://images.pexels.com/photos/3125195/pexels-photo-3125195.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFZG2L55uKKZF',
@@ -177,7 +177,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias berbunga cantik dan harum yang sering digunakan sebagai tanaman pekarangan tropis.',
     mode: 'subscription',
     price: 3.33,
-    image: 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg'
+    image: 'https://images.pexels.com/photos/1408221/pexels-photo-1408221.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFYocFM2XjUpF',
@@ -186,7 +186,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias eksotis dengan bentuk unik dan harga tinggi yang cocok untuk koleksi tanaman langka.',
     mode: 'subscription',
     price: 20.00,
-    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
+    image: 'https://images.pexels.com/photos/4503273/pexels-photo-4503273.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFMzW99yCro5i',
@@ -195,7 +195,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Media tanam berkualitas tinggi yang mendukung pertumbuhan berbagai tanaman hias dalam pot atau tanah terbuka.',
     mode: 'subscription',
     price: 1.00,
-    image: 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg'
+    image: 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFLuVgVuKubOR',
@@ -204,7 +204,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias yang menambah warna dan tekstur pada taman tropis atau sebagai pagar hidup.',
     mode: 'subscription',
     price: 1.00,
-    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
+    image: 'https://images.pexels.com/photos/6208087/pexels-photo-6208087.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFKiXtez68puq',
@@ -213,7 +213,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias kecil tinggi 60 cm dengan daun khas yang sesuai untuk taman minimalis.',
     mode: 'subscription',
     price: 2.33,
-    image: 'https://images.pexels.com/photos/1084199/pexels-photo-1084199.jpeg'
+    image: 'https://images.pexels.com/photos/1084199/pexels-photo-1084199.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFJM21q9rU5X5',
@@ -222,7 +222,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias berukuran sedang tinggi 70 cm dengan daun lebat yang mudah dirawat untuk pemula.',
     mode: 'subscription',
     price: 5.33,
-    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
+    image: 'https://images.pexels.com/photos/6208087/pexels-photo-6208087.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFIPHgNG6THjf',
@@ -231,7 +231,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman cemara mini tinggi 120 cm yang memberikan kesan asri dan elegan untuk taman.',
     mode: 'subscription',
     price: 16.67,
-    image: 'https://images.pexels.com/photos/1084199/pexels-photo-1084199.jpeg'
+    image: 'https://images.pexels.com/photos/1974928/pexels-photo-1974928.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFHrmiqG1VmxI',
@@ -240,7 +240,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Pot plastik hitam berukuran besar yang tahan lama dan ideal untuk tanaman sedang hingga besar.',
     mode: 'subscription',
     price: 2.67,
-    image: 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg'
+    image: 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFGchrosVr0ko',
@@ -249,7 +249,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Pot tanah liat minimalis diameter 30 cm yang sesuai untuk berbagai tanaman hias.',
     mode: 'subscription',
     price: 4.33,
-    image: 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg'
+    image: 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFCPmj7snNNwr',
@@ -258,7 +258,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Pot desain kapsul elegan diameter 35 cm tinggi 60 cm yang cocok untuk tanaman besar atau bonsai.',
     mode: 'subscription',
     price: 5.67,
-    image: 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg'
+    image: 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFBKBi3OwY4TB',
@@ -267,7 +267,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias dengan daun hijau-merah muda yang populer untuk dekorasi interior dan mudah tumbuh.',
     mode: 'subscription',
     price: 4.67,
-    image: 'https://images.pexels.com/photos/1005058/pexels-photo-1005058.jpeg'
+    image: 'https://images.pexels.com/photos/4503273/pexels-photo-4503273.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqFAnEdt6kqnoB',
@@ -276,7 +276,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias kecil dengan daun lebat hijau yang cocok sebagai penghias meja dan mudah dirawat.',
     mode: 'subscription',
     price: 2.00,
-    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
+    image: 'https://images.pexels.com/photos/6208087/pexels-photo-6208087.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqF8DgvkP785GC',
@@ -285,7 +285,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Varian tanaman hias dengan daun hijau cerah yang memberikan kesan segar dan alami.',
     mode: 'subscription',
     price: 0.67,
-    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
+    image: 'https://images.pexels.com/photos/6208087/pexels-photo-6208087.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqF7mdjVgaRlxH',
@@ -294,7 +294,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias gantung dengan bunga putih kecil yang ideal untuk taman minimalis atau teras.',
     mode: 'subscription',
     price: 0.67,
-    image: 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg'
+    image: 'https://images.pexels.com/photos/1408221/pexels-photo-1408221.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqF7UItunSG7vU',
@@ -303,7 +303,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman berbunga terompet emas kuning cerah diameter 5-7,5 cm yang populer untuk pagar hidup.',
     mode: 'subscription',
     price: 5.00,
-    image: 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg'
+    image: 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqF6L3ixdgPFns',
@@ -312,7 +312,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias indoor dengan daun berbentuk hati dan bunga kecil cerah untuk dekorasi meja.',
     mode: 'subscription',
     price: 5.33,
-    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
+    image: 'https://images.pexels.com/photos/4503269/pexels-photo-4503269.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqF4SLLIYbnU99',
@@ -321,7 +321,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman paku-pakuan epifit yang dapat ditanam dalam pot dan umum ditemukan di daerah lembap.',
     mode: 'subscription',
     price: 2.00,
-    image: 'https://images.pexels.com/photos/6208087/pexels-photo-6208087.jpeg'
+    image: 'https://images.pexels.com/photos/6208087/pexels-photo-6208087.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqF3daljXBKVjk',
@@ -330,7 +330,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias tropis dari Brasil dengan daun berwarna-warni merah, hijau, dan putih yang mencolok.',
     mode: 'subscription',
     price: 1.00,
-    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
+    image: 'https://images.pexels.com/photos/4503273/pexels-photo-4503273.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqF3WaBQv6cDaM',
@@ -339,7 +339,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Batu hias dekorasi taman dalam warna hitam dan putih yang memberikan kontras alami dan estetis.',
     mode: 'subscription',
     price: 2.00,
-    image: 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg'
+    image: 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqF2C5Qpb5vdMY',
@@ -348,7 +348,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias outdoor dengan daun panjang hijau bergaris putih yang memberikan tampilan segar.',
     mode: 'subscription',
     price: 0.67,
-    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
+    image: 'https://images.pexels.com/photos/6208087/pexels-photo-6208087.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqF1haKTJry64j',
@@ -357,7 +357,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman air dengan bunga besar indah yang mengapung, sering digunakan untuk mempercantik kolam.',
     mode: 'subscription',
     price: 5.00,
-    image: 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg'
+    image: 'https://images.pexels.com/photos/1408221/pexels-photo-1408221.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqF0vyhreV61DB',
@@ -366,7 +366,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman tropis dengan daun lebar dan bunga besar berwarna cerah yang tahan berbagai kondisi cuaca.',
     mode: 'subscription',
     price: 2.00,
-    image: 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg'
+    image: 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqEzcgDdQo9K9Z',
@@ -375,7 +375,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Perdu tropis dengan daun hijau cerah di atas dan merah gelap di bawah, namun getahnya beracun.',
     mode: 'subscription',
     price: 1.07,
-    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
+    image: 'https://images.pexels.com/photos/6208087/pexels-photo-6208087.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqEyjB1hfIBLEs',
@@ -384,7 +384,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman sukulen dari Meksiko dengan daun panjang runcing membentuk roseta yang tahan panas dan kekeringan.',
     mode: 'subscription',
     price: 4.67,
-    image: 'https://images.pexels.com/photos/1974928/pexels-photo-1974928.jpeg'
+    image: 'https://images.pexels.com/photos/2132227/pexels-photo-2132227.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqEx5QKKEXCWkt',
@@ -393,7 +393,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias unik dengan daun hijau segar menyerupai sayur brokoli untuk sentuhan alami.',
     mode: 'subscription',
     price: 0.67,
-    image: 'https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg'
+    image: 'https://images.pexels.com/photos/6208087/pexels-photo-6208087.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqEwOuhVRc7Wgd',
@@ -402,7 +402,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman tropis dengan bunga kuning cerah yang tahan berbagai kondisi cuaca dan mudah dirawat.',
     mode: 'subscription',
     price: 2.00,
-    image: 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg'
+    image: 'https://images.pexels.com/photos/1084200/pexels-photo-1084200.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqEvFOQzT6hc0v',
@@ -411,7 +411,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hias besar setinggi 2 meter dengan daun hijau mengkilap yang mudah beradaptasi.',
     mode: 'subscription',
     price: 133.33,
-    image: 'https://images.pexels.com/photos/1005058/pexels-photo-1005058.jpeg'
+    image: 'https://images.pexels.com/photos/3125195/pexels-photo-3125195.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqEuUtscfIpBIJ',
@@ -420,7 +420,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman konifer hijau kekuningan berbentuk rimbun yang cocok untuk taman dan indoor.',
     mode: 'subscription',
     price: 3.33,
-    image: 'https://images.pexels.com/photos/1084199/pexels-photo-1084199.jpeg'
+    image: 'https://images.pexels.com/photos/1974928/pexels-photo-1974928.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqEt6N20tbmhZB',
@@ -429,7 +429,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman berbunga dengan duri tajam yang tahan kekeringan dan memberikan tampilan eksotis.',
     mode: 'subscription',
     price: 0.67,
-    image: 'https://images.pexels.com/photos/1974928/pexels-photo-1974928.jpeg'
+    image: 'https://images.pexels.com/photos/2132227/pexels-photo-2132227.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqEr9dhP2l1Uxs',
@@ -438,7 +438,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Pot tanah liat berkualitas tinggi dengan desain minimalis tersedia dalam warna coklat, hitam, dan putih.',
     mode: 'subscription',
     price: 2.67,
-    image: 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg'
+    image: 'https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqEqSSWmbBfa9m',
@@ -447,7 +447,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman hijau abadi dari Afrika Selatan dengan daun menyerupai ekor tupai yang cocok untuk interior.',
     mode: 'subscription',
     price: 2.67,
-    image: 'https://images.pexels.com/photos/6208087/pexels-photo-6208087.jpeg'
+    image: 'https://images.pexels.com/photos/6208087/pexels-photo-6208087.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqEphx8a3caOkq',
@@ -456,7 +456,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Anthurium dengan daun besar berbentuk hati berkilau dan urat putih mencolok yang elegan untuk dekorasi interior.',
     mode: 'subscription',
     price: 5.00,
-    image: 'https://images.pexels.com/photos/7084308/pexels-photo-7084308.jpeg'
+    image: 'https://images.pexels.com/photos/7084308/pexels-photo-7084308.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqEo24QRUGnNed',
@@ -465,7 +465,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Pakis hias dengan daun muda kuning cerah yang berubah hijau saat dewasa, ideal untuk area teduh.',
     mode: 'subscription',
     price: 1.67,
-    image: 'https://images.pexels.com/photos/6208087/pexels-photo-6208087.jpeg'
+    image: 'https://images.pexels.com/photos/6208087/pexels-photo-6208087.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqEnKa8gecQfGB',
@@ -474,7 +474,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Varietas Alocasia eksotis dengan motif daun menyerupai sisik naga berwarna hijau zamrud dan urat perak metalik.',
     mode: 'subscription',
     price: 8.33,
-    image: 'https://images.pexels.com/photos/1005058/pexels-photo-1005058.jpeg'
+    image: 'https://images.pexels.com/photos/4503273/pexels-photo-4503273.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
   {
     id: 'prod_SqEmhZOk3Ds9qe',
@@ -483,7 +483,7 @@ export const stripeProducts: StripeProduct[] = [
     description: 'Tanaman perennial tropis dari Afrika Timur yang toleran terhadap cahaya rendah dan tahan kekeringan dengan daun hijau pekat mengkilap.',
     mode: 'subscription',
     price: 4.67,
-    image: 'https://images.pexels.com/photos/1005058/pexels-photo-1005058.jpeg'
+    image: 'https://images.pexels.com/photos/1005058/pexels-photo-1005058.jpeg?auto=compress&cs=tinysrgb&w=400'
   }
 ];
 
