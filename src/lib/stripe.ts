@@ -1,7 +1,15 @@
 import { loadStripe } from '@stripe/stripe-js';
 
-// Initialize Stripe
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_demo');
+// Initialize Stripe with proper error handling
+const stripePublishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+
+if (!stripePublishableKey) {
+  console.error('VITE_STRIPE_PUBLISHABLE_KEY is not set in environment variables');
+}
+
+const stripePromise = stripePublishableKey 
+  ? loadStripe(stripePublishableKey)
+  : Promise.resolve(null);
 
 export default stripePromise;
 
