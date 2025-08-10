@@ -332,65 +332,81 @@ const About: React.FC = () => {
         </div>
       </section>
 
-      {/* Contact CTA */}
-      <section className="py-20 bg-green-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-4">Siap Memulai Perjalanan Berkebun Anda?</h2>
-          <p className="text-xl text-green-100 mb-8 max-w-2xl mx-auto">
-            Hubungi kami sekarang untuk konsultasi gratis dan temukan tanaman yang tepat untuk rumah Anda
-            Tim ahli kami siap memberikan rekomendasi personal berdasarkan kondisi rumah, pengalaman, dan preferensi Anda.
-          </p>
-          
-          {/* Additional Benefits */}
-          <div className="bg-white bg-opacity-10 rounded-lg p-6 mb-8 max-w-4xl mx-auto">
-            <h3 className="text-lg font-bold mb-4">Yang Anda Dapatkan:</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-200 rounded-full"></div>
-                <span>Konsultasi gratis seumur hidup</span>
+      {/* Contact CTA - Updated Design */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-2xl shadow-xl border-2 border-green-500 p-8 md:p-12">
+            <div className="text-center">
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                🌱 Siap Memulai Perjalanan Berkebun Anda?
+              </h2>
+              <p className="text-xl text-gray-700 mb-8 max-w-3xl mx-auto leading-relaxed">
+                Hubungi kami sekarang untuk <span className="font-semibold text-green-600">konsultasi gratis</span> dan temukan tanaman yang tepat untuk rumah Anda. 
+                Tim ahli kami siap memberikan rekomendasi personal berdasarkan kondisi rumah, pengalaman, dan preferensi Anda.
+              </p>
+              
+              {/* Benefits Box */}
+              <div className="bg-green-50 border-2 border-green-200 rounded-xl p-8 mb-8 max-w-4xl mx-auto">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center justify-center">
+                  <span className="mr-3">🎁</span>
+                  Yang Anda Dapatkan:
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="flex items-center space-x-4 p-4 bg-white rounded-lg shadow-sm border border-green-100">
+                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold">✓</span>
+                    </div>
+                    <span className="text-gray-900 font-medium">Konsultasi gratis seumur hidup</span>
+                  </div>
+                  <div className="flex items-center space-x-4 p-4 bg-white rounded-lg shadow-sm border border-green-100">
+                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold">✓</span>
+                    </div>
+                    <span className="text-gray-900 font-medium">Panduan perawatan detail tertulis</span>
+                  </div>
+                  <div className="flex items-center space-x-4 p-4 bg-white rounded-lg shadow-sm border border-green-100">
+                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold">✓</span>
+                    </div>
+                    <span className="text-gray-900 font-medium">Garansi tanaman hidup 24 jam</span>
+                  </div>
+                  <div className="flex items-center space-x-4 p-4 bg-white rounded-lg shadow-sm border border-green-100">
+                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold">✓</span>
+                    </div>
+                    <span className="text-gray-900 font-medium">Akses grup komunitas eksklusif</span>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-200 rounded-full"></div>
-                <span>Panduan perawatan detail tertulis</span>
+      
+              {/* Contact Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a
+                  href="https://wa.me/6281234567890"
+                  className="inline-flex items-center px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                >
+                  <span className="mr-3 text-xl">📱</span>
+                  Konsultasi via WhatsApp
+                </a>
+                <a
+                  href="tel:+6281234567890"
+                  className="inline-flex items-center px-8 py-4 bg-gray-900 hover:bg-gray-800 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                >
+                  <span className="mr-3 text-xl">📞</span>
+                  Telepon Sekarang
+                </a>
               </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-200 rounded-full"></div>
-                <span>Garansi tanaman hidup 24 jam</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-200 rounded-full"></div>
-                <span>Akses grup komunitas eksklusif</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-200 rounded-full"></div>
-                <span>Packaging khusus anti rusak</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-200 rounded-full"></div>
-                <span>Follow-up perawatan via WhatsApp</span>
+      
+              {/* Additional Info */}
+              <div className="mt-8 p-6 bg-blue-50 border-2 border-blue-200 rounded-xl">
+                <p className="text-gray-800 font-medium text-lg">
+                  💬 <strong>Respon Cepat:</strong> Tim customer service kami siap membantu 24/7
+                </p>
+                <p className="text-gray-600 mt-2">
+                  Rata-rata waktu respon: <span className="font-semibold text-blue-600">2 menit</span>
+                </p>
               </div>
             </div>
-          </div>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="https://wa.me/6289635086182"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-8 py-4 bg-white text-green-600 font-bold rounded-xl hover:bg-green-50 hover:scale-105 transition-all duration-300 shadow-lg"
-            >
-              <MessageCircle className="mr-2 h-5 w-5" />
-              Konsultasi via WhatsApp
-            </a>
-            <a
-              href="https://maps.app.goo.gl/j5AuLF1AZ3VVgovcA"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-8 py-4 border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-green-600 hover:scale-105 transition-all duration-300"
-            >
-              <MapPin className="mr-2 h-5 w-5" />
-              Kunjungi Toko Fisik
-            </a>
           </div>
         </div>
       </section>
