@@ -11,7 +11,7 @@ import {
   ExternalLink,
   CheckCircle
 } from 'lucide-react';
-import { useNewsletter } from '../NewsletterContext';
+import { useNewsletter } from '../../contexts/NewsletterContext';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
