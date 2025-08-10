@@ -59,6 +59,18 @@ function App() {
         return;
       }
       
+      // Check for placeholder configuration first
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+      
+      if (!supabaseUrl || !supabaseKey || 
+          supabaseUrl === 'https://your-project.supabase.co' || 
+          supabaseKey === 'your_supabase_anon_key') {
+        console.log('Supabase not configured (placeholder values) - running in demo mode');
+        console.log('To connect: Update .env file with real Supabase credentials');
+        return;
+      }
+      
       try {
         const healthCheck = await supabaseHealthCheck().catch(() => {
           console.log('Running in demo mode - Supabase not configured or unavailable');

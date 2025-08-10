@@ -11,7 +11,15 @@ export async function supabaseHealthCheck(): Promise<HealthCheckResult> {
   try {
     // Check if Supabase client is available
     if (!supabase) {
-      return { ok: false, type: 'network', error: new Error('Supabase client not initialized') };
+      console.log('Supabase client not initialized - using demo mode');
+      return { ok: false, type: 'not_configured', demo: true };
+    }
+    
+    // Check for placeholder configuration
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    if (!supabaseUrl || supabaseUrl === 'https://your-project.supabase.co') {
+      console.log('Supabase URL not configured - using demo mode');
+      return { ok: false, type: 'not_configured', demo: true };
     }
     
     const { error } = await supabase

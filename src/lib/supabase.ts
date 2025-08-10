@@ -3,15 +3,20 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Supabase env vars missing. Check .env file');
-  console.warn('VITE_SUPABASE_URL:', supabaseUrl);
-  console.warn('VITE_SUPABASE_ANON_KEY exists:', !!supabaseAnonKey);
-  console.warn('Using demo mode - Supabase features will use mock data');
+// Check for placeholder values from .env.example
+const isPlaceholderUrl = !supabaseUrl || supabaseUrl === 'https://your-project.supabase.co';
+const isPlaceholderKey = !supabaseAnonKey || supabaseAnonKey === 'your_supabase_anon_key';
+
+if (isPlaceholderUrl || isPlaceholderKey) {
+  console.log('Supabase not configured (using placeholder values) - running in demo mode');
+  console.log('To connect to Supabase:');
+  console.log('1. Create a Supabase project at https://supabase.com');
+  console.log('2. Update .env file with your actual project URL and keys');
+  console.log('3. Click "Connect to Supabase" button in the top right');
 }
 
 // Create client with fallback for demo mode
-export const supabase = (supabaseUrl && supabaseAnonKey) 
+export const supabase = (supabaseUrl && supabaseAnonKey && !isPlaceholderUrl && !isPlaceholderKey) 
   ? createClient(supabaseUrl, supabaseAnonKey, {
   auth: { 
     persistSession: true, 
