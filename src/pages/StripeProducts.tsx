@@ -6,6 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { StripeService } from '../services/stripe';
 import StripeCheckout from '../components/stripe/StripeCheckout';
 import SubscriptionManager from '../components/stripe/SubscriptionManager';
+import { useNewsletter } from '../contexts/NewsletterContext';
 
 const StripeProducts: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -14,6 +15,7 @@ const StripeProducts: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<StripeProduct | null>(null);
   const [showCheckout, setShowCheckout] = useState(false);
   const { user, isAuthenticated } = useAuth();
+  const { isSubscribed, subscriberEmail } = useNewsletter();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -37,6 +39,11 @@ const StripeProducts: React.FC = () => {
 
 
   const handlePurchase = async (product: StripeProduct) => {
+    if (!isSubscribed) {
+      alert('Silakan berlangganan newsletter terlebih dahulu untuk mengakses produk premium. Scroll ke bawah dan masukkan email Anda di bagian Newsletter.');
+      return;
+    }
+    
     if (!isAuthenticated) {
       alert('Silakan login terlebih dahulu untuk melakukan pembelian');
       return;
@@ -233,25 +240,50 @@ const StripeProducts: React.FC = () => {
         )}
 
         {/* Authentication CTA */}
-        {!isAuthenticated && (
+        {!isSubscribed && (
+          <div className="mt-16 bg-red-50 rounded-xl p-8 text-center mobile-card mobile-padding">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4 mobile-text-sm">
+              Berlangganan Newsletter untuk Akses Premium
+            </h3>
+            <p className="text-gray-600 mb-6 mobile-text-xs">
+              Masukkan email Anda di bagian Newsletter di bawah untuk mengakses koleksi premium dan sistem berlangganan tanaman hias
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                onClick={() => document.querySelector('footer')?.scrollIntoView({ behavior: 'smooth' })}
+                className="inline-flex items-center px-8 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors mobile-btn"
+              >
+                Berlangganan Newsletter
+              </button>
+            </div>
+          </div>
+        )}
+        
+        {isSubscribed && !isAuthenticated && (
           <div className="mt-16 bg-green-50 rounded-xl p-8 text-center">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4 mobile-text-sm">
               Mulai Berlangganan Tanaman Premium
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600 mb-6 mobile-text-xs">
               Login untuk mengakses koleksi premium dan sistem berlangganan tanaman hias
             </p>
+            <div className="bg-green-100 p-4 rounded-lg mb-6">
+              <div className="flex items-center space-x-2 justify-center">
+                <CheckCircle className="h-5 w-5 text-green-600" />
+                <span className="text-green-800 font-medium">Newsletter: {subscriberEmail}</span>
+              </div>
+            </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/login"
-                className="inline-flex items-center px-8 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors"
+                className="inline-flex items-center px-8 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors mobile-btn"
               >
                 <CreditCard className="h-5 w-5 mr-2" />
                 Login & Mulai Berlangganan
               </Link>
               <Link
                 to="/register"
-                className="inline-flex items-center px-8 py-3 border-2 border-green-600 text-green-600 font-semibold rounded-lg hover:bg-green-50 transition-colors"
+                className="inline-flex items-center px-8 py-3 border-2 border-green-600 text-green-600 font-semibold rounded-lg hover:bg-green-50 transition-colors mobile-btn"
               >
                 Daftar Akun Baru
               </Link>

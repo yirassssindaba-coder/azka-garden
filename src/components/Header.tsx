@@ -83,6 +83,16 @@ const Header: React.FC = () => {
             >
               Premium
             </Link>
+            <Link
+              to="/global-chat"
+              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                isActive('/global-chat') 
+                  ? 'text-green-600 bg-green-50 dark:bg-green-900 dark:text-green-400' 
+                  : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900'
+              }`}
+            >
+              Chat Global
+            </Link>
             {isAuthenticated && (
               <Link
                 to="/orders"
@@ -309,6 +319,18 @@ const Header: React.FC = () => {
               }`}
             >
               👑 Premium
+            </Link>
+
+            <Link
+              to="/global-chat"
+              onClick={closeMobileMenu}
+              className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors ${
+                isActive('/global-chat') 
+                  ? 'text-green-600 bg-green-50 dark:bg-green-900 dark:text-green-400' 
+                  : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900'
+              }`}
+            >
+              💬 Chat Global
             </Link>
 
             {isAuthenticated && (

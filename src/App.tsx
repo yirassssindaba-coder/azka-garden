@@ -35,12 +35,14 @@ import ReviewsAndComments from './components/reviews/ReviewsAndComments';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import CustomerService from './pages/CustomerService';
+import GlobalChatSystem from './components/chat/GlobalChatSystem';
 import { CartProvider } from './contexts/CartContext';
 import { OrderProvider } from './contexts/OrderContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { ChatProvider } from './contexts/ChatContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { ReviewProvider } from './contexts/ReviewContext';
+import { NewsletterProvider } from './contexts/NewsletterContext';
 import StripeProvider from './components/stripe/StripeProvider';
 import ProtectedRoute from './components/ProtectedRoute';
 import './index.css';
@@ -48,17 +50,18 @@ import './index.css';
 function App() {
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <StripeProvider>
-          <ReviewProvider>
-            <ChatProvider>
-              <OrderProvider>
-                <CartProvider>
-                  <Router>
-                    <div className="min-h-screen bg-white transition-colors">
-                      <Header />
-                      <main>
-                        <Routes>
+      <NewsletterProvider>
+        <AuthProvider>
+          <StripeProvider>
+            <ReviewProvider>
+              <ChatProvider>
+                <OrderProvider>
+                  <CartProvider>
+                    <Router>
+                      <div className="min-h-screen bg-white transition-colors">
+                        <Header />
+                        <main>
+                          <Routes>
                       <Route path="/" element={<Home />} />
                       <Route path="/products" element={<Products />} />
                       <Route path="/products/:id" element={<ProductDetail />} />
@@ -95,6 +98,7 @@ function App() {
                           <CustomerService />
                         </ProtectedRoute>
                       } />
+                      <Route path="/global-chat" element={<GlobalChatSystem />} />
                       <Route path="/profile" element={
                         <ProtectedRoute>
                           <Profile />
@@ -136,17 +140,18 @@ function App() {
                         </ProtectedRoute>
                       } />
                         </Routes>
-                      </main>
-                      <Footer />
-                      <ChatBot />
-                    </div>
-                  </Router>
-                </CartProvider>
-              </OrderProvider>
-            </ChatProvider>
-          </ReviewProvider>
-        </StripeProvider>
-      </AuthProvider>
+                        </main>
+                        <Footer />
+                        <ChatBot />
+                      </div>
+                    </Router>
+                  </CartProvider>
+                </OrderProvider>
+              </ChatProvider>
+            </ReviewProvider>
+          </StripeProvider>
+        </AuthProvider>
+      </NewsletterProvider>
     </ThemeProvider>
   );
 }

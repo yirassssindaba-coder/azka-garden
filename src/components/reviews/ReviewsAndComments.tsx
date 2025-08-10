@@ -68,7 +68,17 @@ const ReviewsAndComments: React.FC = () => {
           rating: 5,
           comment: 'Pelayanan Azka Garden sangat memuaskan! Tanaman yang saya beli sehat dan packaging rapi. Terima kasih!',
           likes: [],
-          replies: [],
+          replies: [
+            {
+              id: 'reply-1',
+              userId: 'admin-1',
+              userName: 'Admin Azka Garden',
+              userRole: 'admin',
+              comment: 'Terima kasih atas review positifnya! Kami senang tanaman Anda tumbuh dengan baik. Jangan lupa ikuti tips perawatan di channel YouTube kami.',
+              likes: [],
+              createdAt: new Date(Date.now() - 43200000)
+            }
+          ],
           createdAt: new Date(Date.now() - 86400000),
           updatedAt: new Date(Date.now() - 86400000)
         },
@@ -80,9 +90,31 @@ const ReviewsAndComments: React.FC = () => {
           rating: 4,
           comment: 'Koleksi tanaman lengkap dan harga terjangkau. Recommended untuk pecinta tanaman hias!',
           likes: [],
-          replies: [],
+          replies: [
+            {
+              id: 'reply-2',
+              userId: 'admin-1',
+              userName: 'Admin Azka Garden',
+              userRole: 'admin',
+              comment: 'Terima kasih atas kepercayaannya! Kami akan terus memberikan yang terbaik untuk semua pecinta tanaman.',
+              likes: [],
+              createdAt: new Date(Date.now() - 21600000)
+            }
+          ],
           createdAt: new Date(Date.now() - 172800000),
           updatedAt: new Date(Date.now() - 172800000)
+        },
+        {
+          id: 'review-3',
+          userId: 'customer-003',
+          userName: 'Rina Pratiwi',
+          userRole: 'customer',
+          rating: 5,
+          comment: 'Monstera yang saya beli dari Azka Garden tumbuh sangat subur! Packaging juga sangat aman. Pasti akan order lagi.',
+          likes: ['customer-001'],
+          replies: [],
+          createdAt: new Date(Date.now() - 259200000),
+          updatedAt: new Date(Date.now() - 259200000)
         }
       ];
       setReviews(demoReviews);
@@ -230,24 +262,32 @@ const ReviewsAndComments: React.FC = () => {
     : 0;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-green-600 to-green-800 dark:from-gray-800 dark:to-gray-900 text-white py-20">
+      <section className="bg-gradient-to-br from-green-600 to-green-800 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <MessageCircle className="h-16 w-16 text-green-200 mx-auto mb-6" />
-            <h1 className="text-5xl font-bold mb-4">Ulasan & Komentar Azka Garden</h1>
-            <p className="text-xl text-green-100 max-w-2xl mx-auto">
+            <h1 className="text-5xl font-bold mb-4 mobile-text-sm">Ulasan & Komentar Global Azka Garden</h1>
+            <p className="text-xl text-green-100 max-w-2xl mx-auto mobile-text-xs">
               Bagikan pengalaman Anda dan baca testimoni dari pelanggan lain
             </p>
+            <div className="mt-6 bg-white bg-opacity-20 rounded-lg p-4 max-w-md mx-auto">
+              <div className="flex items-center justify-center space-x-2">
+                <Globe className="h-5 w-5 text-green-200" />
+                <span className="text-green-100 font-medium mobile-text-xs">
+                  Ulasan terlihat di semua perangkat secara real-time
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mobile-padding">
         {/* Review Summary */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-8 border border-gray-200 dark:border-gray-700">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Ulasan & Komentar Azka Garden</h2>
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-200 mobile-card mobile-p-3">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4 mobile-text-sm">Ulasan & Komentar Global</h2>
           <div className="flex items-center space-x-4 mb-4">
             <div className="flex items-center space-x-1">
               {[...Array(5)].map((_, i) => (
@@ -260,17 +300,25 @@ const ReviewsAndComments: React.FC = () => {
               ))}
             </div>
             <span className="text-2xl font-bold text-gray-900 dark:text-white">{averageRating.toFixed(1)}</span>
-            <span className="text-gray-600 dark:text-gray-400">({reviews.length} ulasan)</span>
+            <span className="text-gray-600">({reviews.length} ulasan global)</span>
+          </div>
+          <div className="bg-green-50 border border-green-200 rounded-lg p-3 mt-4">
+            <div className="flex items-center space-x-2">
+              <Globe className="h-4 w-4 text-green-600" />
+              <span className="text-green-800 text-sm font-medium mobile-text-xs">
+                Semua ulasan tersinkron real-time di seluruh perangkat dan akun
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Add Review Form */}
         {user && (
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-8 border border-gray-200 dark:border-gray-700">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Tulis Ulasan</h3>
+          <div className="bg-white p-6 rounded-lg shadow-md mb-8 border border-gray-200 mobile-card mobile-p-3">
+            <h3 className="text-lg font-bold text-gray-900 mb-4 mobile-text-sm">Tulis Ulasan Global</h3>
             <form onSubmit={handleSubmitReview}>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2 mobile-text-xs">
                   Rating
                 </label>
                 <div className="flex space-x-1">
@@ -292,14 +340,14 @@ const ReviewsAndComments: React.FC = () => {
               </div>
               
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2 mobile-text-xs">
                   Komentar
                 </label>
                 <textarea
                   rows={4}
                   value={newReview.comment}
                   onChange={(e) => setNewReview(prev => ({ ...prev, comment: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent mobile-form-input"
                   placeholder="Bagikan pengalaman Anda dengan Azka Garden..."
                   required
                 />
@@ -307,7 +355,7 @@ const ReviewsAndComments: React.FC = () => {
               
               <button
                 type="submit"
-                className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors"
+                className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors mobile-btn"
               >
                 Kirim Ulasan
               </button>
@@ -318,7 +366,7 @@ const ReviewsAndComments: React.FC = () => {
         {/* Reviews List */}
         <div className="space-y-6">
           {reviews.map((review) => (
-            <div key={review.id} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+            <div key={review.id} className="bg-white p-6 rounded-lg shadow-md border border-gray-200 mobile-card mobile-p-3">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
@@ -328,7 +376,7 @@ const ReviewsAndComments: React.FC = () => {
                   </div>
                   <div>
                     <div className="flex items-center space-x-2">
-                      <span className="font-medium text-gray-900 dark:text-white">{review.userName}</span>
+                      <span className="font-medium text-gray-900 mobile-text-sm">{review.userName}</span>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRoleColor(review.userRole)}`}>
                         {getRoleLabel(review.userRole)}
                       </span>
@@ -345,6 +393,7 @@ const ReviewsAndComments: React.FC = () => {
                         ))}
                       </div>
                       <span className="text-sm text-gray-600 dark:text-gray-400">
+                      <span className="text-sm text-gray-600 mobile-text-xs">
                         {review.createdAt.toLocaleDateString('id-ID')}
                       </span>
                     </div>
@@ -362,6 +411,7 @@ const ReviewsAndComments: React.FC = () => {
               </div>
               
               <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed break-words">{review.comment}</p>
+              <p className="text-gray-700 mb-4 leading-relaxed break-words mobile-text-xs">{review.comment}</p>
               
               <div className="flex items-center space-x-4 mb-4">
                 <button

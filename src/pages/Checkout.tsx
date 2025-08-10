@@ -5,6 +5,8 @@ import stripePromise, { StripeService } from '../lib/stripe';
 import { useCart } from '../contexts/CartContext';
 import { useOrder } from '../contexts/OrderContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useNewsletter } from '../contexts/NewsletterContext';
+import MultiPaymentOptions from '../components/payment/MultiPaymentOptions';
 
 interface ShippingInfo {
   fullName: string;
@@ -33,6 +35,7 @@ const Checkout: React.FC = () => {
   const { items, getTotalPrice, clearCart } = useCart();
   const { createOrder } = useOrder();
   const { user } = useAuth();
+  const { isSubscribed } = useNewsletter();
   const navigate = useNavigate();
 
   const [shippingInfo, setShippingInfo] = useState<ShippingInfo>({
@@ -51,16 +54,6 @@ const Checkout: React.FC = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentProcessing, setPaymentProcessing] = useState(false);
 
-  const paymentMethods: PaymentMethod[] = [
-    { id: 'stripe', name: 'Kartu Kredit/Debit (Stripe)', type: 'bank', fee: 0 },
-    { id: 'bca', name: 'Transfer BCA', type: 'bank', fee: 0 },
-    { id: 'mandiri', name: 'Transfer Mandiri', type: 'bank', fee: 0 },
-    { id: 'bni', name: 'Transfer BNI', type: 'bank', fee: 0 },
-    { id: 'gopay', name: 'GoPay', type: 'ewallet', fee: 2500 },
-    { id: 'ovo', name: 'OVO', type: 'ewallet', fee: 2500 },
-    { id: 'dana', name: 'DANA', type: 'ewallet', fee: 2500 },
-    { id: 'cod', name: 'Bayar di Tempat (COD)', type: 'cod', fee: 5000 }
-  ];
 
   const shippingMethods: ShippingMethod[] = [
     { id: 'regular', name: 'Pengiriman Regular', price: 15000, estimatedDays: '3-5 hari' },
@@ -71,19 +64,61 @@ const Checkout: React.FC = () => {
   const discountCodes = {
     'WELCOME10': 0.1,
     'PLANT20': 0.2,
-    'NEWBIE15': 0.15
+    'NEWBIE15': 0.15,
+    'NEWSLETTER5': 0.05
   };
 
   const subtotal = getTotalPrice();
   const taxRate = 0.11; // PPN 11%
   const tax = subtotal * taxRate;
-  const selectedPaymentMethod = paymentMethods.find(p => p.id === selectedPayment);
+  const selectedPaymentMethod = { id: selectedPayment, name: getPaymentName(selectedPayment), type: 'bank' as const, fee: getPaymentFee(selectedPayment) };
   const selectedShippingMethod = shippingMethods.find(s => s.id === selectedShipping);
-  const paymentFee = selectedPaymentMethod?.fee || 0;
+  const paymentFee = getPaymentFee(selectedPayment);
   const shippingFee = selectedShippingMethod?.price || 0;
-  const discountAmount = subtotal * appliedDiscount;
+  let discountAmount = subtotal * appliedDiscount;
+  
+  // Auto-apply newsletter discount
+  if (isSubscribed && appliedDiscount === 0) {
+    discountAmount = subtotal * 0.05; // 5% newsletter discount
+    setAppliedDiscount(0.05);
+    setDiscountCode('NEWSLETTER5');
+  }
+  
   const total = subtotal + tax + paymentFee + shippingFee - discountAmount;
 
+  function getPaymentName(paymentId: string): string {
+    const names: { [key: string]: string } = {
+      'stripe': 'Kartu Kredit/Debit (Stripe)',
+      'bca': 'Transfer BCA',
+      'mandiri': 'Transfer Mandiri',
+      'bni': 'Transfer BNI',
+      'bri': 'Transfer BRI',
+      'gopay': 'GoPay',
+      'ovo': 'OVO',
+      'dana': 'DANA',
+      'shopeepay': 'ShopeePay',
+      'linkaja': 'LinkAja',
+      'cod': 'Bayar di Tempat (COD)'
+    };
+    return names[paymentId] || paymentId;
+  }
+
+  function getPaymentFee(paymentId: string): number {
+    const fees: { [key: string]: number } = {
+      'stripe': 0,
+      'bca': 0,
+      'mandiri': 0,
+      'bni': 0,
+      'bri': 0,
+      'gopay': 2500,
+      'ovo': 2500,
+      'dana': 2500,
+      'shopeepay': 2500,
+      'linkaja': 2500,
+      'cod': 5000
+    };
+    return fees[paymentId] || 0;
+  }
   const handleInputChange = (field: keyof ShippingInfo, value: string) => {
     setShippingInfo(prev => ({ ...prev, [field]: value }));
   };
@@ -92,6 +127,7 @@ const Checkout: React.FC = () => {
     const discount = discountCodes[discountCode as keyof typeof discountCodes];
     if (discount) {
       setAppliedDiscount(discount);
+      alert(`Diskon ${Math.round(discount * 100)}% berhasil diterapkan!`);
     } else {
       alert('Kode diskon tidak valid');
     }
@@ -143,7 +179,7 @@ const Checkout: React.FC = () => {
       const orderData = {
         items,
         shippingInfo,
-        paymentMethod: selectedPaymentMethod!,
+        paymentMethod: selectedPaymentMethod,
         shippingMethod: selectedShippingMethod!,
         subtotal,
         tax,
@@ -168,7 +204,7 @@ const Checkout: React.FC = () => {
 
   if (items.length === 0) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mobile-padding">
         <div className="text-center">
           <p className="text-gray-500 text-lg mb-4">Keranjang kosong</p>
           <button
@@ -183,7 +219,7 @@ const Checkout: React.FC = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mobile-padding">
       <button
         onClick={() => navigate('/cart')}
         className="inline-flex items-center text-green-600 hover:text-green-700 mb-6"
@@ -193,12 +229,21 @@ const Checkout: React.FC = () => {
       </button>
 
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Checkout</h1>
+      
+      {isSubscribed && (
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+          <div className="flex items-center space-x-2">
+            <CheckCircle className="h-5 w-5 text-green-600" />
+            <span className="text-green-800 font-medium">Newsletter subscriber - Diskon 5% otomatis diterapkan!</span>
+          </div>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mobile-grid-1 mobile-space-y-2">
           <div className="lg:col-span-2 space-y-8">
             {/* Shipping Information */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 mobile-card mobile-p-3">
               <div className="flex items-center mb-4">
                 <MapPin className="h-6 w-6 text-green-600 mr-2" />
                 <h2 className="text-xl font-semibold text-gray-900">Informasi Pengiriman</h2>
@@ -282,7 +327,7 @@ const Checkout: React.FC = () => {
             </div>
 
             {/* Shipping Method */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 mobile-card mobile-p-3">
               <div className="flex items-center mb-4">
                 <Truck className="h-6 w-6 text-green-600 mr-2" />
                 <h2 className="text-xl font-semibold text-gray-900">Metode Pengiriman</h2>
@@ -311,45 +356,18 @@ const Checkout: React.FC = () => {
             </div>
 
             {/* Payment Method */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-              <div className="flex items-center mb-4">
-                <CreditCard className="h-6 w-6 text-green-600 mr-2" />
-                <h2 className="text-xl font-semibold text-gray-900">Metode Pembayaran</h2>
-              </div>
-              <div className="space-y-3">
-                {paymentMethods.map((method) => (
-                  <label key={method.id} className="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
-                    <input
-                      type="radio"
-                      name="payment"
-                      value={method.id}
-                      checked={selectedPayment === method.id}
-                      onChange={(e) => setSelectedPayment(e.target.value)}
-                      className="mr-3"
-                    />
-                    <div className="flex-1">
-                      <div className="font-medium text-gray-900">{method.name}</div>
-                      {method.fee > 0 && (
-                        <div className="text-sm text-gray-600">
-                          Biaya admin: Rp {method.fee.toLocaleString('id-ID')}
-                        </div>
-                      )}
-                      {method.id === 'stripe' && (
-                        <div className="text-xs text-green-600 flex items-center space-x-1 mt-1">
-                          <Shield className="h-3 w-3" />
-                          <span>Pembayaran aman dengan Stripe</span>
-                        </div>
-                      )}
-                    </div>
-                  </label>
-                ))}
-              </div>
+            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 mobile-card mobile-p-3">
+              <MultiPaymentOptions
+                selectedPayment={selectedPayment}
+                onPaymentSelect={setSelectedPayment}
+                amount={total}
+              />
             </div>
           </div>
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white p-6 rounded-lg shadow-md sticky top-8 border border-gray-200">
+            <div className="bg-white p-6 rounded-lg shadow-md sticky top-8 border border-gray-200 mobile-card mobile-p-3">
               <h2 className="text-xl font-semibold mb-4 text-gray-900">Ringkasan Pesanan</h2>
               
               <div className="space-y-2 mb-4">
@@ -419,14 +437,14 @@ const Checkout: React.FC = () => {
                   </button>
                 </div>
                 <div className="text-xs text-gray-500 mt-1">
-                  Coba: WELCOME10, PLANT20, NEWBIE15
+                  Coba: WELCOME10, PLANT20, NEWBIE15, NEWSLETTER5
                 </div>
               </div>
 
               <button
                 type="submit"
                 disabled={isProcessing || paymentProcessing}
-                className="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mobile-btn"
               >
                 {paymentProcessing ? 'Memproses Pembayaran...' : 
                  isProcessing ? 'Membuat Pesanan...' : 'Buat Pesanan'}

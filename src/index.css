@@ -111,6 +111,66 @@ html, body {
   }
 }
 
+/* Enhanced Mobile Responsiveness */
+@media (max-width: 640px) {
+  .mobile-padding {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+  
+  .mobile-text-sm {
+    font-size: 0.875rem !important;
+  }
+  
+  .mobile-text-xs {
+    font-size: 0.75rem !important;
+  }
+  
+  .mobile-grid-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  }
+  
+  .mobile-space-y-2 > * + * {
+    margin-top: 0.5rem !important;
+  }
+  
+  .mobile-p-3 {
+    padding: 0.75rem !important;
+  }
+  
+  .mobile-rounded-lg {
+    border-radius: 0.5rem !important;
+  }
+  
+  /* Mobile-specific button styles */
+  .mobile-btn {
+    padding: 0.875rem 1.5rem !important;
+    font-size: 0.875rem !important;
+    border-radius: 0.75rem !important;
+    font-weight: 600 !important;
+  }
+  
+  /* Mobile card improvements */
+  .mobile-card {
+    margin-bottom: 1rem !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  /* Mobile form improvements */
+  .mobile-form-input {
+    padding: 1rem !important;
+    font-size: 1rem !important;
+    border-radius: 0.75rem !important;
+  }
+  
+  /* Mobile navigation improvements */
+  .mobile-nav-item {
+    padding: 1rem !important;
+    font-size: 1rem !important;
+    border-radius: 0.75rem !important;
+  }
+}
 /* Light mode base styles */
 @layer base {
   html {

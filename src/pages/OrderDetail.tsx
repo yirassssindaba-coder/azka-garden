@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Package, MapPin, CreditCard, Truck, Calendar, Phone, User } from 'lucide-react';
 import { useOrder } from '../contexts/OrderContext';
+import OrderTracker from '../components/tracking/OrderTracker';
 
 const OrderDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -57,7 +58,7 @@ const OrderDetail: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mobile-padding">
       <Link
         to="/orders"
         className="inline-flex items-center text-green-600 hover:text-green-700 mb-6"
@@ -67,6 +68,16 @@ const OrderDetail: React.FC = () => {
       </Link>
 
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-8 border border-gray-200 dark:border-gray-700">
+        {/* Order Tracking */}
+        <div className="p-6 border-b border-gray-200">
+          <OrderTracker
+            orderId={order.id}
+            orderNumber={order.orderNumber}
+            status={order.status}
+            trackingNumber={`JNE${order.id.slice(-8)}`}
+          />
+        </div>
+
         <div className="p-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between">
             <div>
