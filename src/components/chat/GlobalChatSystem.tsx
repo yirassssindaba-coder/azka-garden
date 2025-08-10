@@ -6,3 +6,5 @@ import { Navigate } from 'react-router-dom';
 const GlobalChatSystem: React.FC = () => {
   return <Navigate to="/global-chat" replace />;
 };
+
+export default GlobalChatSystem;
