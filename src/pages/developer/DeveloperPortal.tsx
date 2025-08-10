@@ -511,7 +511,7 @@ const DeveloperPortal: React.FC = () => {
                             rows={3}
                             value={replyComment}
                             onChange={(e) => setReplyComment(e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                            className="w-full px-3 py-2 border-2 border-green-200 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-400 text-sm transition-all duration-200"
                             placeholder="Tulis balasan teknis sebagai Developer..."
                           />
                           <div className="flex justify-end space-x-2 mt-2">
@@ -524,7 +524,7 @@ const DeveloperPortal: React.FC = () => {
                             <button
                               onClick={() => handleReplyToReview(review.id)}
                               disabled={!replyComment.trim()}
-                              className="flex items-center space-x-1 px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors disabled:opacity-50"
+                              className="flex items-center space-x-1 px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700 hover:shadow-lg transition-all duration-200 disabled:opacity-50 transform hover:scale-105"
                             >
                               <Send className="h-3 w-3" />
                               <span>Kirim Balasan</span>
