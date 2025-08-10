@@ -122,7 +122,9 @@ const Home: React.FC = () => {
               </h1>
               <p className="text-xl mb-8 text-white leading-relaxed animate-slide-up">
                 Koleksi lengkap 59+ tanaman hias berkualitas premium dari Jamani Dolar hingga Bonsai eksklusif. 
-                Dari tanaman indoor mudah perawatan hingga koleksi premium untuk kolektor sejati.
+                Dari tanaman indoor mudah perawatan hingga koleksi premium untuk kolektor sejati. 
+                Dengan pengalaman bertahun-tahun, kami menyediakan tanaman terbaik dengan panduan perawatan lengkap 
+                dan dukungan konsultasi gratis seumur hidup untuk setiap pembelian.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 animate-slide-up">
                 <Link
