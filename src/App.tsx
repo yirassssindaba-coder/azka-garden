@@ -1,4 +1,6 @@
 import React from 'react';
+import CommentSection from './components/CommentSection';
+import './App.css';
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { supabaseHealthCheck } from './services/health';
