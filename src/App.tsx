@@ -214,6 +214,19 @@ function App() {
       </NewsletterProvider>
     </ThemeProvider>
   );
+
+  return (
+    <div className="App">
+      <header className="app-header">
+        <h1>🌿 Azka Garden</h1>
+        <p>Toko Tanaman Hias Terpercaya</p>
+      </header>
+      
+      <main className="app-main">
+        <CommentSection />
+      </main>
+    </div>
+  );
 }
 
 export default App;
